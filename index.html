@@ -1675,16 +1675,21 @@
                 });
                 if (!response.ok) {
                     const errorData = await response.json();
-                    console.error("Gemini API Error:", errorData);
-                    throw new Error(`Gemini API hatası: ${response.status}`);
+                    console.error("Gemini API Error:", errorData, "Status:", response.status, "StatusText:", response.statusText);
+                    throw new Error(`Gemini API hatası: ${response.status} - ${response.statusText}. Detaylar için konsolu kontrol edin.`);
                 }
                 const result = await response.json();
                 if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
                     return result.candidates[0].content.parts[0].text;
                 } else {
+                     console.warn("Gemini API'den beklenmedik yanıt yapısı:", result);
                     throw new Error("Gemini API'den geçerli yanıt alınamadı.");
                 }
-            } finally {
+            } catch(err) {
+                console.error("callGeminiApi içinde hata:", err);
+                throw err; // Hatanın yukarıya yayılmasını sağla
+            }
+            finally {
                  if(loadingIndicator) loadingIndicator.classList.add('hidden');
             }
         }
@@ -1808,7 +1813,7 @@
                 const username = document.getElementById('admin-username').value;
                 const password = document.getElementById('admin-password').value;
                 const errorEl = document.getElementById('admin-login-error');
-                if (username === SIMULATED_ADMIN_USERNAME && password === SIMULATED_ADMIN_PASSWORD) { // Simüle edilmiş kontrol
+                if (username === SIMULATED_ADMIN_USERNAME && password === SIMULATED_ADMIN_PASSWORD) { 
                     isAdminLoggedIn = true;
                     sessionStorage.setItem('isAdminLoggedIn', 'true'); 
                     renderAdminPage();
@@ -1852,10 +1857,13 @@
                     miniQuizzes[doc.id] = { id: doc.id, ...doc.data() };
                 });
                 console.log("Managed quizzes loaded:", Object.keys(miniQuizzes).length);
-                if (Object.keys(miniQuizzes).length > 0) {
+                if (Object.keys(miniQuizzes).length > 0 && !miniQuizzes[currentQuizName]) { // Eğer currentQuizName geçerli değilse
                      currentQuizName = Object.keys(miniQuizzes)[0]; 
-                } else {
+                } else if (Object.keys(miniQuizzes).length === 0){
                     console.log("No quizzes found in Firestore for experiments page.");
+                    // Quizler yoksa, quiz bölümünü boş veya bir mesajla göster
+                    const quizContainerEl = document.getElementById('quiz-container');
+                    if(quizContainerEl) quizContainerEl.innerHTML = "<p class='text-center neon-text-danger'>Yüklenecek quiz bulunamadı.</p>";
                 }
 
 
@@ -2075,8 +2083,8 @@
         if(quizAdminForm) {
             quizAdminForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const quizId = document.getElementById('quiz-title-input').value.trim(); // Bu artık quiz'in ID'si
-                const existingQuizId = document.getElementById('quiz-id-input').value; // Düzenleme için
+                const quizId = document.getElementById('quiz-title-input').value.trim(); 
+                const existingQuizId = document.getElementById('quiz-id-input').value; 
                 
                 if (!quizId) {
                     showModal("Quiz ID (Başlık) boş bırakılamaz.", false);
@@ -2086,7 +2094,7 @@
                 const questions = [];
                 document.querySelectorAll('#quiz-questions-container .quiz-question-item').forEach(item => {
                     const questionText = item.querySelector('.quiz-q-text').value.trim();
-                    const options = Array.from(item.querySelectorAll('.quiz-q-option')).map(opt => opt.value.trim()).filter(opt => opt); // Boş seçenekleri filtrele
+                    const options = Array.from(item.querySelectorAll('.quiz-q-option')).map(opt => opt.value.trim()).filter(opt => opt); 
                     const correctAnswer = item.querySelector('.quiz-q-correct').value.trim();
 
                     if (questionText && options.length >= 2 && correctAnswer && options.includes(correctAnswer)) {
@@ -2102,8 +2110,6 @@
                 const quizData = { title: quizId, questions: questions, timestamp: serverTimestamp() };
 
                 try {
-                    // Firestore'da quizId (document ID) olarak quiz-title-input'taki değeri kullanacağız.
-                    // Eğer düzenleme yapılıyorsa ve ID değişmemişse update, değişmişse veya yeniyse set (overwrite ile)
                     await setDoc(doc(db, managedQuizzesCollectionPath, quizId), quizData, { merge: true }); 
                     
                     quizFormModal.style.display = 'none';
@@ -2154,7 +2160,7 @@
                     }
 
                     if (Array.isArray(generatedQuestions) && generatedQuestions.length > 0) {
-                        quizQuestionsContainer.innerHTML = ''; // Mevcut soruları temizle
+                        quizQuestionsContainer.innerHTML = ''; 
                         generatedQuestions.forEach(q => addQuestionToQuizForm(q));
                     } else {
                         showModal("AI'dan geçerli quiz soruları oluşturulamadı.", false);
@@ -2295,8 +2301,8 @@
                         showModal("AI'dan geçerli bir ifade oluşturulamadı.", false);
                     }
                 } catch (error) {
-                    console.error("AI İfade oluşturma hatası:", error);
-                    showModal("AI ile ifade oluşturulurken bir hata oluştu.", false);
+                    console.error("AI İfade oluşturma hatası:", error, error.stack); // Hata yığınını da logla
+                    showModal("AI ile ifade oluşturulurken bir hata oluştu. Detaylar için konsolu kontrol edin.", false);
                 }
             });
         }

@@ -22,7 +22,7 @@
             --wrong-answer-bg: rgba(255, 20, 57, 0.2);
             --forum-post-bg: rgba(20, 20, 40, 0.7);
             --reply-bg: rgba(25, 25, 45, 0.8);
-            --danger-neon: #ff3366; /* Silme ve uyarılar için */
+            --danger-neon: #ff3366; 
         }
 
         body.dark-mode {
@@ -112,6 +112,16 @@
             color: var(--bg-color);
             box-shadow: 0 0 15px var(--secondary-neon);
         }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .admin-table th, .admin-table td { border: 1px solid var(--primary-neon); padding: 0.75rem; text-align: left; }
+        .admin-table th { background-color: var(--input-bg); font-family: 'Orbitron'; }
+        .admin-form-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 10001; padding:1rem;}
+        .admin-form-modal-content { background-color: var(--darker-bg); padding: 2rem; border-radius: 10px; border: 1px solid var(--primary-neon); box-shadow: 0 0 20px var(--primary-neon); width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;}
+        .admin-form-modal-content label { display: block; margin-bottom: 0.5rem; color: var(--primary-neon); }
+        .admin-form-modal-content input, .admin-form-modal-content textarea, .admin-form-modal-content select { width: 100%; background-color: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 6px; padding: 0.5rem; margin-bottom: 1rem; }
+        .quiz-question-item { border: 1px dashed var(--secondary-neon); padding: 1rem; margin-bottom: 1rem; border-radius: 6px; }
+        .quiz-question-item label { font-size: 0.9rem; }
+        .quiz-option-input { margin-bottom: 0.5rem !important; }
 
 
         .dna-nucleotide {
@@ -222,6 +232,7 @@
                             <li><a href="#experiments" class="text-xs sm:text-sm md:text-base menu-neuron page-link">Deneyler</a></li>
                             <li><a href="#about" class="text-xs sm:text-sm md:text-base menu-neuron page-link">Hakkımda</a></li>
                             <li><a href="#forum" class="text-xs sm:text-sm md:text-base menu-neuron page-link">Forum</a></li>
+                            <li><a href="#admin" class="text-xs sm:text-sm md:text-base menu-neuron page-link">Admin</a></li>
                         </ul>
                     </nav>
                     <button id="darkModeToggle" title="Gece Modu Aç/Kapat"><i class="fas fa-moon"></i></button>
@@ -460,6 +471,42 @@
                     </div>
                 </div>
             </section>
+
+             <!-- Admin Paneli Sayfası -->
+            <section id="admin" class="page-content min-h-screen py-16 px-4 md:px-8">
+                <div class="container mx-auto">
+                    <div id="admin-login-container">
+                        <h2 class="text-3xl md:text-5xl font-orbitron neon-text-blue text-center mb-10">Admin Girişi</h2>
+                        <p class="text-center text-yellow-400 mb-4 text-sm">**Güvenlik Uyarısı:** Bu giriş mekanizması yalnızca geliştirme amaçlıdır ve güvenli değildir. Gerçek bir uygulamada sunucu taraflı kimlik doğrulama kullanılmalıdır.</p>
+                        <form id="admin-login-form" class="max-w-md mx-auto bg-[var(--input-bg)] p-8 rounded-lg shadow-xl neon-border-blue">
+                            <div class="mb-6">
+                                <label for="admin-username" class="block text-sm font-medium text-[color:var(--primary-neon)] mb-1">Kullanıcı Adı</label>
+                                <input type="text" id="admin-username" class="w-full text-sm bg-[var(--darker-bg)] border border-[color:var(--border-color)] text-[color:var(--text-color)] rounded-md p-3 focus:ring-2 focus:ring-[color:var(--primary-neon)] focus:border-[color:var(--primary-neon)] outline-none" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="admin-password" class="block text-sm font-medium text-[color:var(--primary-neon)] mb-1">Şifre</label>
+                                <input type="password" id="admin-password" class="w-full text-sm bg-[var(--darker-bg)] border border-[color:var(--border-color)] text-[color:var(--text-color)] rounded-md p-3 focus:ring-2 focus:ring-[color:var(--primary-neon)] focus:border-[color:var(--primary-neon)] outline-none" required>
+                            </div>
+                            <button type="submit" class="btn-primary w-full">Giriş Yap</button>
+                            <p id="admin-login-error" class="text-red-500 text-sm mt-4 text-center"></p>
+                        </form>
+                    </div>
+
+                    <div id="admin-dashboard-container" class="hidden">
+                        <h2 class="text-3xl md:text-5xl font-orbitron neon-text-green text-center mb-10">Admin Paneli</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                            <button id="manage-videos-button" class="btn-primary text-lg w-full">Videoları Yönet</button>
+                            <button id="manage-quizzes-button" class="btn-primary text-lg w-full">Quizleri Yönet</button>
+                            <button id="manage-myths-button" class="btn-primary text-lg w-full">Efsaneleri Yönet</button>
+                        </div>
+                        <button id="admin-logout-button" class="btn-danger mx-auto block">Çıkış Yap</button>
+                        
+                        <div id="admin-content-area" class="mt-10">
+                            <!-- İçerik yönetim arayüzleri buraya gelecek -->
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <footer class="py-8 text-center border-t " style="border-color: rgba(var(--primary-neon-rgb, 0, 255, 255), 0.3);">
@@ -476,16 +523,113 @@
         </div>
     </div>
 
+    <!-- Video Ekle/Düzenle Modalı -->
+    <div id="video-form-modal" class="admin-form-modal">
+        <div class="admin-form-modal-content">
+            <h3 id="video-modal-title" class="text-2xl font-orbitron neon-text-green mb-6">Video Formu</h3>
+            <form id="video-admin-form">
+                <input type="hidden" id="video-id-input">
+                <div>
+                    <label for="video-title-input">Başlık:</label>
+                    <input type="text" id="video-title-input" required>
+                </div>
+                <div>
+                    <label for="video-desc-input">Açıklama:</label>
+                    <textarea id="video-desc-input" rows="3" required></textarea>
+                </div>
+                <div>
+                    <label for="video-thumbnail-input">Thumbnail URL:</label>
+                    <input type="url" id="video-thumbnail-input" required placeholder="https://placehold.co/...">
+                </div>
+                <div>
+                    <label for="video-youtubeid-input">YouTube Video ID:</label>
+                    <input type="text" id="video-youtubeid-input" required placeholder="örn: w_khel_j43s">
+                </div>
+                 <div>
+                    <label for="video-views-input">İzlenme Sayısı:</label>
+                    <input type="text" id="video-views-input" placeholder="örn: 1.2M">
+                </div>
+                <div>
+                    <label for="video-duration-input">Süre:</label>
+                    <input type="text" id="video-duration-input" placeholder="örn: 15:32">
+                </div>
+                <div class="mt-6 flex justify-end gap-4">
+                    <button type="button" id="cancel-video-form" class="btn-primary btn-danger">İptal</button>
+                    <button type="submit" class="btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Quiz Ekle/Düzenle Modalı (Basit hali) -->
+    <div id="quiz-form-modal" class="admin-form-modal">
+        <div class="admin-form-modal-content">
+            <h3 id="quiz-modal-title" class="text-2xl font-orbitron neon-text-green mb-6">Quiz Formu</h3>
+            <form id="quiz-admin-form">
+                <input type="hidden" id="quiz-id-input">
+                <div>
+                    <label for="quiz-title-input">Quiz Başlığı (ID - Benzersiz olmalı, örn: evreninSirlari):</label>
+                    <input type="text" id="quiz-title-input" required placeholder="örn: evreninSirlari">
+                </div>
+                 <div class="mt-4 mb-4">
+                    <button type="button" id="ai-generate-quiz-button" class="btn-primary btn-secondary text-sm w-full"><i class="fas fa-robot mr-2"></i>AI ile Quiz Oluştur (Konu Girin)</button>
+                    <input type="text" id="ai-quiz-topic-input" class="mt-2" placeholder="Quiz konusu (örn: Kara Delikler)">
+                </div>
+                <div id="quiz-questions-container">
+                    <!-- Sorular dinamik olarak buraya eklenecek -->
+                </div>
+                <button type="button" id="add-quiz-question-button" class="btn-secondary mt-4 mb-4 text-sm"><i class="fas fa-plus mr-2"></i>Yeni Soru Ekle</button>
+                <div class="mt-6 flex justify-end gap-4">
+                    <button type="button" id="cancel-quiz-form" class="btn-primary btn-danger">İptal</button>
+                    <button type="submit" class="btn-primary">Quiz'i Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Myth Ekle/Düzenle Modalı -->
+    <div id="myth-form-modal" class="admin-form-modal">
+        <div class="admin-form-modal-content">
+            <h3 id="myth-modal-title" class="text-2xl font-orbitron neon-text-green mb-6">Efsane/Gerçek Formu</h3>
+             <div class="mt-4 mb-6">
+                <button type="button" id="ai-generate-myth-button" class="btn-primary btn-secondary text-sm w-full"><i class="fas fa-robot mr-2"></i>AI ile İfade Oluştur (Konu Girin)</button>
+                <input type="text" id="ai-myth-topic-input" class="mt-2" placeholder="İfade konusu (örn: Beyin Kullanımı)">
+            </div>
+            <form id="myth-admin-form">
+                <input type="hidden" id="myth-id-input">
+                <div>
+                    <label for="myth-statement-input">İfade:</label>
+                    <textarea id="myth-statement-input" rows="3" required></textarea>
+                </div>
+                <div>
+                    <label for="myth-isMyth-input">Bu bir Efsane mi?</label>
+                    <select id="myth-isMyth-input">
+                        <option value="true">Evet, Efsane</option>
+                        <option value="false">Hayır, Gerçek</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="myth-explanation-input">Açıklama:</label>
+                    <textarea id="myth-explanation-input" rows="3" required></textarea>
+                </div>
+                <div class="mt-6 flex justify-end gap-4">
+                    <button type="button" id="cancel-myth-form" class="btn-primary btn-danger">İptal</button>
+                    <button type="submit" class="btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <script type="module">
         // Firebase SDK'ları
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { initializeApp, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { 
             getFirestore, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, getDocs,
             onSnapshot, collection, query, where, serverTimestamp, orderBy, FieldValue,
             runTransaction
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"; 
 
         // Firebase yapılandırması ve başlatma
         let firebaseConfig;
@@ -496,30 +640,29 @@
             firebaseConfig = null;
         }
 
-        if (!firebaseConfig) {
+        if (!firebaseConfig || !firebaseConfig.apiKey) { 
             console.error("CRITICAL: Firebase configuration is missing or invalid. Using placeholder config.");
-            firebaseConfig = { apiKey: "MISSING_CONFIG", authDomain: "MISSING_CONFIG", projectId: "MISSING_CONFIG" }; // Placeholder
+            firebaseConfig = { apiKey: "MISSING_CONFIG", authDomain: "MISSING_CONFIG", projectId: "MISSING_CONFIG" }; 
         }
         
         let app;
         let db;
-        let authService; // "auth" is a common variable name, using "authService" to avoid conflicts
+        let authService; 
 
         try {
             app = initializeApp(firebaseConfig);
             db = getFirestore(app);
-            authService = getAuth(app); // "auth" yerine "authService"
+            authService = getAuth(app); 
             setLogLevel('debug'); 
         } catch (e) {
             console.error("CRITICAL: Firebase initialization failed:", e);
-            // Display error to user on the page
             const mainContent = document.getElementById('main-content');
             if(mainContent) {
                  mainContent.innerHTML = `<div class="text-center p-8 text-red-500">Uygulama başlatılırken kritik bir hata oluştu: Firebase yapılandırması hatalı veya eksik. Lütfen konsolu kontrol edin.</div>`;
                  mainContent.classList.remove('hidden');
-                 document.getElementById('loader-wrapper').style.display = 'none';
+                 const loader = document.getElementById('loader-wrapper');
+                 if(loader) loader.style.display = 'none';
             }
-            // Stop further script execution if Firebase fails to initialize
             throw new Error("Firebase initialization failed, stopping script.");
         }
 
@@ -528,6 +671,11 @@
         let currentUserId = null;
         const userIdDisplay = document.getElementById('user-id-display');
         let isProgrammaticHashChange = false; 
+        let isAdminLoggedIn = false; 
+        // Güvenlik Uyarısı: Bu bilgiler gerçek bir uygulamada ASLA istemci tarafında saklanmamalıdır!
+        const SIMULATED_ADMIN_USERNAME = "gercegingercegi";
+        const SIMULATED_ADMIN_PASSWORD = "eceece";
+
 
         onAuthStateChanged(authService, (user) => {
             if (user) {
@@ -568,32 +716,20 @@
             }
         }
 
+        // Firestore Collection Paths
+        const managedVideosCollectionPath = `/artifacts/${appId}/public/data/managedVideos`;
+        const managedQuizzesCollectionPath = `/artifacts/${appId}/public/data/managedQuizzes`;
+        const managedMythBusterStatementsCollectionPath = `/artifacts/${appId}/public/data/managedMythBusterStatements`;
+        const forumPostsCollectionPath = `/artifacts/${appId}/public/data/forumPosts`;
 
-        const mockVideos = [
-            { id: 1, title: "Evrenin Sırları: Büyük Patlama Teorisi", description: "Evrenimizin başlangıcına dair en kabul gören teori.", thumbnail: "https://placehold.co/600x400/1a1a2e/00ffff?text=Evrenin+Sırları", views: "1.2M", duration: "15:32", youtubeVideoId: "w_khel_j43s" },
-            { id: 2, title: "Bilinç Nedir? Felsefi ve Bilimsel Yaklaşımlar", description: "İnsan bilincinin gizemli doğasını keşfedin.", thumbnail: "https://placehold.co/600x400/1a1a2e/39ff14?text=Bilinç+Nedir?", views: "875K", duration: "22:10", youtubeVideoId: "1Y_onQcK8xY" },
-            { id: 3, title: "Kuantum Fiziği ve Gerçeklik Algımız", description: "Kuantum dünyasının gerçekliğimizi nasıl şekillendirdiği.", thumbnail: "https://placehold.co/600x400/1a1a2e/00ffff?text=Kuantum+Fiziği", views: "950K", duration: "18:45", youtubeVideoId: "UjaAxUO6-Uw" },
-        ];
 
-        const mythBusterStatements = [
-            { statement: "İnsanlar beyinlerinin sadece %10'unu kullanır.", isMyth: true, explanation: "Bu yaygın bir efsanedir." },
-            { statement: "Yarasalar kördür.", isMyth: true, explanation: "Yarasalar kör değildir; çoğu tür görebilir ve ekolokasyon kullanır." },
-            { statement: "Çin Seddi uzaydan çıplak gözle görülebilir.", isMyth: true, explanation: "Bu da bir efsanedir." },
-        ];
+        let mythBusterStatements = []; 
+        let miniQuizzes = {}; 
+        let managedVideos = []; 
+
         let currentGameStatementIndex = -1;
         let gameScore = 0;
         let gameStatementsOrder = [];
-
-        const miniQuizzes = {
-            "evreninSirlari": {
-                title: "Evrenin Sırları Testi",
-                questions: [
-                    { question: "Evren yaklaşık kaç yaşındadır?", options: ["13.8 milyon", "13.8 milyar", "4.5 milyar"], correctAnswer: "13.8 milyar" },
-                    { question: "Evrenin genişlediğini kim keşfetti?", options: ["Einstein", "Hubble", "Newton"], correctAnswer: "Hubble" },
-                    { question: "Kozmik mikrodalga arka plan ışıması (CMB) nedir?", options: ["Uzak galaksilerden gelen ışık", "Büyük Patlama'dan kalan artık ısı", "Yeni yıldızların oluşumundan kaynaklanan enerji"], correctAnswer: "Büyük Patlama'dan kalan artık ısı"}
-                ]
-            }
-        };
         let currentQuizName = "evreninSirlari"; 
         let currentQuizQuestionIndex = 0;
         let quizScore = 0;
@@ -602,25 +738,20 @@
             const loaderWrapper = document.getElementById('loader-wrapper');
             const mainContent = document.getElementById('main-content');
             
-            if (!loaderWrapper) {
-                console.error("CRITICAL: Loader wrapper not found on load!");
+            if (!loaderWrapper || !mainContent) {
+                console.error("CRITICAL: Loader or Main content not found on load!");
                 if (mainContent) mainContent.classList.remove('hidden');
-                else console.error("CRITICAL: Main content not found on load!");
-                if (mainContent) initializePage(); 
+                try { initializePage(); } catch(e) { console.error("Error in fallback page init:", e); }
                 return;
-            }
-            if (!mainContent) {
-                 console.error("CRITICAL: Main content not found on load!");
-                 loaderWrapper.style.display = 'none';
-                 return;
             }
 
             setTimeout(async () => { 
                 try {
                     await initializeAuth(); 
                     console.log("Auth initialization completed.");
+                    await loadInitialDataFromFirestore(); 
                 } catch (authError) {
-                    console.error("CRITICAL: Error during Firebase auth initialization:", authError);
+                    console.error("CRITICAL: Error during Firebase auth or initial data load:", authError);
                 } finally {
                     if (loaderWrapper) {
                         loaderWrapper.style.transition = 'opacity 0.5s ease-out';
@@ -639,9 +770,6 @@
                                 }
                             }
                         }, 500); 
-                    } else {
-                        if (mainContent) mainContent.classList.remove('hidden');
-                        try { initializePage(); } catch (e) { console.error("CRITICAL: Error in fallback page init:", e); }
                     }
                 }
             }, 1000); 
@@ -708,6 +836,9 @@
                     pageToShowId = 'video-detail-section'; 
                     renderVideoDetailPage(videoId); 
                     menuLinkToActivate = 'videos'; 
+                } else if (targetId === 'admin') {
+                    pageToShowId = 'admin';
+                    renderAdminPage();
                 }
                 
                 const finalTargetPage = document.getElementById(pageToShowId);
@@ -720,6 +851,8 @@
                     } else if (pageToShowId === 'forum') {
                         console.log("Activating forum page, setting up forum.");
                         setupForum();
+                    } else if (pageToShowId === 'videos') {
+                        renderVideoListPage(); 
                     }
                 } else {
                      console.warn(`Target page with ID "${pageToShowId}" (derived from "${targetId}") not found. Defaulting to home.`);
@@ -782,48 +915,8 @@
                 }
             });
 
-            const videoListContainer = document.getElementById('video-list');
-            if (videoListContainer && videoListContainer.children.length === 0) { 
-                mockVideos.forEach(video => { 
-                    const videoCard = `
-                        <div class="dna-nucleotide neon-border-blue hover:neon-border-green cursor-pointer" data-video-id="${video.id}">
-                            <div class="video-jar-overlay"></div>
-                            <img src="${video.thumbnail}" alt="${escapeHTML(video.title)}" class="w-full h-48 object-cover rounded-t-lg" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1a1a2e/cccccc?text=Görüntü+Yüklenemedi';">
-                            <div class="p-5">
-                                <h3 class="text-xl font-orbitron neon-text-green mb-2 h-16 overflow-hidden">${escapeHTML(video.title)}</h3>
-                                <p class="text-sm text-gray-300 mb-3 h-12 overflow-hidden">${escapeHTML(video.description)}</p>
-                                <div class="flex justify-between items-center text-xs text-[color:var(--primary-neon)]">
-                                    <span>👁️ ${escapeHTML(video.views)}</span>
-                                    <span>⏳ ${escapeHTML(video.duration)}</span>
-                                </div>
-                                <button class="w-full mt-4 btn-primary text-sm !py-2 video-details-button page-link" data-target="video-detail-${video.id}">Detayları Gör</button>
-                            </div>
-                        </div>
-                    `;
-                    videoListContainer.innerHTML += videoCard;
-                 });
-                document.querySelectorAll('#video-list .page-link').forEach(link => {
-                    if (!link.dataset.listenerAttached) { 
-                        link.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            const targetId = link.dataset.target || link.getAttribute('href').substring(1);
-                            showPage(targetId);
-                        });
-                        link.dataset.listenerAttached = 'true';
-                    }
-                });
-
-                document.querySelectorAll('.dna-nucleotide').forEach(card => { 
-                    if (!card.dataset.clickListenerAttached) {
-                        card.addEventListener('click', function(event) {
-                            if (event.target.closest('.video-details-button')) return;
-                            this.classList.add('video-cracked'); 
-                            console.log(`Video ${this.dataset.videoId} tıklandı`);
-                        });
-                        card.dataset.clickListenerAttached = 'true';
-                    }
-                });
-            }
+            renderVideoListPage(); 
+            
             document.getElementById('currentYear').textContent = new Date().getFullYear();
             const thoughtStreamContainer = document.body; 
             if (!document.querySelector('.thought-stream-particle')) { 
@@ -901,7 +994,7 @@
         
         function renderVideoDetailPage(videoId) {
             const detailContainer = document.getElementById('video-detail-container');
-            const videoData = mockVideos.find(v => v.id.toString() === videoId);
+            const videoData = managedVideos.find(v => v.id.toString() === videoId); 
 
             if (!detailContainer) {
                 console.error("Video detail container (#video-detail-container) not found.");
@@ -956,6 +1049,52 @@
             });
         }
 
+        function renderVideoListPage() {
+            const videoListContainer = document.getElementById('video-list');
+            if (!videoListContainer) return;
+            videoListContainer.innerHTML = ''; 
+
+            managedVideos.forEach(video => { 
+                const videoCard = `
+                    <div class="dna-nucleotide neon-border-blue hover:neon-border-green cursor-pointer" data-video-id="${video.id}">
+                        <div class="video-jar-overlay"></div>
+                        <img src="${video.thumbnail}" alt="${escapeHTML(video.title)}" class="w-full h-48 object-cover rounded-t-lg" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1a1a2e/cccccc?text=Görüntü+Yüklenemedi';">
+                        <div class="p-5">
+                            <h3 class="text-xl font-orbitron neon-text-green mb-2 h-16 overflow-hidden">${escapeHTML(video.title)}</h3>
+                            <p class="text-sm text-gray-300 mb-3 h-12 overflow-hidden">${escapeHTML(video.description)}</p>
+                            <div class="flex justify-between items-center text-xs text-[color:var(--primary-neon)]">
+                                <span>👁️ ${escapeHTML(video.views || 'N/A')}</span>
+                                <span>⏳ ${escapeHTML(video.duration || 'N/A')}</span>
+                            </div>
+                            <button class="w-full mt-4 btn-primary text-sm !py-2 video-details-button page-link" data-target="video-detail-${video.id}">Detayları Gör</button>
+                        </div>
+                    </div>
+                `;
+                videoListContainer.innerHTML += videoCard;
+            });
+
+            videoListContainer.querySelectorAll('.page-link.video-details-button').forEach(link => {
+                if (!link.dataset.listenerAttached) {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = link.dataset.target || link.getAttribute('href').substring(1);
+                        showPage(targetId);
+                    });
+                    link.dataset.listenerAttached = 'true';
+                }
+            });
+             videoListContainer.querySelectorAll('.dna-nucleotide').forEach(card => { 
+                if (!card.dataset.clickListenerAttached) {
+                    card.addEventListener('click', function(event) {
+                        if (event.target.closest('.video-details-button')) return;
+                        this.classList.add('video-cracked'); 
+                        console.log(`Video ${this.dataset.videoId} tıklandı (kavanoz efekti)`);
+                    });
+                    card.dataset.clickListenerAttached = 'true';
+                }
+            });
+        }
+
 
         function setupMythBusterGame() { 
             const statementTextEl = document.getElementById('statement-text');
@@ -968,7 +1107,13 @@
                 console.warn("Doğru mu Efsane mi oyunu için bazı HTML elementleri bulunamadı. Kurulum atlanıyor.");
                 return; 
             }
-            console.log("MythBuster Game setup initiated.");
+            console.log("MythBuster Game setup initiated. Statements count:", mythBusterStatements.length);
+            if (mythBusterStatements.length === 0) {
+                statementTextEl.textContent = "Oyun ifadeleri yüklenemedi veya hiç ifade yok.";
+                trueButton.disabled = true;
+                mythButton.disabled = true;
+                return;
+            }
 
 
             gameStatementsOrder = mythBusterStatements.map((_, i) => i).sort(() => Math.random() - 0.5);
@@ -998,7 +1143,7 @@
             if (!statementTextEl || !gameFeedbackEl || !trueButton || !mythButton || !nextStatementButton) return;
 
 
-            if (currentGameStatementIndex < gameStatementsOrder.length) {
+            if (currentGameStatementIndex < gameStatementsOrder.length && mythBusterStatements[gameStatementsOrder[currentGameStatementIndex]]) {
                 const currentStatementObj = mythBusterStatements[gameStatementsOrder[currentGameStatementIndex]];
                 statementTextEl.textContent = currentStatementObj.statement;
                 gameFeedbackEl.textContent = "";
@@ -1056,18 +1201,19 @@
         }
 
         function setupMiniQuiz() { 
-            const quiz = miniQuizzes[currentQuizName];
+            const quizData = miniQuizzes[currentQuizName]; 
             const quizQuestionEl = document.getElementById('quiz-question');
             const submitQuizAnswerButton = document.getElementById('submit-quiz-answer');
             const restartQuizButton = document.getElementById('restart-quiz-button');
             const quizResultsEl = document.getElementById('quiz-results');
             const quizContainerEl = document.getElementById('quiz-container');
 
-            if (!quiz || !quizQuestionEl || !submitQuizAnswerButton || !restartQuizButton || !quizResultsEl || !quizContainerEl) {
-                console.warn("Mini quiz için bazı HTML elementleri bulunamadı. Kurulum atlanıyor.");
+            if (!quizData || !quizData.questions || quizData.questions.length === 0 || !quizQuestionEl || !submitQuizAnswerButton || !restartQuizButton || !quizResultsEl || !quizContainerEl) {
+                console.warn("Mini quiz için bazı HTML elementleri veya quiz verisi bulunamadı. Kurulum atlanıyor.");
+                if(quizContainerEl) quizContainerEl.innerHTML = "<p class='text-center neon-text-danger'>Quiz yüklenemedi.</p>";
                 return;
             }
-            console.log("MiniQuiz setup initiated.");
+            console.log("MiniQuiz setup initiated. Questions count:", quizData.questions.length);
 
 
             currentQuizQuestionIndex = 0;
@@ -1088,14 +1234,20 @@
         } 
         
         function loadQuizQuestion() { 
-            const quiz = miniQuizzes[currentQuizName];
-            const questionData = quiz.questions[currentQuizQuestionIndex];
+            const quizData = miniQuizzes[currentQuizName];
+            if (!quizData || !quizData.questions || currentQuizQuestionIndex >= quizData.questions.length) {
+                console.error("Quiz veya soru verisi yüklenemedi.");
+                showQuizResults(); 
+                return;
+            }
+
+            const questionData = quizData.questions[currentQuizQuestionIndex];
             const quizQuestionEl = document.getElementById('quiz-question');
             const quizOptionsEl = document.getElementById('quiz-options');
             const quizFeedbackEl = document.getElementById('quiz-feedback');
             const submitQuizAnswerButton = document.getElementById('submit-quiz-answer');
 
-            if (!quiz || !questionData || !quizQuestionEl || !quizOptionsEl || !quizFeedbackEl || !submitQuizAnswerButton) return;
+            if (!questionData || !quizQuestionEl || !quizOptionsEl || !quizFeedbackEl || !submitQuizAnswerButton) return;
 
 
             quizQuestionEl.textContent = questionData.question;
@@ -1130,13 +1282,17 @@
         } 
         
         function handleQuizAnswer() { 
-            const quiz = miniQuizzes[currentQuizName];
-            const questionData = quiz.questions[currentQuizQuestionIndex];
+            const quizData = miniQuizzes[currentQuizName];
+            if (!quizData || !quizData.questions || currentQuizQuestionIndex >= quizData.questions.length) {
+                console.error("Quiz veya soru verisi işlenemedi.");
+                return;
+            }
+            const questionData = quizData.questions[currentQuizQuestionIndex];
             const quizFeedbackEl = document.getElementById('quiz-feedback');
             const submitQuizAnswerButton = document.getElementById('submit-quiz-answer');
             const selectedOptionInput = document.querySelector(`input[name="q${currentQuizQuestionIndex}_options"]:checked`);
 
-            if (!quiz || !questionData || !quizFeedbackEl || !submitQuizAnswerButton ) return;
+            if (!questionData || !quizFeedbackEl || !submitQuizAnswerButton ) return;
 
 
             if (!selectedOptionInput) {
@@ -1171,7 +1327,7 @@
 
             currentQuizQuestionIndex++;
             setTimeout(() => {
-                if (currentQuizQuestionIndex < quiz.questions.length) {
+                if (currentQuizQuestionIndex < quizData.questions.length) {
                     loadQuizQuestion();
                 } else {
                     showQuizResults();
@@ -1180,24 +1336,22 @@
         } 
         
         function showQuizResults() { 
-            const quiz = miniQuizzes[currentQuizName];
+            const quizData = miniQuizzes[currentQuizName];
             const quizContainerEl = document.getElementById('quiz-container');
             const quizResultsEl = document.getElementById('quiz-results');
             const quizScoreEl = document.getElementById('quiz-score');
             const quizTotalQuestionsEl = document.getElementById('quiz-total-questions');
 
-            if(!quiz || !quizContainerEl || !quizResultsEl || !quizScoreEl || !quizTotalQuestionsEl) return;
+            if(!quizData || !quizContainerEl || !quizResultsEl || !quizScoreEl || !quizTotalQuestionsEl) return;
 
             quizContainerEl.classList.add('hidden');
             quizResultsEl.classList.remove('hidden');
             quizScoreEl.textContent = quizScore;
-            quizTotalQuestionsEl.textContent = quiz.questions.length;
+            quizTotalQuestionsEl.textContent = quizData.questions.length;
         }
 
 
-        // --- Forum Fonksiyonları (Firestore Entegrasyonu ile Güncellendi) ---
-        const forumPostsCollectionPath = `/artifacts/${appId}/public/data/forumPosts`;
-
+        // --- Forum Fonksiyonları ---
         async function setupForum() {
             const submitPostButton = document.getElementById('submit-new-post');
             if (submitPostButton && !submitPostButton.dataset.listenerAttached) {
@@ -1223,13 +1377,13 @@
         function renderForumPosts(posts) {
             const postsContainer = document.getElementById('forum-posts-container');
             const noPostsMessage = document.getElementById('no-forum-posts');
-            if (!postsContainer) return;
+            if (!postsContainer || !noPostsMessage) return;
             postsContainer.innerHTML = ''; 
 
             if (posts.length === 0) {
-                if(noPostsMessage) noPostsMessage.classList.remove('hidden');
+                noPostsMessage.classList.remove('hidden');
             } else {
-                if(noPostsMessage) noPostsMessage.classList.add('hidden');
+                noPostsMessage.classList.add('hidden');
                 posts.forEach(post => {
                     const postElement = document.createElement('div');
                     postElement.className = 'forum-post';
@@ -1259,7 +1413,7 @@
                         <div class="post-actions mt-3 flex flex-wrap gap-2">
                             <button class="btn-primary btn-secondary text-xs ai-edit-post-button"><i class="fas fa-magic mr-1"></i> AI ile Düzelt</button>
                             <button class="btn-primary text-xs moderate-post-button"><i class="fas fa-shield-alt mr-1"></i> AI ile Modere Et</button>
-                            <button class="btn-primary btn-danger text-xs delete-post-button"><i class="fas fa-trash mr-1"></i> Sil</button>
+                            ${post.author === currentUserId || isAdminLoggedIn ? `<button class="btn-primary btn-danger text-xs delete-post-button"><i class="fas fa-trash mr-1"></i> Sil</button>` : ''}
                             <button class="btn-primary text-xs toggle-reply-form-button"><i class="fas fa-reply mr-1"></i> Yanıtla</button>
                         </div>
                         <div class="reply-form hidden mt-3">
@@ -1274,7 +1428,10 @@
 
                     postElement.querySelector('.ai-edit-post-button').addEventListener('click', () => aiCorrectPostContent(post.id, post.content));
                     postElement.querySelector('.moderate-post-button').addEventListener('click', () => aiModeratePostContent(post.id, post.content));
-                    postElement.querySelector('.delete-post-button').addEventListener('click', () => confirmAndDeletePost(post.id));
+                    const deleteButton = postElement.querySelector('.delete-post-button');
+                    if (deleteButton) {
+                        deleteButton.addEventListener('click', () => confirmAndDeletePost(post.id));
+                    }
                     postElement.querySelector('.toggle-reply-form-button').addEventListener('click', (e) => {
                         e.currentTarget.closest('.forum-post').querySelector('.reply-form').classList.toggle('hidden');
                     });
@@ -1386,14 +1543,17 @@
                         <div class="post-actions mt-2 flex gap-1">
                              <button class="btn-primary btn-secondary !text-xs !p-1 ai-edit-reply-button" data-reply-id="${reply.id}"><i class="fas fa-magic"></i></button>
                              <button class="btn-primary !text-xs !p-1 moderate-reply-button" data-reply-id="${reply.id}"><i class="fas fa-shield-alt"></i></button>
-                             <button class="btn-primary btn-danger !text-xs !p-1 delete-reply-button" data-reply-id="${reply.id}"><i class="fas fa-trash"></i></button>
+                             ${reply.author === currentUserId || isAdminLoggedIn ? `<button class="btn-primary btn-danger !text-xs !p-1 delete-reply-button" data-reply-id="${reply.id}"><i class="fas fa-trash"></i></button>`: ''}
                         </div>
                     `;
                     repliesContainerElement.appendChild(replyElement);
 
                     replyElement.querySelector('.ai-edit-reply-button').addEventListener('click', (e) => aiCorrectReplyContent(postId, e.currentTarget.dataset.replyId, reply.content));
                     replyElement.querySelector('.moderate-reply-button').addEventListener('click', (e) => aiModerateReplyContent(postId, e.currentTarget.dataset.replyId, reply.content));
-                    replyElement.querySelector('.delete-reply-button').addEventListener('click', (e) => confirmAndDeleteReply(postId, e.currentTarget.dataset.replyId));
+                    const deleteReplyButton = replyElement.querySelector('.delete-reply-button');
+                    if(deleteReplyButton) {
+                        deleteReplyButton.addEventListener('click', (e) => confirmAndDeleteReply(postId, e.currentTarget.dataset.replyId));
+                    }
                 });
             });
         }
@@ -1504,7 +1664,7 @@
             const apiKey = ""; 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
             
-            const loadingIndicator = document.getElementById('ai-loading-indicator');
+            const loadingIndicator = document.getElementById('ai-loading-indicator'); 
             if(loadingIndicator) loadingIndicator.classList.remove('hidden');
 
             try {
@@ -1592,16 +1752,561 @@
 
         function escapeHTML(str) { 
             if (typeof str !== 'string') return '';
-            return str.replace(/[&<>"']/g, 
-                tag => ({
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    '"': '&quot;',
-                    "'": '&#39;'
-                }[tag] || tag)
-            );
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;' 
+            };
+            return str.replace(/[&<>"']/g, function(m) { return map[m]; });
         }
+        
+        // --- Admin Paneli Fonksiyonları ---
+        const adminLoginContainer = document.getElementById('admin-login-container');
+        const adminDashboardContainer = document.getElementById('admin-dashboard-container');
+        const adminLoginForm = document.getElementById('admin-login-form');
+        const adminLogoutButton = document.getElementById('admin-logout-button');
+        const adminContentArea = document.getElementById('admin-content-area');
+
+        const videoFormModal = document.getElementById('video-form-modal');
+        const videoAdminForm = document.getElementById('video-admin-form');
+        const cancelVideoFormButton = document.getElementById('cancel-video-form');
+        const videoModalTitle = document.getElementById('video-modal-title');
+        
+        const quizFormModal = document.getElementById('quiz-form-modal');
+        const quizAdminForm = document.getElementById('quiz-admin-form');
+        const cancelQuizFormButton = document.getElementById('cancel-quiz-form');
+        const quizModalTitle = document.getElementById('quiz-modal-title');
+        const addQuizQuestionButton = document.getElementById('add-quiz-question-button');
+        const quizQuestionsContainer = document.getElementById('quiz-questions-container');
+        const aiGenerateQuizButton = document.getElementById('ai-generate-quiz-button');
+
+
+        const mythFormModal = document.getElementById('myth-form-modal');
+        const mythAdminForm = document.getElementById('myth-admin-form');
+        const cancelMythFormButton = document.getElementById('cancel-myth-form');
+        const mythModalTitle = document.getElementById('myth-modal-title');
+        const aiGenerateMythButton = document.getElementById('ai-generate-myth-button');
+
+
+        function renderAdminPage() {
+            if (!adminLoginContainer || !adminDashboardContainer) return;
+            if (isAdminLoggedIn) {
+                adminLoginContainer.classList.add('hidden');
+                adminDashboardContainer.classList.remove('hidden');
+                if(adminContentArea) adminContentArea.innerHTML = '<p class="text-center text-lg">Lütfen yönetmek istediğiniz bir içerik türü seçin.</p>';
+            } else {
+                adminLoginContainer.classList.remove('hidden');
+                adminDashboardContainer.classList.add('hidden');
+            }
+        }
+
+        if (adminLoginForm) {
+            adminLoginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('admin-username').value;
+                const password = document.getElementById('admin-password').value;
+                const errorEl = document.getElementById('admin-login-error');
+                if (username === SIMULATED_ADMIN_USERNAME && password === SIMULATED_ADMIN_PASSWORD) { // Simüle edilmiş kontrol
+                    isAdminLoggedIn = true;
+                    sessionStorage.setItem('isAdminLoggedIn', 'true'); 
+                    renderAdminPage();
+                    if(errorEl) errorEl.textContent = '';
+                } else {
+                    if(errorEl) errorEl.textContent = 'Kullanıcı adı veya şifre hatalı!';
+                }
+            });
+        }
+
+        if (adminLogoutButton) {
+            adminLogoutButton.addEventListener('click', () => {
+                isAdminLoggedIn = false;
+                sessionStorage.removeItem('isAdminLoggedIn');
+                renderAdminPage();
+                showPage('home'); 
+            });
+        }
+        if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
+            isAdminLoggedIn = true;
+        }
+
+        const manageVideosButton = document.getElementById('manage-videos-button');
+        const manageQuizzesButton = document.getElementById('manage-quizzes-button');
+        const manageMythsButton = document.getElementById('manage-myths-button');
+
+        if(manageVideosButton) manageVideosButton.addEventListener('click', () => renderAdminVideoManagement());
+        if(manageQuizzesButton) manageQuizzesButton.addEventListener('click', () => renderAdminQuizManagement());
+        if(manageMythsButton) manageMythsButton.addEventListener('click', () => renderAdminMythManagement());
+
+        async function loadInitialDataFromFirestore() {
+            try {
+                const videosSnapshot = await getDocs(collection(db, managedVideosCollectionPath));
+                managedVideos = videosSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                console.log("Managed videos loaded:", managedVideos.length);
+                renderVideoListPage(); 
+
+                const quizzesSnapshot = await getDocs(collection(db, managedQuizzesCollectionPath));
+                miniQuizzes = {}; 
+                quizzesSnapshot.forEach(doc => {
+                    miniQuizzes[doc.id] = { id: doc.id, ...doc.data() };
+                });
+                console.log("Managed quizzes loaded:", Object.keys(miniQuizzes).length);
+                if (Object.keys(miniQuizzes).length > 0) {
+                     currentQuizName = Object.keys(miniQuizzes)[0]; 
+                } else {
+                    console.log("No quizzes found in Firestore for experiments page.");
+                }
+
+
+                const mythsSnapshot = await getDocs(collection(db, managedMythBusterStatementsCollectionPath));
+                mythBusterStatements = mythsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                console.log("Managed myth buster statements loaded:", mythBusterStatements.length);
+
+            } catch (error) {
+                console.error("Error loading initial admin data from Firestore:", error);
+            }
+        }
+        
+        // Admin Video Yönetimi
+        function renderAdminVideoManagement() { 
+            if (!adminContentArea) return;
+            adminContentArea.innerHTML = `
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-orbitron neon-text-blue">Videoları Yönet</h3>
+                    <button id="add-new-video-button" class="btn-primary btn-secondary"><i class="fas fa-plus mr-2"></i>Yeni Video Ekle</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Başlık</th>
+                                <th>YouTube ID</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-video-list-tbody">
+                            </tbody>
+                    </table>
+                </div>
+            `;
+            const videoTbody = document.getElementById('admin-video-list-tbody');
+            videoTbody.innerHTML = ''; 
+            managedVideos.forEach(video => {
+                const row = videoTbody.insertRow();
+                row.innerHTML = `
+                    <td>${escapeHTML(video.title)}</td>
+                    <td>${escapeHTML(video.youtubeVideoId)}</td>
+                    <td>
+                        <button class="btn-primary text-xs edit-video-btn" data-id="${video.id}"><i class="fas fa-edit"></i></button>
+                        <button class="btn-danger text-xs delete-video-btn" data-id="${video.id}"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                row.querySelector('.edit-video-btn').addEventListener('click', (e) => openVideoForm(e.currentTarget.dataset.id));
+                row.querySelector('.delete-video-btn').addEventListener('click', (e) => deleteManagedVideo(e.currentTarget.dataset.id));
+            });
+
+            document.getElementById('add-new-video-button').addEventListener('click', () => openVideoForm());
+        }
+
+        function openVideoForm(videoId = null) {
+            if (!videoFormModal || !videoAdminForm || !videoModalTitle) return;
+            videoAdminForm.reset();
+            document.getElementById('video-id-input').value = '';
+
+            if (videoId) {
+                videoModalTitle.textContent = "Videoyu Düzenle";
+                const video = managedVideos.find(v => v.id === videoId);
+                if (video) {
+                    document.getElementById('video-id-input').value = video.id;
+                    document.getElementById('video-title-input').value = video.title;
+                    document.getElementById('video-desc-input').value = video.description;
+                    document.getElementById('video-thumbnail-input').value = video.thumbnail;
+                    document.getElementById('video-youtubeid-input').value = video.youtubeVideoId;
+                    document.getElementById('video-views-input').value = video.views || '';
+                    document.getElementById('video-duration-input').value = video.duration || '';
+                }
+            } else {
+                videoModalTitle.textContent = "Yeni Video Ekle";
+            }
+            videoFormModal.style.display = 'flex';
+        }
+
+        if (videoAdminForm) {
+            videoAdminForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('video-id-input').value;
+                const videoData = {
+                    title: document.getElementById('video-title-input').value,
+                    description: document.getElementById('video-desc-input').value,
+                    thumbnail: document.getElementById('video-thumbnail-input').value,
+                    youtubeVideoId: document.getElementById('video-youtubeid-input').value,
+                    views: document.getElementById('video-views-input').value,
+                    duration: document.getElementById('video-duration-input').value,
+                    timestamp: serverTimestamp() 
+                };
+
+                try {
+                    if (id) { 
+                        await updateDoc(doc(db, managedVideosCollectionPath, id), videoData);
+                    } else { 
+                        await addDoc(collection(db, managedVideosCollectionPath), videoData);
+                    }
+                    videoFormModal.style.display = 'none';
+                    await loadInitialDataFromFirestore(); 
+                    renderAdminVideoManagement(); 
+                } catch (error) {
+                    console.error("Video kaydedilirken hata:", error);
+                    showModal("Video kaydedilirken bir hata oluştu.", false);
+                }
+            });
+        }
+        
+        async function deleteManagedVideo(videoId) {
+            showModal("Bu videoyu silmek istediğinize emin misiniz?", true, async () => {
+                try {
+                    await deleteDoc(doc(db, managedVideosCollectionPath, videoId));
+                    await loadInitialDataFromFirestore();
+                    renderAdminVideoManagement();
+                } catch (error) {
+                    console.error("Video silinirken hata:", error);
+                    showModal("Video silinirken bir hata oluştu.", false);
+                }
+            });
+        }
+
+
+        // Admin Quiz Yönetimi
+        function renderAdminQuizManagement() { 
+            if (!adminContentArea || !quizQuestionsContainer) return;
+             adminContentArea.innerHTML = `
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-orbitron neon-text-blue">Quizleri Yönet</h3>
+                    <button id="add-new-quiz-button" class="btn-primary btn-secondary"><i class="fas fa-plus mr-2"></i>Yeni Quiz Ekle</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Quiz ID (Başlık)</th>
+                                <th>Soru Sayısı</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-quiz-list-tbody">
+                            </tbody>
+                    </table>
+                </div>
+            `;
+            const quizTbody = document.getElementById('admin-quiz-list-tbody');
+            quizTbody.innerHTML = ''; 
+            Object.keys(miniQuizzes).forEach(quizId => {
+                const quiz = miniQuizzes[quizId];
+                const row = quizTbody.insertRow();
+                row.innerHTML = `
+                    <td>${escapeHTML(quiz.id)}</td>
+                    <td>${quiz.questions ? quiz.questions.length : 0}</td>
+                    <td>
+                        <button class="btn-primary text-xs edit-quiz-btn" data-id="${quiz.id}"><i class="fas fa-edit"></i></button>
+                        <button class="btn-danger text-xs delete-quiz-btn" data-id="${quiz.id}"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                row.querySelector('.edit-quiz-btn').addEventListener('click', (e) => openQuizForm(e.currentTarget.dataset.id));
+                row.querySelector('.delete-quiz-btn').addEventListener('click', (e) => deleteManagedQuiz(e.currentTarget.dataset.id));
+            });
+            document.getElementById('add-new-quiz-button').addEventListener('click', () => openQuizForm());
+        }
+
+        function openQuizForm(quizId = null) {
+            if (!quizFormModal || !quizAdminForm || !quizModalTitle || !quizQuestionsContainer) return;
+            quizAdminForm.reset();
+            quizQuestionsContainer.innerHTML = ''; // Önceki soruları temizle
+            document.getElementById('quiz-id-input').value = '';
+            const quizTitleInput = document.getElementById('quiz-title-input');
+
+            if (quizId) {
+                quizModalTitle.textContent = "Quiz'i Düzenle";
+                quizTitleInput.value = quizId;
+                quizTitleInput.readOnly = true; // ID düzenlenemez
+                const quiz = miniQuizzes[quizId];
+                if (quiz && quiz.questions) {
+                    document.getElementById('quiz-id-input').value = quiz.id; // Hidden input'a ID'yi set et
+                    quiz.questions.forEach(q => addQuestionToQuizForm(q));
+                }
+            } else {
+                quizModalTitle.textContent = "Yeni Quiz Ekle";
+                quizTitleInput.readOnly = false;
+                addQuestionToQuizForm(); // Başlangıç için boş bir soru alanı ekle
+            }
+            quizFormModal.style.display = 'flex';
+        }
+        
+        function addQuestionToQuizForm(questionData = null) {
+            if(!quizQuestionsContainer) return;
+            const questionIndex = quizQuestionsContainer.children.length;
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'quiz-question-item mb-4';
+            questionDiv.innerHTML = `
+                <label for="q-text-${questionIndex}">Soru ${questionIndex + 1}:</label>
+                <input type="text" id="q-text-${questionIndex}" class="quiz-q-text" value="${questionData ? escapeHTML(questionData.question) : ''}" required>
+                
+                <label for="q-opt1-${questionIndex}">Seçenek 1:</label>
+                <input type="text" id="q-opt1-${questionIndex}" class="quiz-q-option" value="${questionData && questionData.options[0] ? escapeHTML(questionData.options[0]) : ''}" required>
+                
+                <label for="q-opt2-${questionIndex}">Seçenek 2:</label>
+                <input type="text" id="q-opt2-${questionIndex}" class="quiz-q-option" value="${questionData && questionData.options[1] ? escapeHTML(questionData.options[1]) : ''}" required>
+                
+                <label for="q-opt3-${questionIndex}">Seçenek 3:</label>
+                <input type="text" id="q-opt3-${questionIndex}" class="quiz-q-option" value="${questionData && questionData.options[2] ? escapeHTML(questionData.options[2]) : ''}">
+                
+                <label for="q-opt4-${questionIndex}">Seçenek 4 (Opsiyonel):</label>
+                <input type="text" id="q-opt4-${questionIndex}" class="quiz-q-option" value="${questionData && questionData.options[3] ? escapeHTML(questionData.options[3]) : ''}">
+
+                <label for="q-correct-${questionIndex}">Doğru Cevap (Seçeneklerden biriyle tam eşleşmeli):</label>
+                <input type="text" id="q-correct-${questionIndex}" class="quiz-q-correct" value="${questionData ? escapeHTML(questionData.correctAnswer) : ''}" required>
+                <button type="button" class="btn-danger btn-primary text-xs remove-quiz-question-btn mt-2">Bu Soruyu Sil</button>
+            `;
+            quizQuestionsContainer.appendChild(questionDiv);
+            questionDiv.querySelector('.remove-quiz-question-btn').addEventListener('click', () => questionDiv.remove());
+        }
+
+        if(addQuizQuestionButton) addQuizQuestionButton.addEventListener('click', () => addQuestionToQuizForm());
+
+        if(quizAdminForm) {
+            quizAdminForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const quizId = document.getElementById('quiz-title-input').value.trim(); // Bu artık quiz'in ID'si
+                const existingQuizId = document.getElementById('quiz-id-input').value; // Düzenleme için
+                
+                if (!quizId) {
+                    showModal("Quiz ID (Başlık) boş bırakılamaz.", false);
+                    return;
+                }
+
+                const questions = [];
+                document.querySelectorAll('#quiz-questions-container .quiz-question-item').forEach(item => {
+                    const questionText = item.querySelector('.quiz-q-text').value.trim();
+                    const options = Array.from(item.querySelectorAll('.quiz-q-option')).map(opt => opt.value.trim()).filter(opt => opt); // Boş seçenekleri filtrele
+                    const correctAnswer = item.querySelector('.quiz-q-correct').value.trim();
+
+                    if (questionText && options.length >= 2 && correctAnswer && options.includes(correctAnswer)) {
+                        questions.push({ question: questionText, options: options, correctAnswer: correctAnswer });
+                    }
+                });
+
+                if (questions.length === 0) {
+                    showModal("Lütfen en az bir geçerli soru ekleyin.", false);
+                    return;
+                }
+
+                const quizData = { title: quizId, questions: questions, timestamp: serverTimestamp() };
+
+                try {
+                    // Firestore'da quizId (document ID) olarak quiz-title-input'taki değeri kullanacağız.
+                    // Eğer düzenleme yapılıyorsa ve ID değişmemişse update, değişmişse veya yeniyse set (overwrite ile)
+                    await setDoc(doc(db, managedQuizzesCollectionPath, quizId), quizData, { merge: true }); 
+                    
+                    quizFormModal.style.display = 'none';
+                    await loadInitialDataFromFirestore();
+                    renderAdminQuizManagement();
+                } catch (error) {
+                    console.error("Quiz kaydedilirken hata:", error);
+                    showModal("Quiz kaydedilirken bir hata oluştu.", false);
+                }
+            });
+        }
+
+        async function deleteManagedQuiz(quizId) {
+             showModal(`"${quizId}" quizini silmek istediğinize emin misiniz?`, true, async () => {
+                try {
+                    await deleteDoc(doc(db, managedQuizzesCollectionPath, quizId));
+                    await loadInitialDataFromFirestore();
+                    renderAdminQuizManagement();
+                } catch (error) {
+                    console.error("Quiz silinirken hata:", error);
+                    showModal("Quiz silinirken bir hata oluştu.", false);
+                }
+            });
+        }
+        
+        if(aiGenerateQuizButton) {
+            aiGenerateQuizButton.addEventListener('click', async () => {
+                const topic = document.getElementById('ai-quiz-topic-input').value.trim();
+                if (!topic) {
+                    showModal("Lütfen quiz için bir konu girin.", false);
+                    return;
+                }
+                const prompt = `"${topic}" konusu hakkında 3 adet çoktan seçmeli (her biri için 4 seçenekli) quiz sorusu oluştur. Yanıtların JSON formatında, her soru için "question", "options" (bir dizi), ve "correctAnswer" (seçeneklerden biri) alanlarını içermeli. Örneğin: [{"question": "Soru 1?", "options": ["A", "B", "C", "D"], "correctAnswer": "A"}, ...]`;
+                
+                const quizQuestionsContainer = document.getElementById('quiz-questions-container');
+                if(!quizQuestionsContainer) return;
+
+                try {
+                    const rawResponse = await callGeminiApi(prompt, true);
+                    let generatedQuestions;
+                    try {
+                        const jsonString = rawResponse.replace(/^```json\s*|```\s*$/g, '');
+                        generatedQuestions = JSON.parse(jsonString);
+                    } catch (parseError) {
+                        console.error("AI Quiz JSON parse hatası:", parseError, "Alınan yanıt:", rawResponse);
+                        showModal("AI quiz yanıtı işlenirken bir sorun oluştu.", false);
+                        return;
+                    }
+
+                    if (Array.isArray(generatedQuestions) && generatedQuestions.length > 0) {
+                        quizQuestionsContainer.innerHTML = ''; // Mevcut soruları temizle
+                        generatedQuestions.forEach(q => addQuestionToQuizForm(q));
+                    } else {
+                        showModal("AI'dan geçerli quiz soruları oluşturulamadı.", false);
+                    }
+                } catch (error) {
+                    console.error("AI Quiz oluşturma hatası:", error);
+                    showModal("AI ile quiz oluşturulurken bir hata oluştu.", false);
+                }
+            });
+        }
+
+
+        // Admin Efsane Yönetimi
+        function renderAdminMythManagement() { 
+            if (!adminContentArea) return;
+            adminContentArea.innerHTML = `
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-orbitron neon-text-blue">Efsane/Gerçek İfadelerini Yönet</h3>
+                    <button id="add-new-myth-button" class="btn-primary btn-secondary"><i class="fas fa-plus mr-2"></i>Yeni İfade Ekle</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>İfade</th>
+                                <th>Efsane mi?</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-myth-list-tbody">
+                           </tbody>
+                    </table>
+                </div>
+            `;
+            const mythTbody = document.getElementById('admin-myth-list-tbody');
+            mythTbody.innerHTML = '';
+            mythBusterStatements.forEach(item => {
+                const row = mythTbody.insertRow();
+                row.innerHTML = `
+                    <td class="truncate max-w-xs">${escapeHTML(item.statement)}</td>
+                    <td>${item.isMyth ? 'Evet' : 'Hayır'}</td>
+                    <td>
+                        <button class="btn-primary text-xs edit-myth-btn" data-id="${item.id}"><i class="fas fa-edit"></i></button>
+                        <button class="btn-danger text-xs delete-myth-btn" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                 row.querySelector('.edit-myth-btn').addEventListener('click', (e) => openMythForm(e.currentTarget.dataset.id));
+                 row.querySelector('.delete-myth-btn').addEventListener('click', (e) => deleteManagedMyth(e.currentTarget.dataset.id));
+            });
+            document.getElementById('add-new-myth-button').addEventListener('click', () => openMythForm());
+        }
+
+        function openMythForm(mythId = null) {
+            if (!mythFormModal || !mythAdminForm || !mythModalTitle) return;
+            mythAdminForm.reset();
+            document.getElementById('myth-id-input').value = '';
+
+            if (mythId) {
+                mythModalTitle.textContent = "İfadeyi Düzenle";
+                const myth = mythBusterStatements.find(m => m.id === mythId);
+                if (myth) {
+                    document.getElementById('myth-id-input').value = myth.id;
+                    document.getElementById('myth-statement-input').value = myth.statement;
+                    document.getElementById('myth-isMyth-input').value = myth.isMyth.toString();
+                    document.getElementById('myth-explanation-input').value = myth.explanation;
+                }
+            } else {
+                mythModalTitle.textContent = "Yeni İfade Ekle";
+            }
+            mythFormModal.style.display = 'flex';
+        }
+
+        if(mythAdminForm) {
+            mythAdminForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = document.getElementById('myth-id-input').value;
+                const mythData = {
+                    statement: document.getElementById('myth-statement-input').value,
+                    isMyth: document.getElementById('myth-isMyth-input').value === 'true',
+                    explanation: document.getElementById('myth-explanation-input').value,
+                    timestamp: serverTimestamp()
+                };
+                try {
+                    if (id) {
+                        await updateDoc(doc(db, managedMythBusterStatementsCollectionPath, id), mythData);
+                    } else {
+                        await addDoc(collection(db, managedMythBusterStatementsCollectionPath), mythData);
+                    }
+                    mythFormModal.style.display = 'none';
+                    await loadInitialDataFromFirestore();
+                    renderAdminMythManagement();
+                } catch (error) {
+                     console.error("Efsane/Gerçek kaydedilirken hata:", error);
+                     showModal("İfade kaydedilirken bir hata oluştu.", false);
+                }
+            });
+        }
+        
+        async function deleteManagedMyth(mythId) {
+            showModal("Bu ifadeyi silmek istediğinize emin misiniz?", true, async () => {
+                try {
+                    await deleteDoc(doc(db, managedMythBusterStatementsCollectionPath, mythId));
+                    await loadInitialDataFromFirestore();
+                    renderAdminMythManagement();
+                } catch (error) {
+                    console.error("İfade silinirken hata:", error);
+                    showModal("İfade silinirken bir hata oluştu.", false);
+                }
+            });
+        }
+
+        if(aiGenerateMythButton) {
+            aiGenerateMythButton.addEventListener('click', async () => {
+                const topic = document.getElementById('ai-myth-topic-input').value.trim();
+                if (!topic) {
+                    showModal("Lütfen bir konu veya fikir girin.", false);
+                    return;
+                }
+                const prompt = `"${topic}" konusuyla ilgili ilginç bir ifade oluştur. Bu ifadenin doğru mu yoksa bir efsane mi olduğunu belirle ve kısa bir açıklama ekle. Yanıtı JSON formatında şu alanlarla ver: "statement" (ifade), "isMyth" (boolean), "explanation" (açıklama).`;
+                
+                try {
+                    const rawResponse = await callGeminiApi(prompt, true);
+                    let generatedMyth;
+                    try {
+                        const jsonString = rawResponse.replace(/^```json\s*|```\s*$/g, '');
+                        generatedMyth = JSON.parse(jsonString);
+                    } catch (parseError) {
+                        console.error("AI Myth JSON parse hatası:", parseError, "Alınan yanıt:", rawResponse);
+                        showModal("AI ifade yanıtı işlenirken bir sorun oluştu.", false);
+                        return;
+                    }
+
+                    if (generatedMyth && generatedMyth.statement && typeof generatedMyth.isMyth !== 'undefined' && generatedMyth.explanation) {
+                        document.getElementById('myth-statement-input').value = generatedMyth.statement;
+                        document.getElementById('myth-isMyth-input').value = generatedMyth.isMyth.toString();
+                        document.getElementById('myth-explanation-input').value = generatedMyth.explanation;
+                    } else {
+                        showModal("AI'dan geçerli bir ifade oluşturulamadı.", false);
+                    }
+                } catch (error) {
+                    console.error("AI İfade oluşturma hatası:", error);
+                    showModal("AI ile ifade oluşturulurken bir hata oluştu.", false);
+                }
+            });
+        }
+
+
+        // Modalları kapatma butonları
+        if(cancelVideoFormButton) cancelVideoFormButton.addEventListener('click', () => videoFormModal.style.display = 'none');
+        if(cancelQuizFormButton) cancelQuizFormButton.addEventListener('click', () => quizFormModal.style.display = 'none');
+        if(cancelMythFormButton) cancelMythFormButton.addEventListener('click', () => mythFormModal.style.display = 'none');
+
 
     </script>
 </body>

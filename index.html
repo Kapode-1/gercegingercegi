@@ -3,2317 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerçeğin Gerçeği - Dijital Düşünce Laboratuvarı</title>
+    <title>Gerçeğin Gerçeği - Dijital Keşif Platformu</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- İkon Kütüphanesi -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
-        :root {
-            --bg-color: #1a1a2e;
-            --text-color: #e0e0e0;
-            --primary-neon: #00ffff;
-            --secondary-neon: #39ff14;
-            --darker-bg: #10101a;
-            --card-bg: rgba(30, 30, 50, 0.6);
-            --border-color: #00ffff;
-            --header-bg: rgba(26, 26, 46, 0.8);
-            --input-bg: rgba(40, 40, 60, 0.7);
-            --correct-answer-bg: rgba(57, 255, 20, 0.2);
-            --wrong-answer-bg: rgba(255, 20, 57, 0.2);
-            --forum-post-bg: rgba(20, 20, 40, 0.7);
-            --reply-bg: rgba(25, 25, 45, 0.8);
-            --danger-neon: #ff3366; 
-        }
-
-        body.dark-mode {
-            --bg-color: #0d0d1a;
-            --text-color: #f0f0f0;
-            --primary-neon: #0afafa;
-            --secondary-neon: #4cff30;
-            --darker-bg: #050508;
-            --card-bg: rgba(15, 15, 25, 0.7);
-            --border-color: #0afafa;
-            --header-bg: rgba(10, 10, 20, 0.85);
-            --input-bg: rgba(20, 20, 30, 0.8);
-            --correct-answer-bg: rgba(76, 255, 48, 0.25);
-            --wrong-answer-bg: rgba(255, 48, 76, 0.25);
-            --forum-post-bg: rgba(10, 10, 20, 0.8);
-            --reply-bg: rgba(15, 15, 25, 0.9);
-            --danger-neon: #ff4d79;
-        }
-
+        /* Custom Stiller ve Animasyonlar */
         body {
+            background-color: rgb(10, 12, 18);
+            color: #F0F0F0;
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
             overflow-x: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        .font-orbitron {
+
+        .font-title {
             font-family: 'Orbitron', sans-serif;
         }
-        .neon-text-blue {
-            color: var(--primary-neon);
-            text-shadow: 0 0 5px var(--primary-neon), 0 0 10px var(--primary-neon), 0 0 15px var(--primary-neon), 0 0 20px #0073e6;
+        
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
         }
-        .neon-text-green {
-            color: var(--secondary-neon);
-            text-shadow: 0 0 5px var(--secondary-neon), 0 0 10px var(--secondary-neon), 0 0 15px var(--secondary-neon), 0 0 20px #00cc00;
-        }
-        .neon-text-danger {
-            color: var(--danger-neon);
-            text-shadow: 0 0 5px var(--danger-neon), 0 0 10px var(--danger-neon);
-        }
-        .neon-border-blue {
-            border: 2px solid var(--border-color);
-            box-shadow: 0 0 10px var(--border-color), 0 0 5px var(--border-color) inset;
-        }
-        .neon-border-green {
-            border: 2px solid var(--secondary-neon);
-            box-shadow: 0 0 10px var(--secondary-neon), 0 0 5px var(--secondary-neon) inset;
-        }
-        .btn-primary {
-            background-color: transparent;
-            border: 2px solid var(--primary-neon);
-            color: var(--primary-neon);
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            text-shadow: 0 0 3px var(--primary-neon);
-            cursor: pointer;
-        }
-        .btn-primary:hover:not(:disabled) {
-            background-color: var(--primary-neon);
-            color: var(--bg-color);
-            box-shadow: 0 0 15px var(--primary-neon), 0 0 20px #0073e6;
-            transform: translateY(-2px);
-        }
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .btn-danger {
-            border-color: var(--danger-neon);
-            color: var(--danger-neon);
-            text-shadow: 0 0 3px var(--danger-neon);
-        }
-        .btn-danger:hover:not(:disabled) {
-            background-color: var(--danger-neon);
-            color: var(--text-color); 
-            box-shadow: 0 0 15px var(--danger-neon);
-        }
-        .btn-secondary { 
-            border-color: var(--secondary-neon);
-            color: var(--secondary-neon);
-            text-shadow: 0 0 3px var(--secondary-neon);
-        }
-        .btn-secondary:hover:not(:disabled) {
-            background-color: var(--secondary-neon);
-            color: var(--bg-color);
-            box-shadow: 0 0 15px var(--secondary-neon);
-        }
-        .admin-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-        .admin-table th, .admin-table td { border: 1px solid var(--primary-neon); padding: 0.75rem; text-align: left; }
-        .admin-table th { background-color: var(--input-bg); font-family: 'Orbitron'; }
-        .admin-form-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 10001; padding:1rem;}
-        .admin-form-modal-content { background-color: var(--darker-bg); padding: 2rem; border-radius: 10px; border: 1px solid var(--primary-neon); box-shadow: 0 0 20px var(--primary-neon); width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;}
-        .admin-form-modal-content label { display: block; margin-bottom: 0.5rem; color: var(--primary-neon); }
-        .admin-form-modal-content input, .admin-form-modal-content textarea, .admin-form-modal-content select { width: 100%; background-color: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 6px; padding: 0.5rem; margin-bottom: 1rem; }
-        .quiz-question-item { border: 1px dashed var(--secondary-neon); padding: 1rem; margin-bottom: 1rem; border-radius: 6px; }
-        .quiz-question-item label { font-size: 0.9rem; }
-        .quiz-option-input { margin-bottom: 0.5rem !important; }
 
+        .neon-glow {
+            transition: all 0.3s ease-in-out;
+        }
+        .neon-glow:hover {
+            text-shadow: 0 0 5px #00E5FF, 0 0 10px #00E5FF;
+            color: #00E5FF;
+        }
 
-        .dna-nucleotide {
-            position: relative; z-index: 1; transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background-color: var(--card-bg); border-radius: 12px; overflow: visible; 
+        .card-glow:hover {
+             box-shadow: 0 0 8px rgba(0, 229, 255, 0.4), 0 0 20px rgba(0, 229, 255, 0.3);
         }
-        .dna-nucleotide:hover { transform: scale(1.03); box-shadow: 0 0 20px var(--secondary-neon), 0 0 25px #00cc00; }
-        .dna-nucleotide::after {
-            content: ''; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
-            border-radius: 16px; border: 2px solid transparent; z-index: -1; opacity: 0;
-            transition: opacity 0.4s ease, border-color 0.4s ease;
+        
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .dna-nucleotide:hover::after { opacity: 0.7; border-color: var(--secondary-neon); animation: neuronSpark 1.5s infinite alternate; }
-        @keyframes neuronSpark {
-            0% { box-shadow: 0 0 5px var(--secondary-neon), 0 0 10px var(--secondary-neon) inset; }
-            100% { box-shadow: 0 0 15px var(--secondary-neon), 0 0 20px var(--secondary-neon) inset, 0 0 25px var(--secondary-neon); }
+        ::-webkit-scrollbar-track {
+            background: rgb(18, 18, 18);
         }
-        .video-jar-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 12px; pointer-events: none; transition: opacity 0.5s ease; }
-        .video-cracked .video-jar-overlay { opacity: 0; }
-        .neural-blink { animation: neuralBlinkEffect 0.7s ease-out forwards; }
-        @keyframes neuralBlinkEffect { 0% { opacity: 1; } 40% { opacity: 0; background-color: #000; } 60% { opacity: 0; background-color: #fff; } 100% { opacity: 1; background-color: var(--bg-color); } }
-        #loader-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--darker-bg); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
-        #brain-loader { width: 100px; height: 100px; opacity: 0.2; animation: illuminateBrain 3s ease-in-out forwards, eurekaGlow 0.5s 3s ease-out; }
-        @keyframes illuminateBrain { 0% { opacity: 0.2; filter: drop-shadow(0 0 2px rgba(0, 255, 255, 0.3)); } 70% { opacity: 0.8; filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.7)); } 100% { opacity: 1; filter: drop-shadow(0 0 15px rgba(0, 255, 255, 1)); } }
-        @keyframes eurekaGlow { 0% { filter: drop-shadow(0 0 15px rgba(0, 255, 255, 1)) drop-shadow(0 0 20px #fff); transform: scale(1); } 50% { filter: drop-shadow(0 0 30px #00ffff) drop-shadow(0 0 40px #fff) drop-shadow(0 0 50px #00ffff); transform: scale(1.1); } 100% { filter: drop-shadow(0 0 15px rgba(0, 255, 255, 1)) drop-shadow(0 0 20px #fff); transform: scale(1); } }
-        .loader-text { margin-top: 20px; font-family: 'Orbitron', sans-serif; font-size: 1.2em; color: var(--primary-neon); opacity: 0; animation: fadeInText 1s 1s ease-out forwards; }
-        @keyframes fadeInText { to { opacity: 1; } }
-        .page-content { display: none; }
-        .page-content.active { display: block; animation: fadeInPage 0.5s ease-out; }
-        @keyframes fadeInPage { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .brain-hologram-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; }
-        .brain-hologram-bg svg { position: absolute; top: 50%; left: 50%; width: 80%; max-width: 600px; transform: translate(-50%, -50%); opacity: 0.1; animation: slowRotate 60s linear infinite, pulseEffect 10s ease-in-out infinite; }
-        @keyframes slowRotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-        @keyframes pulseEffect { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.15; } }
-        .thought-stream-particle { position: fixed; color: rgba(0, 255, 255, 0.2); font-size: 0.8rem; user-select: none; pointer-events: none; animation: floatUp 10s linear infinite; z-index: -2; }
-        @keyframes floatUp { from { transform: translateY(100vh) translateX(var(--random-x)); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } to { transform: translateY(-100px) translateX(var(--random-x)); opacity: 0; } }
-        .menu-neuron { transition: color 0.3s ease, text-shadow 0.3s ease; }
-        .menu-neuron:hover, .menu-neuron.active-link { color: var(--secondary-neon); text-shadow: 0 0 8px var(--secondary-neon); }
-        .interactive-brain-map { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; margin-bottom: 2rem; position: relative; width: 100%; max-width:600px; margin-left:auto; margin-right:auto;}
-        .brain-lobe { padding: 10px 15px; margin: 5px; border-radius: 8px; cursor: pointer; background-color: rgba(0, 255, 255, 0.1); border: 1px solid rgba(0,255,255,0.3); transition: all 0.3s ease; text-align: center; }
-        .brain-lobe:hover, .brain-lobe.active-lobe { background-color: rgba(0, 255, 255, 0.3); transform: scale(1.05); box-shadow: 0 0 10px var(--primary-neon); color: var(--primary-neon); }
-        .brain-lobe-content { display: none; padding:20px; background-color: var(--card-bg); border-radius:8px; margin-top:1rem; border: 1px solid var(--border-color); }
-        .brain-lobe-content.active { display: block; animation: fadeInPage 0.5s ease; }
-        .resource-icon { color: var(--primary-neon); margin-right: 5px; }
-        #story-animation-container { min-height: 350px; background-color: rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; border-radius:8px; margin-bottom:1.5rem; padding: 1rem; overflow: hidden; }
-        #story-animation-container svg { width: 100%; max-width: 600px; height: auto; }
-        #darkModeToggle { background: transparent; border: 1px solid var(--primary-neon); color: var(--primary-neon); padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.3s; }
-        #darkModeToggle:hover { background-color: var(--primary-neon); color: var(--bg-color); }
-        .header-controls { display: flex; align-items: center; gap: 1rem; }
-        .query-box-container { background-color: var(--card-bg); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; }
-        #ai-query-input { width: 100%; background-color: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-color); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; outline: none; transition: box-shadow 0.3s; }
-        #ai-query-input:focus { box-shadow: 0 0 10px var(--primary-neon); }
-        #ai-response-area { margin-top: 1.5rem; padding: 1rem; background-color: var(--input-bg); border-radius: 8px; min-height: 100px; border: 1px dashed rgba(var(--primary-neon-rgb),0.3); color: var(--text-color); white-space: pre-wrap; }
-        .experiment-item { background-color: var(--card-bg); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid var(--secondary-neon); }
-        #statement-card, #quiz-container { background-color: var(--input-bg); padding: 1.5rem; border-radius: 8px; }
-        .quiz-option-label { display: block; background-color: rgba(var(--primary-neon-rgb), 0.1); padding: 0.75rem 1rem; border-radius: 6px; border: 1px solid rgba(var(--primary-neon-rgb), 0.3); cursor: pointer; transition: background-color 0.3s; margin-bottom: 0.5rem; }
-        .quiz-option-label:hover { background-color: rgba(var(--primary-neon-rgb), 0.2); }
-        .quiz-option-label input { display: none; } 
-        .quiz-option-label.selected { background-color: rgba(var(--secondary-neon-rgb), 0.3); border-color: var(--secondary-neon); }
-        .quiz-option-label.correct { background-color: var(--correct-answer-bg) !important; border-color: var(--secondary-neon) !important; color: var(--secondary-neon); }
-        .quiz-option-label.incorrect { background-color: var(--wrong-answer-bg) !important; border-color: #ff1439 !important; color: #ff8a9e; }
-        #game-feedback.correct, #quiz-feedback.correct { color: var(--secondary-neon); font-weight: bold; }
-        #game-feedback.incorrect, #quiz-feedback.incorrect { color: #ff8a9e; font-weight: bold; }
+        ::-webkit-scrollbar-thumb {
+            background-color: #9370DB;
+            border-radius: 10px;
+            border: 2px solid rgb(18, 18, 18);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #00E5FF;
+        }
 
-        /* Forum Stilleri */
-        #forum-new-post-container { background-color: var(--input-bg); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid var(--border-color); box-shadow: 0 0 15px rgba(var(--primary-neon-rgb), 0.2); }
-        #new-post-title, #new-post-content, .reply-content-input { width: 100%; background-color: var(--darker-bg); border: 1px solid var(--primary-neon); color: var(--text-color); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1rem; outline: none; transition: box-shadow 0.3s; }
-        #new-post-title:focus, #new-post-content:focus, .reply-content-input:focus { box-shadow: 0 0 10px var(--primary-neon); }
-        .forum-post { background-color: var(--forum-post-bg); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem; border-left: 5px solid var(--primary-neon); transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .forum-post:hover { transform: translateY(-3px); box-shadow: 0 5px 20px rgba(var(--primary-neon-rgb), 0.3); }
-        .forum-post-title { font-family: 'Orbitron', sans-serif; color: var(--secondary-neon); font-size: 1.25rem; margin-bottom: 0.5rem; }
-        .forum-post-content { margin-bottom: 0.75rem; line-height: 1.6; white-space: pre-wrap; }
-        .forum-post-meta { font-size: 0.8rem; color: rgba(var(--text-color-rgb), 0.7); }
-        .forum-post-meta .author { color: var(--primary-neon); }
-        .no-posts-message { text-align: center; padding: 2rem; color: rgba(var(--text-color-rgb), 0.6); font-style: italic; }
-        .post-actions button { font-size: 0.8rem; padding: 4px 8px; margin-right: 8px; }
-        .replies-container { margin-top: 1rem; margin-left: 2rem; border-left: 2px solid rgba(var(--primary-neon-rgb), 0.2); padding-left: 1rem; }
-        .reply { background-color: var(--reply-bg); padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; }
-        .reply-form { margin-top: 0.5rem; }
-        .moderation-status { font-size: 0.75rem; color: var(--danger-neon); font-style: italic; margin-top: 0.5rem; }
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 10000; }
-        .modal-content { background-color: var(--darker-bg); padding: 2rem; border-radius: 10px; border: 1px solid var(--primary-neon); text-align: center; box-shadow: 0 0 20px var(--primary-neon); }
-        .modal-content p { margin-bottom: 1.5rem; }
+        /* Sayfa Geçiş Animasyonları */
+        .page-container {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        .page-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .page-exit-active {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        
+        #reading-progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background-color: #00E5FF;
+            z-index: 100;
+            transition: width 0.1s linear;
+        }
+        
+        .article-content p { line-height: 1.8; margin-bottom: 1.5rem; }
+        .article-content h3 { font-family: 'Orbitron', sans-serif; color: #9370DB; font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; }
+        
+        /* Gerçeklik Filtresi Animasyonları */
+        .filter-explanation {
+            transition: opacity 0.5s, max-height 0.5s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .filter-explanation.show {
+            max-height: 500px; /* İçeriğe göre ayarlanmalı */
+            opacity: 1;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body>
+    <canvas id="particle-canvas"></canvas>
+    <div id="root"></div>
 
-    <div id="loader-wrapper">
-        <svg id="brain-loader" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M50,5 C25,5 10,25 10,50 C10,75 25,95 50,95 C75,95 90,75 90,50 C90,25 75,5 50,5 Z M50,10 C72,10 85,28 85,50 C85,72 72,90 50,90 C28,90 15,72 15,50 C15,28 28,10 50,10 Z M50,20 Q40,30 50,40 Q60,30 50,20 M40,45 Q30,50 40,55 M60,45 Q70,50 60,55 M50,60 Q40,70 50,80 Q60,70 50,60 M30,50 L70,50" fill="none" stroke="#00ffff" stroke-width="2"/>
-            <circle cx="50" cy="50" r="2" fill="#00ffff"/><circle cx="40" cy="35" r="1.5" fill="#00ffff"/><circle cx="60" cy="35" r="1.5" fill="#00ffff"/>
-            <circle cx="35" cy="50" r="1.5" fill="#00ffff"/><circle cx="65" cy="50" r="1.5" fill="#00ffff"/><circle cx="40" cy="65" r="1.5" fill="#00ffff"/>
-            <circle cx="60" cy="65" r="1.5" fill="#00ffff"/>
-        </svg>
-        <div class="loader-text">Laboratuvar Hazırlanıyor...</div>
-    </div>
+    <!-- React ve Babel CDN -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <div id="main-content" class="hidden flex-grow">
-        <header class="py-6 px-4 md:px-8 sticky top-0 z-50 backdrop-blur-md" style="background-color: var(--header-bg);">
-            <div class="container mx-auto flex justify-between items-center">
-                <a href="#home" class="text-2xl md:text-3xl font-orbitron neon-text-blue page-link">Gerçeğin Gerçeği</a>
-                <div class="header-controls">
-                    <nav>
-                        <ul class="flex space-x-2 sm:space-x-3 md:space-x-4">
-                            <li><a href="#home" class="text-xs sm:text-sm md:text-base menu-neuron page-link">Ana Sayfa</a></li>
-                            <li><a href="#videos" class="text-xs sm:text-sm md:text-base menu-neuron page-link">Sorgular</a></li>
-                            <li><a href="#archive" class="text-xs sm:text-sm md:text-base menu-neuron page-link">Arşiv</a></li>
-                            <li><a href="#experiments" class="text-xs sm:text-sm md:text-base menu-neuron page-link">Deneyler</a></li>
-                            <li><a href="#about" class="text-xs sm:text-sm md:text-base menu-neuron page-link">Hakkımda</a></li>
-                            <li><a href="#forum" class="text-xs sm:text-sm md:text-base menu-neuron page-link">Forum</a></li>
-                            <li><a href="#admin" class="text-xs sm:text-sm md:text-base menu-neuron page-link">Admin</a></li>
-                        </ul>
-                    </nav>
-                    <button id="darkModeToggle" title="Gece Modu Aç/Kapat"><i class="fas fa-moon"></i></button>
-                </div>
-            </div>
-        </header>
-
-        <main class="flex-grow">
-            <section id="home" class="page-content active min-h-screen flex items-center justify-center text-center p-4 relative">
-                <div class="brain-hologram-bg">
-                    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="var(--primary-neon)" d="M56.1,-60.8C71.4,-52.4,81.5,-34.4,85.5,-15.2C89.5,4,87.4,24.4,77.7,39.4C68,54.4,50.7,64.1,33.3,70.9C15.9,77.7,-1.6,81.6,-19.4,77.5C-37.2,73.3,-55.3,61.1,-66.2,44.9C-77.1,28.7,-80.8,8.5,-77.7,-9.9C-74.5,-28.3,-64.6,-44.9,-50.4,-53.4C-36.2,-61.9,-18.1,-62.3,0.7,-63.1C19.5,-63.9,39.1,-69.2,56.1,-60.8Z" transform="translate(100 100)" />
-                    </svg>
-                </div>
-                <div class="relative z-10">
-                    <h1 class="text-4xl md:text-6xl font-orbitron neon-text-green mb-6">Gerçeğin Gerçeği'ne Hoş Geldin</h1>
-                    <p class="text-xl md:text-2xl mb-8">Gerçeklik nedir? Haydi birlikte sorgulayalım.</p>
-                    <button class="btn-primary text-lg page-link" data-target="videos">Keşfe Başla</button>
-                </div>
-            </section>
-
-            <section id="videos" class="page-content min-h-screen py-16 px-4 md:px-8">
-                <div class="container mx-auto">
-                    <h2 class="text-3xl md:text-5xl font-orbitron neon-text-blue text-center mb-12">Sorgular Galerisi</h2>
-                    <div id="video-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-                        </div>
-                    <p class="text-center mt-12 text-gray-400 text-sm">Her bir video, bir sorgunun kapısını aralar. Üzerine tıklayarak düşünce deneyine katılın.</p>
-                </div>
-            </section>
-            
-            <section id="video-detail-section" class="page-content min-h-screen py-16 px-4 md:px-8">
-                <div id="video-detail-container" class="container mx-auto">
-                    </div>
-            </section>
-
-            <section id="archive" class="page-content min-h-screen py-16 px-4 md:px-8">
-                <div class="container mx-auto">
-                    <h2 class="text-3xl md:text-5xl font-orbitron neon-text-blue text-center mb-6">Zihin Arşivi</h2>
-                    <p class="text-lg md:text-xl text-center mb-10">Bu Videonun Arkasındaki Bilimsel Temeller</p>
-                    
-                    <div class="interactive-brain-map">
-                        <div data-lobe="prefrontal" class="brain-lobe">Prefrontal Korteks (Mantık)</div>
-                        <div data-lobe="limbic" class="brain-lobe">Limbik Sistem (Duygular)</div>
-                        <div data-lobe="cerebellum" class="brain-lobe">Serebellum (Veriler)</div>
-                    </div>
-
-                    <div id="prefrontal-content" class="brain-lobe-content">
-                        <h3 class="text-2xl font-orbitron neon-text-green mb-4">Mantık & Analiz</h3>
-                        <p class="mb-3">Videodaki temel argümanlar, mantıksal çıkarımlar ve analizler burada detaylandırılacaktır. Her bir düşünce zinciri, kanıtlarla desteklenerek sunulur.</p>
-                        <p><i class="fas fa-book resource-icon"></i> Kaynak: Bilimsel Makale Adı 1</p>
-                        <p><i class="fas fa-link resource-icon"></i> <a href="#" class="hover:underline text-[color:var(--primary-neon)]">İlgili Araştırma Linki</a></p>
-                    </div>
-                    <div id="limbic-content" class="brain-lobe-content">
-                        <h3 class="text-2xl font-orbitron neon-text-green mb-4">Duygular & İnançlar</h3>
-                        <p class="mb-3">Konunun toplumsal etkileri, etik boyutları veya yaygın inançlarla olan karmaşık ilişkisi bu bölümde incelenir. Farklı bakış açıları ve felsefi tartışmalar ele alınır.</p>
-                         <p><i class="fas fa-comments resource-icon"></i> Kaynak: Toplumsal Etki Raporu</p>
-                    </div>
-                    <div id="cerebellum-content" class="brain-lobe-content">
-                        <h3 class="text-2xl font-orbitron neon-text-green mb-4">Veriler & İstatistikler</h3>
-                        <p class="mb-3">Araştırmada kullanılan ham veriler, sayılar, grafikler veya istatistiksel bilgiler bu alanda şeffaf bir şekilde sunulur. Verilerin nasıl yorumlandığına dair açıklamalar da bulunur.</p>
-                        <p><i class="fas fa-chart-bar resource-icon"></i> Kaynak: İstatistiksel Analiz Seti</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="experiments" class="page-content min-h-screen py-16 px-4 md:px-8">
-                <div class="container mx-auto">
-                    <h2 class="text-3xl md:text-5xl font-orbitron neon-text-blue text-center mb-12">Laboratuvar Deneyleri</h2>
-                    <p class="text-lg md:text-xl text-center mb-10 text-gray-300">Zihnini daha da zorlamaya hazır mısın? İşte bazı deneysel modüller!</p>
-
-                    <div class="experiment-item query-box-container neon-border-blue">
-                        <h3 class="text-2xl font-orbitron neon-text-green mb-4">AI Destekli "Sorgu Kutusu"</h3>
-                        <p class="mb-4 text-gray-300">Evren, bilinç, bilim... Aklındaki soruları yapay zekaya sor ve ilk düşünce kıvılcımlarını yakala.</p>
-                        <textarea id="ai-query-input" rows="3" placeholder="Örn: Evren nasıl oluştu? Bilinç nedir?"></textarea>
-                        <button id="submit-ai-query" class="btn-primary w-full sm:w-auto">Sorgula</button>
-                        <div id="ai-response-area" class="mt-4">Yapay zeka yanıtı burada görünecek...</div>
-                         <div id="ai-loading-indicator" class="hidden mt-4 text-center text-[color:var(--primary-neon)]">
-                            <i class="fas fa-spinner fa-spin mr-2"></i> Yanıt oluşturuluyor...
-                        </div>
-                    </div>
-
-                    <div id="mini-quiz-section" class="experiment-item neon-border-blue">
-                        <h3 class="text-2xl font-orbitron neon-text-blue mb-4">Zihin Testi: Evrenin Sırları</h3>
-                        <p class="text-gray-300 mb-4">"Evrenin Sırları: Büyük Patlama Teorisi" videomuzdaki bilgilerini test et!</p>
-                        <div id="quiz-container" class="bg-[var(--input-bg)] p-6 rounded-md">
-                            <h4 id="quiz-question" class="text-xl neon-text-green mb-4 min-h-[3em]">Soru yükleniyor...</h4>
-                            <div id="quiz-options" class="space-y-3 mb-4 min-h-[10em]">
-                                </div>
-                            <button id="submit-quiz-answer" class="btn-primary w-full">Cevabı Kontrol Et</button>
-                            <div id="quiz-feedback" class="mt-4 text-center min-h-[24px]"></div>
-                        </div>
-                        <div id="quiz-results" class="hidden mt-6 text-center p-6 bg-[var(--input-bg)] rounded-md">
-                            <h4 class="text-2xl neon-text-blue mb-3">Quiz Tamamlandı!</h4>
-                            <p class="text-lg">Skorun: <span id="quiz-score" class="font-orbitron text-[color:var(--secondary-neon)]">0</span> / <span id="quiz-total-questions" class="font-orbitron">0</span></p>
-                            <button id="restart-quiz-button" class="btn-primary mt-6">Quizi Yeniden Başlat</button>
-                        </div>
-                    </div>
-                    
-                    <div id="myth-buster-game" class="experiment-item neon-border-green">
-                        <h3 class="text-2xl font-orbitron neon-text-green mb-4">Oyun: "Doğru mu, Efsane mi?"</h3>
-                        <p class="text-gray-300 mb-4">Yaygın bilimsel yanılgıları ve şehir efsanelerini çürütmeye hazır mısın? Bilgilerini sına!</p>
-                        <div id="statement-card" class="bg-[var(--input-bg)] p-6 rounded-md mb-6 min-h-[120px] flex items-center justify-center text-center border border-[color:var(--primary-neon)]">
-                            <p id="statement-text" class="text-lg">Oyun Başlıyor...</p>
-                        </div>
-                        <div class="flex flex-col sm:flex-row justify-around items-center mb-4 gap-4">
-                            <button id="true-button" class="btn-primary bg-green-500/20 border-green-500 hover:bg-green-500 text-white px-8 py-3 w-full sm:w-auto text-lg">DOĞRU</button>
-                            <button id="myth-button" class="btn-primary bg-red-500/20 border-red-500 hover:bg-red-500 text-white px-8 py-3 w-full sm:w-auto text-lg">EFSANE</button>
-                        </div>
-                        <div id="game-feedback" class="text-center min-h-[24px] mb-4 text-lg"></div>
-                        <div class="text-center mt-2 text-lg">Skor: <span id="game-score" class="font-orbitron text-[color:var(--secondary-neon)]">0</span></div>
-                        <button id="next-statement-button" class="btn-primary w-full mt-6 hidden">Sonraki İfade</button>
-                    </div>
-
-                    <div class="experiment-item">
-                        <h3 class="text-2xl font-orbitron neon-text-green mb-3">Podcast: "İkinci Beyin" Serisi</h3>
-                        <p class="text-gray-300">Derinlemesine sohbetler, uzman konuklar ve daha fazlası... "Gerçeğin Gerçeği" podcast serisi "İkinci Beyin" ile düşünce yolculuğuna sesli devam et. (Yakında Eklenecek)</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="about" class="page-content min-h-screen py-16 px-4 md:px-8">
-                 <div class="container mx-auto">
-                    <h2 class="text-3xl md:text-5xl font-orbitron neon-text-green text-center mb-10">Bu Zihnin Sahibi Kim?</h2>
-                    <div id="story-animation-container" class="neon-border-blue">
-                        <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-                            <defs>
-                                <radialGradient id="starShine" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                                    <stop offset="0%" style="stop-color:white; stop-opacity:1" />
-                                    <stop offset="100%" style="stop-color:var(--primary-neon); stop-opacity:0.3" />
-                                </radialGradient>
-                                <g id="bookIcon">
-                                    <rect x="-10" y="-15" width="20" height="30" rx="2" fill="var(--primary-neon)" stroke="var(--text-color)" stroke-width="0.5"/>
-                                    <line x1="-8" y1="-10" x2="8" y2="-10" stroke="var(--text-color)" stroke-width="1"/>
-                                    <line x1="-8" y1="-5" x2="8" y2="-5" stroke="var(--text-color)" stroke-width="1"/>
-                                    <line x1="-8" y1="0" x2="8" y2="0" stroke="var(--text-color)" stroke-width="1"/>
-                                </g>
-                                <g id="tubeIcon">
-                                    <path d="M -5 15 Q -5 20 0 20 Q 5 20 5 15 L 5 -15 L -5 -15 Z" fill="rgba(0,255,255,0.3)" stroke="var(--primary-neon)" stroke-width="1"/>
-                                    <rect x="-5" y="-15" width="10" height="5" fill="var(--primary-neon)"/>
-                                </g>
-                                <g id="ideaIcon">
-                                    <path d="M0-15 C-10-15 -15-5 -15 5 C-15 15 -5 20 0 20 C5 20 15 15 15 5 C15-5 10-15 0-15 Z 
-                                             M0-12 Q-8-10 0 0 Q8-10 0-12
-                                             M-7 2 Q-10 5 -7 8 M7 2 Q10 5 7 8" 
-                                          fill="var(--secondary-neon)" opacity="0.8"/>
-                                    <line x1="0" y1="-15" x2="0" y2="-20" stroke="var(--secondary-neon)" stroke-width="1.5"/>
-                                    <line x1="-3" y1="-22" x2="3" y2="-18" stroke="var(--secondary-neon)" stroke-width="1.5"/>
-                                    <line x1="3" y1="-22" x2="-3" y2="-18" stroke="var(--secondary-neon)" stroke-width="1.5"/>
-                                </g>
-                            </defs>
-                    
-                            <g id="stage1">
-                                <circle cx="70" cy="150" r="20" fill="var(--text-color)" opacity="0.7">
-                                    <animate id="childAppear" attributeName="opacity" from="0" to="0.7" dur="1s" begin="0s" fill="freeze"/>
-                                </circle>
-                                <rect x="60" y="100" width="20" height="50" fill="var(--text-color)" opacity="0.7">
-                                     <animate attributeName="opacity" from="0" to="0.7" dur="1s" begin="0s" fill="freeze"/>
-                                </rect>
-                                <circle cx="150" cy="50" r="3" fill="url(#starShine)">
-                                    <animate attributeName="r" values="3;4;3" dur="2s" repeatCount="indefinite" begin="0.5s"/>
-                                    <animate attributeName="opacity" from="0" to="1" dur="1s" begin="childAppear.end-0.5s" fill="freeze"/>
-                                </circle>
-                                <circle cx="200" cy="30" r="2.5" fill="url(#starShine)">
-                                    <animate attributeName="r" values="2.5;3.5;2.5" dur="1.8s" repeatCount="indefinite" begin="0.8s"/>
-                                     <animate attributeName="opacity" from="0" to="1" dur="1s" begin="childAppear.end-0.2s" fill="freeze"/>
-                                </circle>
-                                <circle cx="250" cy="60" r="3.5" fill="url(#starShine)">
-                                    <animate attributeName="r" values="3.5;4.5;3.5" dur="2.2s" repeatCount="indefinite" begin="0.3s"/>
-                                     <animate attributeName="opacity" from="0" to="1" dur="1s" begin="childAppear.end" fill="freeze"/>
-                                </circle>
-                                <animate id="fadeOutStage1" attributeName="opacity" from="1" to="0" dur="1s" begin="4s" fill="freeze"/>
-                            </g>
-                    
-                            <g id="stage2" opacity="0">
-                                <animate attributeName="opacity" from="0" to="1" dur="1s" begin="fadeOutStage1.end" fill="freeze"/>
-                                <circle cx="70" cy="140" r="25" fill="var(--text-color)" opacity="0.6"/>
-                                <rect x="55" y="80" width="30" height="60" fill="var(--text-color)" opacity="0.6"/>
-                                <use href="#bookIcon" transform="translate(150 100) scale(1.2)">
-                                    <animateTransform attributeName="transform" type="translate" values="150 250; 150 100" dur="1s" begin="fadeOutStage1.end+0.2s" fill="freeze"/>
-                                    <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="fadeOutStage1.end+0.2s" fill="freeze"/>
-                                </use>
-                                <use href="#bookIcon" transform="translate(180 120) scale(1)">
-                                     <animateTransform attributeName="transform" type="translate" values="180 250; 180 120" dur="1s" begin="fadeOutStage1.end+0.5s" fill="freeze"/>
-                                     <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="fadeOutStage1.end+0.5s" fill="freeze"/>
-                                </use>
-                                <use href="#tubeIcon" transform="translate(220 110) scale(1.3)">
-                                    <animateTransform attributeName="transform" type="translate" values="220 250; 220 110" dur="1s" begin="fadeOutStage1.end+0.8s" fill="freeze"/>
-                                    <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="fadeOutStage1.end+0.8s" fill="freeze"/>
-                                </use>
-                                <animate id="fadeOutStage2" attributeName="opacity" from="1" to="0" dur="1s" begin="8s" fill="freeze"/>
-                            </g>
-                    
-                            <g id="stage3" opacity="0">
-                                 <animate attributeName="opacity" from="0" to="1" dur="1s" begin="fadeOutStage2.end" fill="freeze"/>
-                                <circle cx="70" cy="130" r="30" fill="var(--primary-neon)" opacity="0.8"/>
-                                <rect x="50" y="60" width="40" height="70" fill="var(--primary-neon)" opacity="0.8"/>
-                                <rect x="120" y="100" width="160" height="60" rx="5" fill="rgba(var(--primary-neon-rgb),0.1)" stroke="var(--primary-neon)" stroke-width="1"/>
-                                <rect x="130" y="70" width="30" height="30" fill="rgba(var(--secondary-neon-rgb),0.2)"/> <use href="#ideaIcon" transform="translate(200 60) scale(1.5)">
-                                     <animateTransform attributeName="transform" type="rotate" from="0 200 60" to="360 200 60" dur="10s" repeatCount="indefinite" begin="fadeOutStage2.end"/>
-                                     <animate attributeName="opacity" from="0" to="1" dur="1s" begin="fadeOutStage2.end+0.5s" fill="freeze"/>
-                                </use>
-                                <text x="130" y="180" font-family="Orbitron, sans-serif" font-size="12" fill="var(--secondary-neon)">Gerçeğin Gerçeği</text>
-                                 <animate id="loopAnimation" attributeName="opacity" from="1" to="1" dur="1s" begin="12s" fill="freeze"/> </g>
-                            <animate attributeName="visibility" from="visible" to="visible" dur="16s" repeatCount="indefinite"/>
-                        </svg>
-                    </div>
-                    <div class="max-w-3xl mx-auto space-y-6 text-lg">
-                        <p>Karanlık bir fonda yıldızlara bakan meraklı bir çocuk siluetiyle başlar her şey. O çocuk bendim. Evrenin sonsuzluğuna, bilginin derinliğine duyduğum o saf merak, hiç sönmeyen bir ateşe dönüştü.</p>
-                        <p>Yıllar geçtikçe, kitaplar en yakın dostum, laboratuvarlar oyun alanım oldu. Her yeni keşif, her çözülen denklem, o ateşi daha da harladı. Sorgulamak, anlamak ve anladıklarımı paylaşmak bir tutku haline geldi.</p>
-                        <p>"Gerçeğin Gerçeği" işte bu tutkunun, bu bitmek bilmeyen merakın bir ürünü. Bir dijital düşünce laboratuvarı kurarak, karmaşık görünen bilimsel ve felsefi konuları herkesin anlayabileceği bir dille sunmayı, birlikte sorgulamayı ve gerçeğe bir adım daha yaklaşmayı hedefledim.</p>
-                        <p class="font-orbitron neon-text-blue text-xl text-center mt-8">İşte bu merak ve sorgulama tutkusuyla Gerçeğin Gerçeği’ni kurdum. Birlikte daha nice gerçeği keşfetmek dileğiyle.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="forum" class="page-content min-h-screen py-16 px-4 md:px-8">
-                <div class="container mx-auto">
-                    <h2 class="text-3xl md:text-5xl font-orbitron neon-text-blue text-center mb-6">
-                        <i class="fas fa-meteor mr-3 opacity-70"></i>Yıldızlararası Tartışma Platformu
-                    </h2>
-                    <p class="text-lg md:text-xl text-center mb-10 text-gray-300">
-                        Evrenin gizemlerini, bilimin sınırlarını ve felsefenin derinliklerini birlikte keşfedelim. Sorularınızı sorun, fikirlerinizi paylaşın!
-                    </p>
-                    <p id="user-id-display" class="text-center text-xs text-gray-500 mb-6">Kullanıcı Kimliği Yükleniyor...</p>
-
-                    <div id="forum-new-post-container" class="mb-12">
-                        <h3 class="text-2xl font-orbitron neon-text-green mb-4">Yeni Bir Konu Başlat <i class="fas fa-rocket ml-2 text-sm"></i></h3>
-                        <input type="text" id="new-post-title" placeholder="Konu Başlığı (örn: Kara Deliklerin İçinde Ne Var?)">
-                        <textarea id="new-post-content" rows="4" placeholder="Sorunuzu veya düşüncelerinizi buraya yazın..."></textarea>
-                        <button id="submit-new-post" class="btn-primary w-full sm:w-auto">Gönderiyi Yayınla</button>
-                    </div>
-
-                    <h3 class="text-2xl md:text-3xl font-orbitron neon-text-blue text-center mb-8">Aktif Tartışmalar</h3>
-                    <div id="forum-posts-container">
-                        <p id="no-forum-posts" class="no-posts-message">Henüz hiç tartışma başlatılmamış. İlk kıvılcımı sen yak!</p>
-                    </div>
-                </div>
-            </section>
-
-             <!-- Admin Paneli Sayfası -->
-            <section id="admin" class="page-content min-h-screen py-16 px-4 md:px-8">
-                <div class="container mx-auto">
-                    <div id="admin-login-container">
-                        <h2 class="text-3xl md:text-5xl font-orbitron neon-text-blue text-center mb-10">Admin Girişi</h2>
-                        <p class="text-center text-yellow-400 mb-4 text-sm">**Güvenlik Uyarısı:** Bu giriş mekanizması yalnızca geliştirme amaçlıdır ve güvenli değildir. Gerçek bir uygulamada sunucu taraflı kimlik doğrulama kullanılmalıdır.</p>
-                        <form id="admin-login-form" class="max-w-md mx-auto bg-[var(--input-bg)] p-8 rounded-lg shadow-xl neon-border-blue">
-                            <div class="mb-6">
-                                <label for="admin-username" class="block text-sm font-medium text-[color:var(--primary-neon)] mb-1">Kullanıcı Adı</label>
-                                <input type="text" id="admin-username" class="w-full text-sm bg-[var(--darker-bg)] border border-[color:var(--border-color)] text-[color:var(--text-color)] rounded-md p-3 focus:ring-2 focus:ring-[color:var(--primary-neon)] focus:border-[color:var(--primary-neon)] outline-none" required>
-                            </div>
-                            <div class="mb-6">
-                                <label for="admin-password" class="block text-sm font-medium text-[color:var(--primary-neon)] mb-1">Şifre</label>
-                                <input type="password" id="admin-password" class="w-full text-sm bg-[var(--darker-bg)] border border-[color:var(--border-color)] text-[color:var(--text-color)] rounded-md p-3 focus:ring-2 focus:ring-[color:var(--primary-neon)] focus:border-[color:var(--primary-neon)] outline-none" required>
-                            </div>
-                            <button type="submit" class="btn-primary w-full">Giriş Yap</button>
-                            <p id="admin-login-error" class="text-red-500 text-sm mt-4 text-center"></p>
-                        </form>
-                    </div>
-
-                    <div id="admin-dashboard-container" class="hidden">
-                        <h2 class="text-3xl md:text-5xl font-orbitron neon-text-green text-center mb-10">Admin Paneli</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                            <button id="manage-videos-button" class="btn-primary text-lg w-full">Videoları Yönet</button>
-                            <button id="manage-quizzes-button" class="btn-primary text-lg w-full">Quizleri Yönet</button>
-                            <button id="manage-myths-button" class="btn-primary text-lg w-full">Efsaneleri Yönet</button>
-                        </div>
-                        <button id="admin-logout-button" class="btn-danger mx-auto block">Çıkış Yap</button>
-                        
-                        <div id="admin-content-area" class="mt-10">
-                            <!-- İçerik yönetim arayüzleri buraya gelecek -->
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <footer class="py-8 text-center border-t " style="border-color: rgba(var(--primary-neon-rgb, 0, 255, 255), 0.3);">
-            <p class="text-sm" style="color: var(--text-color);">© <span id="currentYear"></span> Gerçeğin Gerçeği. Tüm hakları saklıdır.</p>
-            <p class="text-xs mt-1" style="color: var(--text-color); opacity:0.7;">Bir Dijital Düşünce Laboratuvarı Deneyimi</p>
-        </footer>
-    </div>
-
-    <div id="confirmation-modal" class="modal">
-        <div class="modal-content">
-            <p id="modal-message">Bu işlemi yapmak istediğinize emin misiniz?</p>
-            <button id="modal-confirm-button" class="btn-primary btn-danger mr-4">Evet, Eminim</button>
-            <button id="modal-cancel-button" class="btn-primary">İptal</button>
-        </div>
-    </div>
-
-    <!-- Video Ekle/Düzenle Modalı -->
-    <div id="video-form-modal" class="admin-form-modal">
-        <div class="admin-form-modal-content">
-            <h3 id="video-modal-title" class="text-2xl font-orbitron neon-text-green mb-6">Video Formu</h3>
-            <form id="video-admin-form">
-                <input type="hidden" id="video-id-input">
-                <div>
-                    <label for="video-title-input">Başlık:</label>
-                    <input type="text" id="video-title-input" required>
-                </div>
-                <div>
-                    <label for="video-desc-input">Açıklama:</label>
-                    <textarea id="video-desc-input" rows="3" required></textarea>
-                </div>
-                <div>
-                    <label for="video-thumbnail-input">Thumbnail URL:</label>
-                    <input type="url" id="video-thumbnail-input" required placeholder="https://placehold.co/...">
-                </div>
-                <div>
-                    <label for="video-youtubeid-input">YouTube Video ID:</label>
-                    <input type="text" id="video-youtubeid-input" required placeholder="örn: w_khel_j43s">
-                </div>
-                 <div>
-                    <label for="video-views-input">İzlenme Sayısı:</label>
-                    <input type="text" id="video-views-input" placeholder="örn: 1.2M">
-                </div>
-                <div>
-                    <label for="video-duration-input">Süre:</label>
-                    <input type="text" id="video-duration-input" placeholder="örn: 15:32">
-                </div>
-                <div class="mt-6 flex justify-end gap-4">
-                    <button type="button" id="cancel-video-form" class="btn-primary btn-danger">İptal</button>
-                    <button type="submit" class="btn-primary">Kaydet</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Quiz Ekle/Düzenle Modalı (Basit hali) -->
-    <div id="quiz-form-modal" class="admin-form-modal">
-        <div class="admin-form-modal-content">
-            <h3 id="quiz-modal-title" class="text-2xl font-orbitron neon-text-green mb-6">Quiz Formu</h3>
-            <form id="quiz-admin-form">
-                <input type="hidden" id="quiz-id-input">
-                <div>
-                    <label for="quiz-title-input">Quiz Başlığı (ID - Benzersiz olmalı, örn: evreninSirlari):</label>
-                    <input type="text" id="quiz-title-input" required placeholder="örn: evreninSirlari">
-                </div>
-                 <div class="mt-4 mb-4">
-                    <button type="button" id="ai-generate-quiz-button" class="btn-primary btn-secondary text-sm w-full"><i class="fas fa-robot mr-2"></i>AI ile Quiz Oluştur (Konu Girin)</button>
-                    <input type="text" id="ai-quiz-topic-input" class="mt-2" placeholder="Quiz konusu (örn: Kara Delikler)">
-                </div>
-                <div id="quiz-questions-container">
-                    <!-- Sorular dinamik olarak buraya eklenecek -->
-                </div>
-                <button type="button" id="add-quiz-question-button" class="btn-secondary mt-4 mb-4 text-sm"><i class="fas fa-plus mr-2"></i>Yeni Soru Ekle</button>
-                <div class="mt-6 flex justify-end gap-4">
-                    <button type="button" id="cancel-quiz-form" class="btn-primary btn-danger">İptal</button>
-                    <button type="submit" class="btn-primary">Quiz'i Kaydet</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Myth Ekle/Düzenle Modalı -->
-    <div id="myth-form-modal" class="admin-form-modal">
-        <div class="admin-form-modal-content">
-            <h3 id="myth-modal-title" class="text-2xl font-orbitron neon-text-green mb-6">Efsane/Gerçek Formu</h3>
-             <div class="mt-4 mb-6">
-                <button type="button" id="ai-generate-myth-button" class="btn-primary btn-secondary text-sm w-full"><i class="fas fa-robot mr-2"></i>AI ile İfade Oluştur (Konu Girin)</button>
-                <input type="text" id="ai-myth-topic-input" class="mt-2" placeholder="İfade konusu (örn: Beyin Kullanımı)">
-            </div>
-            <form id="myth-admin-form">
-                <input type="hidden" id="myth-id-input">
-                <div>
-                    <label for="myth-statement-input">İfade:</label>
-                    <textarea id="myth-statement-input" rows="3" required></textarea>
-                </div>
-                <div>
-                    <label for="myth-isMyth-input">Bu bir Efsane mi?</label>
-                    <select id="myth-isMyth-input">
-                        <option value="true">Evet, Efsane</option>
-                        <option value="false">Hayır, Gerçek</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="myth-explanation-input">Açıklama:</label>
-                    <textarea id="myth-explanation-input" rows="3" required></textarea>
-                </div>
-                <div class="mt-6 flex justify-end gap-4">
-                    <button type="button" id="cancel-myth-form" class="btn-primary btn-danger">İptal</button>
-                    <button type="submit" class="btn-primary">Kaydet</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-    <script type="module">
-        // Firebase SDK'ları
-        import { initializeApp, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { 
-            getFirestore, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, getDocs,
-            onSnapshot, collection, query, where, serverTimestamp, orderBy, FieldValue,
-            runTransaction
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Firebase yapılandırması ve başlatma
-        let firebaseConfig;
-        try {
-            firebaseConfig = typeof __firebase_config !== 'undefined' && __firebase_config ? JSON.parse(__firebase_config) : null;
-        } catch (e) {
-            console.error("Error parsing __firebase_config:", e);
-            firebaseConfig = null;
+    <script type="text/babel">
+        // --- BÖLÜM 1: İNTERAKTİF PARÇACIK ARKA PLANI (Değişiklik yok) ---
+        const canvas = document.getElementById('particle-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            let particlesArray;
+            const mouse = { x: null, y: null, radius: 150 };
+            window.addEventListener('mousemove', (event) => { mouse.x = event.x; mouse.y = event.y; });
+            class Particle {
+                constructor(x, y, dX, dY, s, c) { this.x=x; this.y=y; this.directionX=dX; this.directionY=dY; this.size=s; this.color=c; }
+                draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false); ctx.fillStyle = this.color; ctx.fill(); }
+                update() { if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX; if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY; let dx = mouse.x - this.x; let dy = mouse.y - this.y; let distance = Math.sqrt(dx*dx + dy*dy); if (distance < mouse.radius + this.size){ if(mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 3; if(mouse.x > this.x && this.x > this.size * 10) this.x -= 3; if(mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 3; if(mouse.y > this.y && this.y > this.size * 10) this.y -= 3; } this.x += this.directionX; this.y += this.directionY; this.draw(); }
+            }
+            function init() { particlesArray = []; let num = (canvas.height * canvas.width) / 9000; for (let i = 0; i < num; i++) { let s = (Math.random() * 2) + 0.5; let x = (Math.random() * ((innerWidth - s*2) - (s*2)) + s*2); let y = (Math.random() * ((innerHeight - s*2) - (s*2)) + s*2); let dX = (Math.random() * 0.4) - 0.2; let dY = (Math.random() * 0.4) - 0.2; particlesArray.push(new Particle(x, y, dX, dY, s, '#F0F0F0')); } }
+            function connect() { for(let a=0; a<particlesArray.length; a++) { for (let b=a; b<particlesArray.length; b++) { let dist = ((particlesArray[a].x - particlesArray[b].x)*(particlesArray[a].x - particlesArray[b].x)) + ((particlesArray[a].y - particlesArray[b].y)*(particlesArray[a].y - particlesArray[b].y)); if(dist < (canvas.width/7)*(canvas.height/7)) { let opacity = 1 - (dist/20000); ctx.strokeStyle = `rgba(147, 112, 219, ${opacity * 0.3})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particlesArray[a].x, particlesArray[a].y); ctx.lineTo(particlesArray[b].x, particlesArray[b].y); ctx.stroke(); } } } }
+            function animate() { requestAnimationFrame(animate); ctx.clearRect(0,0,innerWidth,innerHeight); particlesArray.forEach(p=>p.update()); connect(); }
+            window.addEventListener('resize', () => { canvas.width = innerWidth; canvas.height = innerHeight; mouse.radius = 150; init(); });
+            window.addEventListener('mouseout', () => { mouse.x = undefined; mouse.y = undefined; });
+            init(); animate();
         }
 
-        if (!firebaseConfig || !firebaseConfig.apiKey) { 
-            console.error("CRITICAL: Firebase configuration is missing or invalid. Using placeholder config.");
-            firebaseConfig = { apiKey: "MISSING_CONFIG", authDomain: "MISSING_CONFIG", projectId: "MISSING_CONFIG" }; 
-        }
+        // --- BÖLÜM 2: REACT UYGULAMASI ---
+
+        // Mock Data
+        const mockVideos = [ { id: 1, title: 'Kuantum Köpüğü ve Gerçekliğin Pikselleri', category: 'Kuantum Fiziği', thumbnail: 'https://placehold.co/600x400/101218/00E5FF?text=Kuantum', youtubeId: '2U_gOIST-rM'}, { id: 2, title: 'Bilinç: Beyindeki Hayalet mi?', category: 'Nörobilim', thumbnail: 'https://placehold.co/400x500/101218/9370DB?text=Bilinç', youtubeId: 'C4yIxUOWrtw'}, { id: 3, title: 'Simülasyon Argümanı', category: 'Felsefe', thumbnail: 'https://placehold.co/400x400/101218/F0F0F0?text=Simülasyon', youtubeId: 'VqULEE80Z_U' }, { id: 4, title: 'Entropi ve Zamanın Oku', category: 'Fizik', thumbnail: 'https://placehold.co/400x600/101218/00E5FF?text=Entropi', youtubeId: 'r_p_7_l_5I4' }, { id: 5, title: 'Mandela Etkisi', category: 'Popüler Efsaneler', thumbnail: 'https://placehold.co/600x450/101218/9370DB?text=Mandela', youtubeId: 'g_jA5fMlDPg' }, { id: 6, title: 'Gözlemci Etkisi', category: 'Kuantum Fiziği', thumbnail: 'https://placehold.co/400x400/101218/F0F0F0?text=Gözlemci', youtubeId: 'q_jA5fMlDPg' }];
+        const cognitiveBiasesData = [ { id: 'confirmation', name: 'Doğrulama Önyargısı', scenario: 'Bir arkadaşınız yeni bir "süper gıda"nın zekayı artırdığını iddia eden bir makale paylaşıyor. Ne yaparsınız?', options: [ { text: 'Bu iddiayı destekleyen başka makaleler ararım.', isBiased: true }, { text: 'Hem lehte hem de aleyhte kanıtları incelerim.', isBiased: false }, { text: 'Konuyla ilgili bilimsel meta-analizleri ararım.', isBiased: false } ], explanation: 'Eğer ilk seçeneğe yatkınsanız, "Doğrulama Önyargısı" (Confirmation Bias) eğilimi gösteriyor olabilirsiniz. Bu, mevcut inançlarımızı doğrulayan bilgileri arama eğilimimizdir.' }, { id: 'anchoring', name: 'Çıpalama Etkisi', scenario: 'Mağazada önce 10.000 TL\'lik, sonra "sadece" 5.000 TL\'lik bir telefon görüyorsunuz. Ne düşünürsünüz?', options: [ { text: 'İkinci telefon çok iyi bir fırsat.', isBiased: true }, { text: 'Özelliklerini ve piyasa değerini araştırırım.', isBiased: false }, { text: 'Ne kadar "kâr" ettiğimi düşünürüm.', isBiased: true } ], explanation: 'İlk veya son seçeneğe yöneldiyseniz, "Çıpalama Etkisi"ne (Anchoring Effect) maruz kalmış olabilirsiniz. Bu, karar verirken ilk aldığımız bilgiye (çıpaya) aşırı güvenme eğilimidir.' }];
+        const mockArticles = [ { id: 1, title: 'Gözlemci Etkisi: Gerçeklik Biz Baktığımızda mı Oluşuyor?', author: 'Dr. Evelyn Reed', publishDate: '01 Haziran 2025', excerpt: 'Kuantum mekaniğinin en kafa karıştırıcı kavramlarından biri olan gözlemci etkisini, çift yarık deneyinden yola çıkarak felsefi ve bilimsel sonuçlarıyla inceliyoruz...', content: `<h3>Giriş: Çift Yarık Deneyinin Gizemi</h3><p>Fizik tarihinde hiçbir deney, gerçekliğin doğası hakkındaki varsayımlarımızı Richard Feynman'ın "tüm kuantum mekaniğinin kalbinde yatan" olarak tanımladığı çift yarık deneyi kadar sarsmamıştır. Temelde deney basittir: bir kaynaktan çıkan parçacıklar (elektronlar gibi), üzerinde iki dar yarık bulunan bir engelden geçirilir ve arkadaki bir ekrana düşmeleri gözlemlenir. Parçacıkların tek tek mermiler gibi davrandığını varsayarsak, ekranda iki parlak çizgi görmeyi bekleriz. Ancak deney yapıldığında, sonuç şaşırtıcıdır: ekranda, dalgaların birbiriyle etkileşime girdiğinde oluşturduğu gibi bir girişim deseni belirir. Bu, tek bir elektronun bile aynı anda her iki yarıktan da bir olasılık dalgası olarak geçtiğini gösterir. <ref id="ref1">Feynman, R. P. (1985). QED: The Strange Theory of Light and Matter.</ref></p><h3>Gözlemcinin Rolü</h3><p>İşlerin gerçekten tuhaflaştığı yer, bilim insanlarının elektronun hangi yarıktan geçtiğini tespit etmek için bir dedektör yerleştirmeye karar vermesidir. Mantıken, bu "gözlem" eyleminin sonucu etkilememesi gerekir. Ancak kuantum dünyasında, gözlem her şeyi değiştirir. Elektronun yolu gözlemlendiği anda, girişim deseni ortadan kaybolur ve ekranda tam da başlangıçta beklediğimiz gibi iki parlak çizgi belirir. <ref id="ref2">Wheeler, J. A., & Zurek, W. H. (Eds.). (1983). Quantum Theory and Measurement.</ref> Sanki elektron, izlendiğini "bildiği" için dalga gibi davranmayı bırakıp parçacık gibi davranmaya karar vermiştir. Bu fenomene "gözlemci etkisi" denir ve gerçekliğin bizden bağımsız, nesnel bir varoluşa sahip olup olmadığı konusunda derin felsefi soruları gündeme getirir.</p>`, references: { ref1: 'Feynman, R. P. (1985). QED: The Strange Theory of Light and Matter. Princeton University Press.', ref2: 'Wheeler, J. A., & Zurek, W. H. (Eds.). (1983). Quantum Theory and Measurement. Princeton University Press.' } } ];
         
-        let app;
-        let db;
-        let authService; 
-
-        try {
-            app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            authService = getAuth(app); 
-            setLogLevel('debug'); 
-        } catch (e) {
-            console.error("CRITICAL: Firebase initialization failed:", e);
-            const mainContent = document.getElementById('main-content');
-            if(mainContent) {
-                 mainContent.innerHTML = `<div class="text-center p-8 text-red-500">Uygulama başlatılırken kritik bir hata oluştu: Firebase yapılandırması hatalı veya eksik. Lütfen konsolu kontrol edin.</div>`;
-                 mainContent.classList.remove('hidden');
-                 const loader = document.getElementById('loader-wrapper');
-                 if(loader) loader.style.display = 'none';
-            }
-            throw new Error("Firebase initialization failed, stopping script.");
-        }
-
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        let currentUserId = null;
-        const userIdDisplay = document.getElementById('user-id-display');
-        let isProgrammaticHashChange = false; 
-        let isAdminLoggedIn = false; 
-        // Güvenlik Uyarısı: Bu bilgiler gerçek bir uygulamada ASLA istemci tarafında saklanmamalıdır!
-        const SIMULATED_ADMIN_USERNAME = "gercegingercegi";
-        const SIMULATED_ADMIN_PASSWORD = "eceece";
-
-
-        onAuthStateChanged(authService, (user) => {
-            if (user) {
-                currentUserId = user.uid;
-                console.log("Kullanıcı giriş yaptı:", currentUserId);
-                if(userIdDisplay) userIdDisplay.textContent = `Aktif Kullanıcı ID: ${currentUserId}`;
-            } else {
-                signInAnonymously(authService)
-                    .then((anonUser) => {
-                        currentUserId = anonUser.user.uid;
-                        console.log("Anonim kullanıcı olarak giriş yapıldı:", currentUserId);
-                         if(userIdDisplay) userIdDisplay.textContent = `Aktif Kullanıcı ID (Anonim): ${currentUserId}`;
-                    })
-                    .catch((error) => {
-                        console.error("Anonim giriş hatası:", error);
-                        currentUserId = crypto.randomUUID(); 
-                        if(userIdDisplay) userIdDisplay.textContent = `Geçici Kullanıcı ID: ${currentUserId.substring(0,8)}...`;
-                    });
-            }
-            const forumPage = document.getElementById('forum');
-            if (forumPage && forumPage.classList.contains('active')) {
-                 setupForum(); 
-            }
-        });
-
-        async function initializeAuth() {
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                try {
-                    await signInWithCustomToken(authService, __initial_auth_token);
-                    console.log("Özel token ile giriş başarılı.");
-                } catch (error) {
-                    console.error("Özel token ile giriş hatası, anonim girişe geçiliyor:", error);
-                    await signInAnonymously(authService);
-                }
-            } else {
-                console.log("Özel token bulunamadı, anonim giriş yapılıyor.");
-                await signInAnonymously(authService);
-            }
-        }
-
-        // Firestore Collection Paths
-        const managedVideosCollectionPath = `/artifacts/${appId}/public/data/managedVideos`;
-        const managedQuizzesCollectionPath = `/artifacts/${appId}/public/data/managedQuizzes`;
-        const managedMythBusterStatementsCollectionPath = `/artifacts/${appId}/public/data/managedMythBusterStatements`;
-        const forumPostsCollectionPath = `/artifacts/${appId}/public/data/forumPosts`;
-
-
-        let mythBusterStatements = []; 
-        let miniQuizzes = {}; 
-        let managedVideos = []; 
-
-        let currentGameStatementIndex = -1;
-        let gameScore = 0;
-        let gameStatementsOrder = [];
-        let currentQuizName = "evreninSirlari"; 
-        let currentQuizQuestionIndex = 0;
-        let quizScore = 0;
-
-        window.addEventListener('load', () => {
-            const loaderWrapper = document.getElementById('loader-wrapper');
-            const mainContent = document.getElementById('main-content');
-            
-            if (!loaderWrapper || !mainContent) {
-                console.error("CRITICAL: Loader or Main content not found on load!");
-                if (mainContent) mainContent.classList.remove('hidden');
-                try { initializePage(); } catch(e) { console.error("Error in fallback page init:", e); }
-                return;
-            }
-
-            setTimeout(async () => { 
-                try {
-                    await initializeAuth(); 
-                    console.log("Auth initialization completed.");
-                    await loadInitialDataFromFirestore(); 
-                } catch (authError) {
-                    console.error("CRITICAL: Error during Firebase auth or initial data load:", authError);
-                } finally {
-                    if (loaderWrapper) {
-                        loaderWrapper.style.transition = 'opacity 0.5s ease-out';
-                        loaderWrapper.style.opacity = '0';
-                        setTimeout(() => {
-                            if (loaderWrapper) loaderWrapper.style.display = 'none';
-                            if (mainContent) mainContent.classList.remove('hidden');
-                            try {
-                                initializePage();
-                                console.log("Page initialization successful.");
-                            } catch (pageInitError) {
-                                console.error("CRITICAL: Error during page initialization:", pageInitError);
-                                if(mainContent) {
-                                    mainContent.innerHTML = `<div class="text-center p-8 text-red-500">Sayfa yüklenirken kritik bir hata oluştu. Lütfen konsolu kontrol edin.</div>`;
-                                    mainContent.classList.remove('hidden'); 
-                                }
-                            }
-                        }, 500); 
-                    }
-                }
-            }, 1000); 
-        });
+        // --- YARDIMCI KOMPONENTLER ---
+        function ReadingProgressBar() { const [width, setWidth] = React.useState(0); React.useEffect(() => { const scrollListener = () => { const totalHeight = document.body.scrollHeight - window.innerHeight; const progress = (window.scrollY / totalHeight) * 100; setWidth(progress); }; window.addEventListener('scroll', scrollListener); return () => window.removeEventListener('scroll', scrollListener); }, []); return <div id="reading-progress-bar" style={{ width: `${width}%` }}></div>; }
         
-        function getRgbFromCssVar(cssVarName) {
-            if (!document.documentElement) return '0, 255, 255';
-            const colorValue = getComputedStyle(document.documentElement).getPropertyValue(cssVarName).trim();
-            let r = 0, g = 255, b = 255; 
-            if (colorValue) {
-                if (colorValue.startsWith('#')) {
-                    const hex = colorValue.substring(1);
-                    if (hex.length === 3) { 
-                         r = parseInt(hex.substring(0,1) + hex.substring(0,1), 16); 
-                         g = parseInt(hex.substring(1,2) + hex.substring(1,2), 16); 
-                         b = parseInt(hex.substring(2,3) + hex.substring(2,3), 16);
-                    } else if (hex.length === 6) {
-                        r = parseInt(hex.substring(0,2), 16); g = parseInt(hex.substring(2,4), 16); b = parseInt(hex.substring(4,6), 16);
-                    }
-                } else if (colorValue.startsWith('rgb')) {
-                        const match = colorValue.match(/\d+/g);
-                        if (match && match.length >=3) { r = parseInt(match[0]); g = parseInt(match[1]); b = parseInt(match[2]); }
+        // --- KOMPONENTLER ---
+        function Header({ setPage, setSelectedArticleId, setSelectedVideoId }) { const navigate = (targetPage) => { setSelectedVideoId(null); setSelectedArticleId(null); setPage(targetPage); }; return ( <header className="fixed top-0 left-0 w-full p-6 z-50 flex justify-between items-center bg-transparent"> <div className="font-title text-2xl cursor-pointer" onClick={() => navigate('home')}>G/G</div> <nav className="hidden md:flex items-center space-x-6 text-lg"> <a href="#" className="neon-glow" onClick={(e) => { e.preventDefault(); navigate('sorusturmalar'); }}>Soruşturmalar</a> <a href="#" className="neon-glow" onClick={(e) => { e.preventDefault(); navigate('derinDalislar'); }}>Derin Dalışlar</a> <a href="#" className="neon-glow" onClick={(e) => { e.preventDefault(); navigate('zihinLaboratuvari'); }}>Zihin Laboratuvarı</a> </nav> </header> ); }
+        function HomePage({ setPage }) { return ( <div className="min-h-screen flex flex-col items-center justify-center pt-24"> <section className="text-center pb-16"> <h1 className="font-title text-4xl md:text-6xl lg:text-7xl tracking-widest mb-6 animate-pulse">Gördüklerin,</h1> <p className="text-xl md:text-2xl text-[#9370DB]">Gerçekliğin Sadece Bir Yorumu.</p> </section> <section className="w-full max-w-6xl px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center"> <div className="p-8 border border-white/10 rounded-lg card-glow cursor-pointer" onClick={() => setPage('sorusturmalar')}> <i className="fa-solid fa-film text-3xl mb-4 text-[#00E5FF]"></i> <h3 className="font-title text-2xl text-[#00E5FF] mb-2">Soruşturmalar</h3> <p className="text-gray-400">Videolarla derinleşen konular.</p> </div> <div className="p-8 border border-white/10 rounded-lg card-glow cursor-pointer" onClick={() => setPage('derinDalislar')}> <i className="fa-solid fa-book-open text-3xl mb-4 text-[#9370DB]"></i> <h3 className="font-title text-2xl text-[#9370DB] mb-2">Derin Dalışlar</h3> <p className="text-gray-400">Detaylı araştırma makaleleri.</p> </div> <div className="p-8 border border-white/10 rounded-lg card-glow cursor-pointer" onClick={() => setPage('zihinLaboratuvari')}> <i className="fa-solid fa-brain text-3xl mb-4 text-gray-300"></i> <h3 className="font-title text-2xl text-gray-300 mb-2">Zihin Laboratuvarı</h3> <p className="text-gray-400">İnteraktif deneyler.</p> </div> </section> </div> ); }
+        function SoruşturmalarPage({ handleVideoSelect }) { const [filter, setFilter] = React.useState('Tümü'); const categories = ['Tümü', ...new Set(mockVideos.map(v => v.category))]; const filteredVideos = filter === 'Tümü' ? mockVideos : mockVideos.filter(v => v.category === filter); return ( <div className="container mx-auto px-4 pt-32 pb-16"> <h1 className="font-title text-5xl text-center mb-4">Soruşturmalar</h1> <p className="text-center text-gray-400 mb-12">Gerçekliğin katmanlarını araladığımız görsel yolculuklar.</p> <div className="flex justify-center items-center flex-wrap gap-2 md:gap-4 mb-12"> {categories.map(cat => ( <button key={cat} onClick={()=> setFilter(cat)} className={`px-4 py-2 rounded-md font-semibold transition-all duration-300 ${filter === cat ? 'bg-[#00E5FF] text-black' : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50'}`}>{cat}</button> ))} </div> <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4"> {filteredVideos.map(video => <VideoCard key={video.id} video={video} handleVideoSelect={handleVideoSelect} />)} </div> </div> ); }
+        function VideoCard({ video, handleVideoSelect }) { const color = ['Kuantum Fiziği', 'Fizik'].includes(video.category) ? '#00E5FF' : '#9370DB'; return ( <div onClick={()=> handleVideoSelect(video.id)} className="group relative overflow-hidden rounded-lg cursor-pointer break-inside-avoid mb-4 card-glow"> <img src={video.thumbnail} alt={video.title} className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105" /> <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div> <div className="absolute bottom-0 left-0 p-4"> <span className="text-sm font-semibold" style={{ color }}>{video.category}</span> <h3 className="font-title text-lg text-white mt-1">{video.title}</h3> </div> </div> ); }
+        function VideoDetailPage({ video }) { if (!video) return null; return ( <div className="container mx-auto px-4 pt-24 md:pt-32 pb-16"> <h1 className="font-title text-3xl md:text-5xl text-center mb-2">{video.title}</h1> <p className="text-center text-lg mb-12" style={{color: ['Kuantum Fiziği', 'Fizik'].includes(video.category) ? '#00E5FF' : '#9370DB'}}>{video.category}</p> <div className="grid grid-cols-1 lg:grid-cols-3 gap-8"> <div className="lg:col-span-2"> <div className="aspect-w-16 aspect-h-9 mb-8 rounded-lg overflow-hidden border border-white/10"><iframe src={`https://www.youtube.com/embed/${video.youtubeId}`} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="w-full h-full"></iframe></div> </div> <div className="bg-black/20 p-6 rounded-lg border border-white/10 h-full"> <h3 className="font-title text-xl mb-4 text-[#9370DB] flex items-center gap-2"><i className="fa-solid fa-flask-vial"></i> Araştırma Notları</h3> <p>Bu video için detaylı notlar yakında.</p> </div> </div> </div> ); }
+        function CognitiveBiasSimulator() { const [index, setIndex] = React.useState(0); const [option, setOption] = React.useState(null); const [result, showResult] = React.useState(false); const question = cognitiveBiasesData[index]; const select = (opt) => { setOption(opt); showResult(true); }; const next = () => { showResult(false); setOption(null); setIndex((index + 1) % cognitiveBiasesData.length); }; return( <div className="w-full max-w-3xl mx-auto bg-black/20 border border-white/10 rounded-lg p-8"> <h3 className="font-title text-2xl text-center text-[#9370DB] mb-6">{question.name}</h3> <p className="text-lg text-center text-gray-300 mb-8 min-h-[6rem]">{question.scenario}</p> <div className="space-y-4 mb-8"> {question.options.map((opt, i) => ( <button key={i} onClick={() => select(opt)} disabled={result} className={`w-full text-left p-4 border rounded-lg transition-all duration-300 ${ result ? (opt.isBiased ? 'bg-red-900/50 border-red-500/50' : 'bg-green-900/50 border-green-500/50') : 'border-white/20 hover:bg-white/5 hover:border-[#00E5FF]' }`}> {opt.text} </button> ))} </div> {result && ( <div className="bg-gray-900/50 p-6 rounded-lg text-center animate-pulse"> <h4 className="font-title text-xl text-[#00E5FF] mb-3">Analiz</h4> <p className="text-gray-300 mb-6">{question.explanation}</p> <button onClick={next} className="font-title bg-transparent border-2 border-[#9370DB] text-[#9370DB] px-8 py-3 rounded-md transition-all hover:bg-[#9370DB] hover:text-black"> {index < cognitiveBiasesData.length - 1 ? 'Sıradaki Deney' : 'Başa Dön'} </button> </div> )} </div> ); }
+        function PerceptionGatesExperiment() { const [answer, showAnswer] = React.useState(false); const Ebbinghaus = ({ show }) => { const center = "rounded-full bg-[#FF8C00] z-10"; const surround = "rounded-full bg-gray-500 absolute"; return ( <div className="flex flex-col md:flex-row justify-around items-center min-h-[250px] my-8"> <div className="relative w-40 h-40 flex justify-center items-center"> <div className={center} style={{ width: '2rem', height: '2rem' }}></div> <div className={surround} style={{ width: '0.8rem', height: '0.8rem', top: '0', left: '50%', transform: 'translateX(-50%)' }}></div> <div className={surround} style={{ width: '0.8rem', height: '0.8rem', bottom: '0', left: '50%', transform: 'translateX(-50%)' }}></div> <div className={surround} style={{ width: '0.8rem', height: '0.8rem', left: '0', top: '50%', transform: 'translateY(-50%)' }}></div> <div className={surround} style={{ width: '0.8rem', height: '0.8rem', right: '0', top: '50%', transform: 'translateY(-50%)' }}></div> <div className={surround} style={{ width: '0.8rem', height: '0.8rem', top: '15%', left: '15%' }}></div> <div className={surround} style={{ width: '0.8rem', height: '0.8rem', top: '15%', right: '15%' }}></div> <div className={surround} style={{ width: '0.8rem', height: '0.8rem', bottom: '15%', left: '15%' }}></div> <div className={surround} style={{ width: '0.8rem', height: '0.8rem', bottom: '15%', right: '15%' }}></div> </div> <div className="relative w-40 h-40 flex justify-center items-center mt-8 md:mt-0"> <div className={`${center} transition-transform duration-1000`} style={{ width: '2rem', height: '2rem', transform: show ? 'translateX(-10rem)' : 'translateX(0)' }}></div> <div className={surround} style={{ width: '4rem', height: '4rem', top: '0', left: '50%', transform: 'translate(-50%, -60%)' }}></div> <div className={surround} style={{ width: '4rem', height: '4rem', bottom: '0', left: '50%', transform: 'translate(-50%, 60%)' }}></div> <div className={surround} style={{ width: '4rem', height: '4rem', left: '0', top: '50%', transform: 'translate(-60%, -50%)' }}></div> <div className={surround} style={{ width: '4rem', height: '4rem', right: '0', top: '50%', transform: 'translate(60%, -50%)' }}></div> </div> </div> ); }; return ( <div className="w-full max-w-3xl mx-auto bg-black/20 border border-white/10 rounded-lg p-8"> <p className="text-lg text-center text-gray-300 mb-4">Beyniniz, bir nesnenin boyutunu çevresine göre yorumlar.</p> <p className="text-2xl text-center font-semibold text-[#00E5FF] mb-4">Ortadaki hangi turuncu daire daha büyük?</p> <Ebbinghaus show={answer} /> {!answer ? ( <div className="text-center"> <button onClick={() => showAnswer(true)} className="font-title bg-[#00E5FF] text-black px-8 py-3 rounded-md transition-all hover:scale-105"> Cevabı Göster & Kanıtla </button> </div> ) : ( <div className="bg-gray-900/50 p-6 rounded-lg text-center"> <h4 className="font-title text-xl text-[#9370DB] mb-3">Analiz: Ebbinghaus İllüzyonu</h4> <p className="text-gray-300 mb-6">Her iki turuncu daire de <strong>tamamen aynı boyutta</strong>. Beynimizin "göreli boyut" ilkesine göre yaptığı bir yorumlamadır.</p> <button onClick={() => showAnswer(false)} className="font-title bg-transparent border-2 border-[#9370DB] text-[#9370DB] px-8 py-3 rounded-md transition-all hover:bg-[#9370DB] hover:text-black"> Deneyi Sıfırla </button> </div> )} </div> ); }
+        function DerinDalislarPage({ handleArticleSelect }) { return ( <div className="container mx-auto px-4 pt-32 pb-16"> <h1 className="font-title text-5xl text-center mb-4">Derin Dalışlar</h1> <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto">Soruşturmalarımızın temelini oluşturan, hakemli makalelerden ve birincil kaynaklardan beslenen detaylı araştırma yazıları.</p> <div className="max-w-4xl mx-auto space-y-8"> {mockArticles.map(article => ( <div key={article.id} className="bg-black/20 p-8 rounded-lg border border-white/10 card-glow transition-all duration-300 hover:border-[#9370DB]/80 cursor-pointer" onClick={() => handleArticleSelect(article.id)}> <h2 className="font-title text-2xl text-[#9370DB] mb-3">{article.title}</h2> <p className="text-sm text-gray-500 mb-4">{article.author} - {article.publishDate}</p> <p className="text-gray-300 mb-6">{article.excerpt}</p> <span className="font-semibold text-[#00E5FF] hover:text-white">Makaleyi Oku →</span> </div> ))} </div> </div> ); }
+        function ArticleDetailPage({ article }) { const [popup, setPopup] = React.useState({ show: false, content: '', x: 0, y: 0 }); const handleRefHover = (e, refId) => { const refContent = article.references[refId]; setPopup({ show: true, content: refContent, x: e.pageX + 15, y: e.pageY + 15 }); }; const handleRefLeave = () => { setPopup({ show: false, content: '', x: 0, y: 0 }); }; const processContent = (content) => { return content.split(/(<ref id="[^"]+">.*?<\/ref>)/g).map((part, index) => { const match = part.match(/<ref id="([^"]+)">(.*?)<\/ref>/); if (match) { const refId = match[1]; const text = match[2]; return ( <span key={index} className="font-bold text-[#00E5FF] cursor-pointer" onMouseMove={(e) => handleRefHover(e, refId)} onMouseLeave={handleRefLeave}> {text} </span> ); } return <span key={index} dangerouslySetInnerHTML={{ __html: part }} />; }); }; if (!article) return null; return ( <div> <ReadingProgressBar /> {popup.show && ( <div className="fixed p-3 bg-gray-900 border border-[#00E5FF] rounded-md shadow-lg z-50 max-w-xs text-sm" style={{ top: popup.y, left: popup.x }}> {popup.content} </div> )} <div className="container mx-auto px-4 pt-24 md:pt-32 pb-16"> <div className="max-w-3xl mx-auto"> <h1 className="font-title text-3xl md:text-5xl text-center mb-4">{article.title}</h1> <p className="text-center text-gray-400 mb-12">{article.author} - {article.publishDate}</p> <div className="article-content text-gray-200"> {processContent(article.content)} </div> </div> </div> </div> ); }
+
+        // --- YENİ BÖLÜM: Gerçeklik Filtresi ---
+        const realityFilterContent = {
+            baseText: "Biyoteknoloji şirketi NeuroCorp, insan hafızasını %40 oranında güçlendirebildiği iddia edilen 'Synapse+' adlı bir nöral implant geliştirdiğini duyurdu. Klinik denemelerin ilk fazının başarılı olduğu ve implantın Alzheimer gibi nörodejeneratif hastalıkların tedavisinde yeni bir çığır açabileceği belirtildi. Şirket hisseleri, duyurunun ardından %25 değer kazandı.",
+            filters: {
+                duygusal: {
+                    title: "Duygusal Filtre",
+                    color: "pink-500",
+                    explanation: "Bu filtre, bir haberin insanlarda uyandırdığı umutları, korkuları ve hayalleri ön plana çıkarır. Unutkanlık çeken sevdiklerimiz için bir umut ışığı... Ya bu teknoloji yanlış ellere geçerse? Hafızalarımızın bir meta haline gelmesi korkutucu değil mi? İnsanlığın geleceği için ne büyük bir adım!"
+                },
+                mantiksal: {
+                    title: "Mantıksal Filtre",
+                    color: "blue-500",
+                    explanation: "Bu filtre, verilere, istatistiklere ve somut sonuçlara odaklanır. İddia: Hafıza %40 güçlendi. Veri: Klinik denemelerin sadece ilk fazı başarılı. Sonuç: Geniş çaplı etkinlik ve yan etkiler henüz bilinmiyor. Finansal Etki: Şirket hisseleri %25 arttı. Bu, teknolojinin etkinliğinden çok piyasa beklentisini yansıtır."
+                },
+                supheci: {
+                    title: "Şüpheci Filtre",
+                    color: "yellow-500",
+                    explanation: "Bu filtre, anlatılmayanları, potansiyel çıkarları ve gizli gündemleri sorgular. 'İlk faz' başarısı ne kadar anlamlı? Uzun vadeli yan etkilerden neden bahsedilmiyor? Bu teknolojiden kimler faydalanacak? Sadece zenginler mi? Hisselerdeki bu artış, beklentiyi mi yoksa manipülasyonu mu gösteriyor?"
                 }
             }
-            return `${r}, ${g}, ${b}`;
-        }
+        };
 
-        function applyTheme(theme) {
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            const moonIcon = '<i class="fas fa-moon"></i>'; 
-            const sunIcon = '<i class="fas fa-sun"></i>';
-            if (theme === 'dark') {
-                document.body.classList.add('dark-mode');
-                if(darkModeToggle) darkModeToggle.innerHTML = sunIcon;
-            } else {
-                document.body.classList.remove('dark-mode');
-                if(darkModeToggle) darkModeToggle.innerHTML = moonIcon;
-            }
-            document.documentElement.style.setProperty('--primary-neon-rgb', getRgbFromCssVar('--primary-neon'));
-            document.documentElement.style.setProperty('--secondary-neon-rgb', getRgbFromCssVar('--secondary-neon'));
-            document.documentElement.style.setProperty('--text-color-rgb', getRgbFromCssVar('--text-color'));
-        }
+        function RealityFilterExperiment() {
+            const [activeFilter, setActiveFilter] = React.useState('none');
 
-        function showPage(targetId, skipAnimation = false) {
-            const body = document.body;
-            const pages = document.querySelectorAll('.page-content');
-            const menuLinks = document.querySelectorAll('header nav a.page-link');
-            const currentActivePage = document.querySelector('.page-content.active');
-
-            if (currentActivePage && currentActivePage.id === targetId && !targetId.startsWith('video-detail-')) { 
-                return;
-            }
-
-            if (!skipAnimation) { body.classList.add('neural-blink'); }
-            
-            setTimeout(() => {
-                pages.forEach(page => page.classList.remove('active')); 
-
-                let pageToShowId = targetId;
-                let menuLinkToActivate = targetId;
-
-                if (targetId.startsWith('video-detail-')) {
-                    const videoId = targetId.substring('video-detail-'.length);
-                    pageToShowId = 'video-detail-section'; 
-                    renderVideoDetailPage(videoId); 
-                    menuLinkToActivate = 'videos'; 
-                } else if (targetId === 'admin') {
-                    pageToShowId = 'admin';
-                    renderAdminPage();
+            const getFilterStyle = (filterName) => {
+                if (activeFilter === 'none') return 'border-white/20 hover:border-[#00E5FF]';
+                if (activeFilter === filterName) {
+                    const color = realityFilterContent.filters[filterName].color;
+                    return `border-${color} text-${color} ring-2 ring-${color}`;
                 }
-                
-                const finalTargetPage = document.getElementById(pageToShowId);
-                if (finalTargetPage) {
-                    finalTargetPage.classList.add('active');
-                    if (pageToShowId === 'experiments') { 
-                        console.log("Activating experiments page, setting up game and quiz."); 
-                        setupMythBusterGame();
-                        setupMiniQuiz();
-                    } else if (pageToShowId === 'forum') {
-                        console.log("Activating forum page, setting up forum.");
-                        setupForum();
-                    } else if (pageToShowId === 'videos') {
-                        renderVideoListPage(); 
-                    }
-                } else {
-                     console.warn(`Target page with ID "${pageToShowId}" (derived from "${targetId}") not found. Defaulting to home.`);
-                     const homePage = document.getElementById('home');
-                     if(homePage) homePage.classList.add('active'); 
-                     menuLinkToActivate = 'home';
-                }
-
-                menuLinks.forEach(ml => {
-                    ml.classList.remove('active-link');
-                    if (ml.getAttribute('href') === `#${menuLinkToActivate}`) { ml.classList.add('active-link'); }
-                });
-
-                if (window.location.hash !== `#${targetId}`) { 
-                    isProgrammaticHashChange = true;
-                    window.location.hash = targetId; 
-                }
-                
-                window.scrollTo(0, 0); 
-            }, skipAnimation ? 0 : 350);
-
-            if (!skipAnimation) { setTimeout(() => body.classList.remove('neural-blink'), 700); }
-        }
-
-
-        function initializePage() {
-            const pageLinks = document.querySelectorAll('.page-link');
-            
-            const savedTheme = localStorage.getItem('theme') || 'light'; 
-            applyTheme(savedTheme);
-
-            pageLinks.forEach(link => {
-                if (!link.dataset.listenerAttachedPageLink) { 
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const targetId = link.dataset.target || link.getAttribute('href').substring(1);
-                        showPage(targetId);
-                    });
-                    link.dataset.listenerAttachedPageLink = 'true';
-                }
-            });
-
-            const initialHash = window.location.hash.substring(1);
-            let pageToLoadInitially = 'home';
-            if (initialHash && (document.getElementById(initialHash) || initialHash.startsWith('video-detail-'))) {
-                 pageToLoadInitially = initialHash;
-            }
-            showPage(pageToLoadInitially, true); 
-
-            window.addEventListener('hashchange', () => {
-                if (isProgrammaticHashChange) {
-                    isProgrammaticHashChange = false;
-                    return;
-                }
-                const hash = window.location.hash.substring(1) || 'home'; 
-                if (document.getElementById(hash) || hash.startsWith('video-detail-')) {
-                    showPage(hash, true); 
-                } else {
-                    showPage('home', true); 
-                }
-            });
-
-            renderVideoListPage(); 
-            
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
-            const thoughtStreamContainer = document.body; 
-            if (!document.querySelector('.thought-stream-particle')) { 
-                 const symbols = ['∑', '∫', '∀', '∃', '∞', 'ħ', 'λ', 'Δ', 'Ω', 'φ', 'E=mc²', 'H₂O', 'DNA', 'AI', '?', '∴', '∵', 'α', 'β', 'γ'];
-                 const numParticles = 30;
-                 for (let i = 0; i < numParticles; i++) {
-                    const particle = document.createElement('div');
-                    particle.classList.add('thought-stream-particle');
-                    particle.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                    particle.style.left = `${Math.random() * 100}vw`;
-                    particle.style.setProperty('--random-x', `${(Math.random() - 0.5) * 200}px`);
-                    particle.style.animationDelay = `${Math.random() * 10}s`;
-                    particle.style.fontSize = `${0.6 + Math.random() * 0.6}rem`; 
-                    thoughtStreamContainer.appendChild(particle);
-                }
-            }
-            
-            const brainLobes = document.querySelectorAll('.brain-lobe');
-            const lobeContents = document.querySelectorAll('.brain-lobe-content');
-            brainLobes.forEach(lobe => { 
-                lobe.addEventListener('click', () => {
-                    const targetContentId = lobe.dataset.lobe + '-content';
-                    brainLobes.forEach(l => l.classList.remove('active-lobe'));
-                    lobe.classList.add('active-lobe');
-                    lobeContents.forEach(content => {
-                        content.classList.toggle('active', content.id === targetContentId);
-                    });
-                });
-             });
-            if (brainLobes.length > 0 && !document.querySelector('.brain-lobe.active-lobe')) { 
-                brainLobes[0].classList.add('active-lobe');
-                const firstLobeContent = document.getElementById(brainLobes[0].dataset.lobe + '-content');
-                if(firstLobeContent) { 
-                    firstLobeContent.classList.add('active');
-                }
-            }
-
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            if(darkModeToggle) {
-                darkModeToggle.addEventListener('click', () => { 
-                    const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
-                    localStorage.setItem('theme', newTheme);
-                    applyTheme(newTheme);
-                });
-            }
-
-
-            const aiQueryInput = document.getElementById('ai-query-input');
-            const submitAiQueryButton = document.getElementById('submit-ai-query');
-            const aiResponseArea = document.getElementById('ai-response-area');
-            const aiLoadingIndicator = document.getElementById('ai-loading-indicator');
-            if (submitAiQueryButton) { 
-                submitAiQueryButton.addEventListener('click', async () => { 
-                    const prompt = aiQueryInput.value.trim();
-                    if (!prompt) {
-                        aiResponseArea.textContent = "Lütfen bir soru girin.";
-                        return;
-                    }
-                    aiResponseArea.textContent = "";
-                    if(aiLoadingIndicator) aiLoadingIndicator.classList.remove('hidden');
-                    submitAiQueryButton.disabled = true;
-                    try {
-                        const responseText = await callGeminiApi("Sen, bilimsel ve felsefi konularda kısa, başlangıç seviyesinde ve merak uyandırıcı yanıtlar veren bir yapay zekasın. Yanıtların 'Gerçeğin Gerçeği' YouTube kanalının tonuna uygun olmalı: sorgulayıcı, keşif odaklı ve biraz da gizemli. Şu soruya yanıt ver: " + prompt);
-                        aiResponseArea.textContent = responseText;
-                    } catch (error) {
-                        console.error("AI Sorgu Hatası:", error);
-                        aiResponseArea.textContent = "Bir hata oluştu: " + error.message;
-                    } finally {
-                        if(aiLoadingIndicator) aiLoadingIndicator.classList.add('hidden');
-                        submitAiQueryButton.disabled = false;
-                    }
-                 }); 
-            }
-        }
-        
-        function renderVideoDetailPage(videoId) {
-            const detailContainer = document.getElementById('video-detail-container');
-            const videoData = managedVideos.find(v => v.id.toString() === videoId); 
-
-            if (!detailContainer) {
-                console.error("Video detail container (#video-detail-container) not found.");
-                return; 
-            }
-            detailContainer.innerHTML = ''; 
-
-            if (!videoData) {
-                console.error("Video data not found for ID:", videoId);
-                detailContainer.innerHTML = "<p class='text-center text-xl neon-text-danger'>Video bulunamadı.</p>";
-                return;
-            }
-            if (!videoData.youtubeVideoId) {
-                console.error("YouTube Video ID missing for video:", videoData.title);
-                detailContainer.innerHTML = `<p class='text-center text-xl neon-text-danger'>Bu video için YouTube ID'si bulunamadı.</p>`;
-                return;
-            }
-
-            detailContainer.innerHTML = `
-                <h2 class="text-3xl md:text-5xl font-orbitron neon-text-green text-center mb-8">${escapeHTML(videoData.title)}</h2>
-                <div class="mb-8 max-w-4xl mx-auto rounded-lg overflow-hidden neon-border-blue" style="aspect-ratio: 16 / 9;">
-                    <iframe 
-                        class="w-full h-full"
-                        src="https://www.youtube.com/embed/${videoData.youtubeVideoId}" 
-                        title="YouTube video player for ${escapeHTML(videoData.title)}"
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        referrerpolicy="strict-origin-when-cross-origin" 
-                        allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="max-w-3xl mx-auto text-lg leading-relaxed bg-[var(--card-bg)] p-6 rounded-lg neon-border-blue">
-                    <h3 class="text-2xl font-orbitron neon-text-blue mb-4">Açıklama</h3>
-                    <p class="mb-6">${escapeHTML(videoData.description)}</p>
-                    
-                    <h3 class="text-2xl font-orbitron neon-text-blue mb-4 mt-8">İlgili Araştırma Notları</h3>
-                    <p class="mb-4">Bu video ile ilgili derinlemesine analizler, kaynaklar ve ek bilgiler için "Zihin Arşivi" bölümünü ziyaret edebilirsiniz.</p>
-                    <div class="text-center">
-                        <button class="btn-primary page-link" data-target="archive">Zihin Arşivine Git</button>
-                    </div>
-                </div>
-            `;
-            detailContainer.querySelectorAll('.page-link').forEach(link => {
-                 if (!link.dataset.listenerAttached) {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const targetId = link.dataset.target || link.getAttribute('href').substring(1);
-                        showPage(targetId);
-                    });
-                    link.dataset.listenerAttached = 'true';
-                }
-            });
-        }
-
-        function renderVideoListPage() {
-            const videoListContainer = document.getElementById('video-list');
-            if (!videoListContainer) return;
-            videoListContainer.innerHTML = ''; 
-
-            managedVideos.forEach(video => { 
-                const videoCard = `
-                    <div class="dna-nucleotide neon-border-blue hover:neon-border-green cursor-pointer" data-video-id="${video.id}">
-                        <div class="video-jar-overlay"></div>
-                        <img src="${video.thumbnail}" alt="${escapeHTML(video.title)}" class="w-full h-48 object-cover rounded-t-lg" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1a1a2e/cccccc?text=Görüntü+Yüklenemedi';">
-                        <div class="p-5">
-                            <h3 class="text-xl font-orbitron neon-text-green mb-2 h-16 overflow-hidden">${escapeHTML(video.title)}</h3>
-                            <p class="text-sm text-gray-300 mb-3 h-12 overflow-hidden">${escapeHTML(video.description)}</p>
-                            <div class="flex justify-between items-center text-xs text-[color:var(--primary-neon)]">
-                                <span>👁️ ${escapeHTML(video.views || 'N/A')}</span>
-                                <span>⏳ ${escapeHTML(video.duration || 'N/A')}</span>
-                            </div>
-                            <button class="w-full mt-4 btn-primary text-sm !py-2 video-details-button page-link" data-target="video-detail-${video.id}">Detayları Gör</button>
-                        </div>
-                    </div>
-                `;
-                videoListContainer.innerHTML += videoCard;
-            });
-
-            videoListContainer.querySelectorAll('.page-link.video-details-button').forEach(link => {
-                if (!link.dataset.listenerAttached) {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const targetId = link.dataset.target || link.getAttribute('href').substring(1);
-                        showPage(targetId);
-                    });
-                    link.dataset.listenerAttached = 'true';
-                }
-            });
-             videoListContainer.querySelectorAll('.dna-nucleotide').forEach(card => { 
-                if (!card.dataset.clickListenerAttached) {
-                    card.addEventListener('click', function(event) {
-                        if (event.target.closest('.video-details-button')) return;
-                        this.classList.add('video-cracked'); 
-                        console.log(`Video ${this.dataset.videoId} tıklandı (kavanoz efekti)`);
-                    });
-                    card.dataset.clickListenerAttached = 'true';
-                }
-            });
-        }
-
-
-        function setupMythBusterGame() { 
-            const statementTextEl = document.getElementById('statement-text');
-            const trueButton = document.getElementById('true-button');
-            const mythButton = document.getElementById('myth-button');
-            const gameFeedbackEl = document.getElementById('game-feedback');
-            const nextStatementButton = document.getElementById('next-statement-button');
-
-            if (!statementTextEl || !trueButton || !mythButton || !gameFeedbackEl || !nextStatementButton) { 
-                console.warn("Doğru mu Efsane mi oyunu için bazı HTML elementleri bulunamadı. Kurulum atlanıyor.");
-                return; 
-            }
-            console.log("MythBuster Game setup initiated. Statements count:", mythBusterStatements.length);
-            if (mythBusterStatements.length === 0) {
-                statementTextEl.textContent = "Oyun ifadeleri yüklenemedi veya hiç ifade yok.";
-                trueButton.disabled = true;
-                mythButton.disabled = true;
-                return;
-            }
-
-
-            gameStatementsOrder = mythBusterStatements.map((_, i) => i).sort(() => Math.random() - 0.5);
-            currentGameStatementIndex = -1; 
-            gameScore = 0;
-            updateGameScoreDisplay();
-            loadNextGameStatement();
-
-            if (!trueButton.dataset.listenerAttachedGame) {
-                trueButton.addEventListener('click', () => handleGameAnswer(false)); 
-                trueButton.dataset.listenerAttachedGame = 'true';
-            }
-            if (!mythButton.dataset.listenerAttachedGame) {
-                mythButton.addEventListener('click', () => handleGameAnswer(true));  
-                mythButton.dataset.listenerAttachedGame = 'true';
-            }
-        } 
-        
-        function loadNextGameStatement() { 
-            currentGameStatementIndex++;
-            const statementTextEl = document.getElementById('statement-text');
-            const gameFeedbackEl = document.getElementById('game-feedback');
-            const trueButton = document.getElementById('true-button');
-            const mythButton = document.getElementById('myth-button');
-            const nextStatementButton = document.getElementById('next-statement-button');
-
-            if (!statementTextEl || !gameFeedbackEl || !trueButton || !mythButton || !nextStatementButton) return;
-
-
-            if (currentGameStatementIndex < gameStatementsOrder.length && mythBusterStatements[gameStatementsOrder[currentGameStatementIndex]]) {
-                const currentStatementObj = mythBusterStatements[gameStatementsOrder[currentGameStatementIndex]];
-                statementTextEl.textContent = currentStatementObj.statement;
-                gameFeedbackEl.textContent = "";
-                gameFeedbackEl.className = 'text-center min-h-[24px] mb-4 text-lg'; 
-                trueButton.disabled = false;
-                mythButton.disabled = false;
-                nextStatementButton.classList.add('hidden');
-                nextStatementButton.textContent = "Sonraki İfade"; 
-                nextStatementButton.onclick = loadNextGameStatement; 
-            } else {
-                statementTextEl.textContent = "Oyun Bitti! Harika iş çıkardın.";
-                gameFeedbackEl.textContent = `Toplam Skorun: ${gameScore}`;
-                trueButton.disabled = true;
-                mythButton.disabled = true;
-                nextStatementButton.classList.remove('hidden');
-                nextStatementButton.textContent = "Yeniden Başla";
-                nextStatementButton.onclick = () => { 
-                    setupMythBusterGame(); 
-                };
-            }
-        } 
-        
-        function handleGameAnswer(userChoseMyth) { 
-            const currentStatementObj = mythBusterStatements[gameStatementsOrder[currentGameStatementIndex]];
-            const gameFeedbackEl = document.getElementById('game-feedback');
-            const trueButton = document.getElementById('true-button');
-            const mythButton = document.getElementById('myth-button');
-            const nextStatementButton = document.getElementById('next-statement-button');
-
-            if (!currentStatementObj || !gameFeedbackEl || !trueButton || !mythButton || !nextStatementButton) return;
-
-
-            trueButton.disabled = true;
-            mythButton.disabled = true;
-            nextStatementButton.classList.remove('hidden');
-            
-            if (currentGameStatementIndex >= gameStatementsOrder.length -1){ 
-                 nextStatementButton.textContent = "Sonuçları Gör"; 
-            }
-
-            if (userChoseMyth === currentStatementObj.isMyth) {
-                gameFeedbackEl.textContent = "Doğru! " + (currentStatementObj.explanation || "");
-                gameFeedbackEl.classList.add('correct');
-                gameScore++;
-                updateGameScoreDisplay();
-            } else {
-                gameFeedbackEl.textContent = "Yanlış. " + (currentStatementObj.explanation || "");
-                gameFeedbackEl.classList.add('incorrect');
-            }
-        } 
-        
-        function updateGameScoreDisplay() { 
-            const gameScoreEl = document.getElementById('game-score');
-            if(gameScoreEl) gameScoreEl.textContent = gameScore;
-        }
-
-        function setupMiniQuiz() { 
-            const quizData = miniQuizzes[currentQuizName]; 
-            const quizQuestionEl = document.getElementById('quiz-question');
-            const submitQuizAnswerButton = document.getElementById('submit-quiz-answer');
-            const restartQuizButton = document.getElementById('restart-quiz-button');
-            const quizResultsEl = document.getElementById('quiz-results');
-            const quizContainerEl = document.getElementById('quiz-container');
-
-            if (!quizData || !quizData.questions || quizData.questions.length === 0 || !quizQuestionEl || !submitQuizAnswerButton || !restartQuizButton || !quizResultsEl || !quizContainerEl) {
-                console.warn("Mini quiz için bazı HTML elementleri veya quiz verisi bulunamadı. Kurulum atlanıyor.");
-                if(quizContainerEl) quizContainerEl.innerHTML = "<p class='text-center neon-text-danger'>Quiz yüklenemedi.</p>";
-                return;
-            }
-            console.log("MiniQuiz setup initiated. Questions count:", quizData.questions.length);
-
-
-            currentQuizQuestionIndex = 0;
-            quizScore = 0;
-            quizResultsEl.classList.add('hidden');
-            quizContainerEl.classList.remove('hidden');
-            
-            loadQuizQuestion();
-
-            if (!submitQuizAnswerButton.dataset.listenerAttachedQuiz) {
-                 submitQuizAnswerButton.addEventListener('click', handleQuizAnswer);
-                 submitQuizAnswerButton.dataset.listenerAttachedQuiz = 'true';
-            }
-            if (!restartQuizButton.dataset.listenerAttachedQuiz) {
-                restartQuizButton.addEventListener('click', setupMiniQuiz);
-                restartQuizButton.dataset.listenerAttachedQuiz = 'true';
-            }
-        } 
-        
-        function loadQuizQuestion() { 
-            const quizData = miniQuizzes[currentQuizName];
-            if (!quizData || !quizData.questions || currentQuizQuestionIndex >= quizData.questions.length) {
-                console.error("Quiz veya soru verisi yüklenemedi.");
-                showQuizResults(); 
-                return;
-            }
-
-            const questionData = quizData.questions[currentQuizQuestionIndex];
-            const quizQuestionEl = document.getElementById('quiz-question');
-            const quizOptionsEl = document.getElementById('quiz-options');
-            const quizFeedbackEl = document.getElementById('quiz-feedback');
-            const submitQuizAnswerButton = document.getElementById('submit-quiz-answer');
-
-            if (!questionData || !quizQuestionEl || !quizOptionsEl || !quizFeedbackEl || !submitQuizAnswerButton) return;
-
-
-            quizQuestionEl.textContent = questionData.question;
-            quizOptionsEl.innerHTML = ""; 
-            quizFeedbackEl.textContent = "";
-            quizFeedbackEl.className = 'mt-4 text-center min-h-[24px]'; 
-            submitQuizAnswerButton.disabled = false;
-
-            questionData.options.forEach((option, index) => {
-                const optionId = `q${currentQuizQuestionIndex}_option${index}`;
-                const label = document.createElement('label');
-                label.htmlFor = optionId;
-                label.className = 'quiz-option-label';
-                label.textContent = option;
-
-                const input = document.createElement('input');
-                input.type = 'radio';
-                input.name = `q${currentQuizQuestionIndex}_options`;
-                input.id = optionId;
-                input.value = option;
-                
-                label.prepend(input); 
-                quizOptionsEl.appendChild(label);
-
-                label.addEventListener('click', () => {
-                    document.querySelectorAll('#quiz-options .quiz-option-label.selected').forEach(selectedLabel => {
-                        selectedLabel.classList.remove('selected');
-                    });
-                    label.classList.add('selected');
-                });
-            });
-        } 
-        
-        function handleQuizAnswer() { 
-            const quizData = miniQuizzes[currentQuizName];
-            if (!quizData || !quizData.questions || currentQuizQuestionIndex >= quizData.questions.length) {
-                console.error("Quiz veya soru verisi işlenemedi.");
-                return;
-            }
-            const questionData = quizData.questions[currentQuizQuestionIndex];
-            const quizFeedbackEl = document.getElementById('quiz-feedback');
-            const submitQuizAnswerButton = document.getElementById('submit-quiz-answer');
-            const selectedOptionInput = document.querySelector(`input[name="q${currentQuizQuestionIndex}_options"]:checked`);
-
-            if (!questionData || !quizFeedbackEl || !submitQuizAnswerButton ) return;
-
-
-            if (!selectedOptionInput) {
-                quizFeedbackEl.textContent = "Lütfen bir seçenek işaretleyin.";
-                quizFeedbackEl.className = 'mt-4 text-center min-h-[24px] incorrect';
-                return;
-            }
-
-            submitQuizAnswerButton.disabled = true;
-            const userAnswer = selectedOptionInput.value;
-            const correctAnswer = questionData.correctAnswer;
-            const optionLabels = document.querySelectorAll(`#quiz-options label`);
-
-            optionLabels.forEach(label => {
-                const input = label.querySelector('input');
-                label.classList.remove('selected'); 
-                if (input.value === correctAnswer) {
-                    label.classList.add('correct');
-                } else if (input.checked && input.value !== correctAnswer) {
-                    label.classList.add('incorrect');
-                }
-            });
-
-            if (userAnswer === correctAnswer) {
-                quizFeedbackEl.textContent = "Doğru Cevap!";
-                quizFeedbackEl.classList.add('correct');
-                quizScore++;
-            } else {
-                quizFeedbackEl.textContent = `Yanlış. Doğru cevap: ${correctAnswer}`;
-                quizFeedbackEl.classList.add('incorrect');
-            }
-
-            currentQuizQuestionIndex++;
-            setTimeout(() => {
-                if (currentQuizQuestionIndex < quizData.questions.length) {
-                    loadQuizQuestion();
-                } else {
-                    showQuizResults();
-                }
-            }, 2500); 
-        } 
-        
-        function showQuizResults() { 
-            const quizData = miniQuizzes[currentQuizName];
-            const quizContainerEl = document.getElementById('quiz-container');
-            const quizResultsEl = document.getElementById('quiz-results');
-            const quizScoreEl = document.getElementById('quiz-score');
-            const quizTotalQuestionsEl = document.getElementById('quiz-total-questions');
-
-            if(!quizData || !quizContainerEl || !quizResultsEl || !quizScoreEl || !quizTotalQuestionsEl) return;
-
-            quizContainerEl.classList.add('hidden');
-            quizResultsEl.classList.remove('hidden');
-            quizScoreEl.textContent = quizScore;
-            quizTotalQuestionsEl.textContent = quizData.questions.length;
-        }
-
-
-        // --- Forum Fonksiyonları ---
-        async function setupForum() {
-            const submitPostButton = document.getElementById('submit-new-post');
-            if (submitPostButton && !submitPostButton.dataset.listenerAttached) {
-                submitPostButton.addEventListener('click', addNewForumPostToFirestore);
-                submitPostButton.dataset.listenerAttached = 'true';
-            }
-            const q = query(collection(db, forumPostsCollectionPath), orderBy("timestamp", "desc"));
-            onSnapshot(q, (querySnapshot) => {
-                const posts = [];
-                querySnapshot.forEach((doc) => {
-                    posts.push({ id: doc.id, ...doc.data() });
-                });
-                renderForumPosts(posts);
-            }, (error) => {
-                console.error("Forum gönderileri alınırken hata oluştu: ", error);
-                const forumPostsContainer = document.getElementById('forum-posts-container');
-                if (forumPostsContainer) {
-                    forumPostsContainer.innerHTML = '<p class="no-posts-message">Gönderiler yüklenirken bir sorun oluştu.</p>';
-                }
-            });
-        }
-
-        function renderForumPosts(posts) {
-            const postsContainer = document.getElementById('forum-posts-container');
-            const noPostsMessage = document.getElementById('no-forum-posts');
-            if (!postsContainer || !noPostsMessage) return;
-            postsContainer.innerHTML = ''; 
-
-            if (posts.length === 0) {
-                noPostsMessage.classList.remove('hidden');
-            } else {
-                noPostsMessage.classList.add('hidden');
-                posts.forEach(post => {
-                    const postElement = document.createElement('div');
-                    postElement.className = 'forum-post';
-                    postElement.dataset.postId = post.id;
-
-                    const postTimestamp = post.timestamp?.toDate ? post.timestamp.toDate().toLocaleString('tr-TR') : (post.timestamp || 'Bilinmeyen tarih');
-                    
-                    let contentHTML = escapeHTML(post.content);
-                    if (post.isEditedByAI) {
-                        contentHTML += `<p class="text-xs text-gray-400 mt-2">(Bu gönderi Yapay Zeka tarafından düzenlendi.)</p>`;
-                    }
-                    if (post.isFlaggedByAI && post.moderationNote) {
-                         contentHTML = `<p class="moderation-status"><i class="fas fa-exclamation-triangle mr-1"></i> Moderasyon Notu: ${escapeHTML(post.moderationNote)}</p><p class="text-gray-500 line-through">${escapeHTML(post.originalContent || post.content)}</p>`;
-                         if(post.cleanedContent) {
-                            contentHTML = `<p class="moderation-status"><i class="fas fa-exclamation-triangle mr-1"></i> Moderasyon Notu: ${escapeHTML(post.moderationNote)}</p><p><strong>Yapay Zeka Tarafından Temizlenmiş İçerik:</strong> ${escapeHTML(post.cleanedContent)}</p>`;
-                         }
-                    }
-
-
-                    postElement.innerHTML = `
-                        <h4 class="forum-post-title">${escapeHTML(post.title)}</h4>
-                        <div class="forum-post-content-display">${contentHTML}</div>
-                        <p class="forum-post-meta">
-                            <span class="author"><i class="fas fa-user-astronaut mr-1"></i>${escapeHTML(post.author || 'Anonim Kaşif')}</span> | 
-                            <span class="timestamp"><i class="fas fa-clock mr-1"></i>${postTimestamp}</span>
-                        </p>
-                        <div class="post-actions mt-3 flex flex-wrap gap-2">
-                            <button class="btn-primary btn-secondary text-xs ai-edit-post-button"><i class="fas fa-magic mr-1"></i> AI ile Düzelt</button>
-                            <button class="btn-primary text-xs moderate-post-button"><i class="fas fa-shield-alt mr-1"></i> AI ile Modere Et</button>
-                            ${post.author === currentUserId || isAdminLoggedIn ? `<button class="btn-primary btn-danger text-xs delete-post-button"><i class="fas fa-trash mr-1"></i> Sil</button>` : ''}
-                            <button class="btn-primary text-xs toggle-reply-form-button"><i class="fas fa-reply mr-1"></i> Yanıtla</button>
-                        </div>
-                        <div class="reply-form hidden mt-3">
-                            <textarea class="reply-content-input" rows="2" placeholder="Yanıtınızı yazın..."></textarea>
-                            <button class="btn-primary submit-reply-button text-sm">Yanıt Gönder</button>
-                        </div>
-                        <div class="replies-container mt-4">
-                            </div>
-                    `;
-                    postsContainer.appendChild(postElement);
-                    renderReplies(post.id, postElement.querySelector('.replies-container'));
-
-                    postElement.querySelector('.ai-edit-post-button').addEventListener('click', () => aiCorrectPostContent(post.id, post.content));
-                    postElement.querySelector('.moderate-post-button').addEventListener('click', () => aiModeratePostContent(post.id, post.content));
-                    const deleteButton = postElement.querySelector('.delete-post-button');
-                    if (deleteButton) {
-                        deleteButton.addEventListener('click', () => confirmAndDeletePost(post.id));
-                    }
-                    postElement.querySelector('.toggle-reply-form-button').addEventListener('click', (e) => {
-                        e.currentTarget.closest('.forum-post').querySelector('.reply-form').classList.toggle('hidden');
-                    });
-                    postElement.querySelector('.submit-reply-button').addEventListener('click', (e) => {
-                        const replyContentInput = e.currentTarget.previousElementSibling;
-                        const replyContent = replyContentInput.value.trim();
-                        if (replyContent) {
-                            addReplyToPost(post.id, replyContent);
-                            replyContentInput.value = ''; 
-                        }
-                    });
-                });
-            }
-        }
-        
-        async function addNewForumPostToFirestore() {
-            if (!currentUserId) {
-                alert("Yeni gönderi oluşturmak için kullanıcı kimliği gereklidir. Lütfen sayfanın yenilenmesini bekleyin.");
-                return;
-            }
-            const titleInput = document.getElementById('new-post-title');
-            const contentInput = document.getElementById('new-post-content');
-            const title = titleInput.value.trim();
-            const content = contentInput.value.trim();
-
-            if (!title || !content) {
-                showModal("Lütfen hem başlık hem de içerik girin.", false);
-                return;
-            }
-
-            try {
-                await addDoc(collection(db, forumPostsCollectionPath), {
-                    title: title,
-                    content: content,
-                    originalContent: content, 
-                    author: currentUserId, 
-                    timestamp: serverTimestamp(),
-                    isEditedByAI: false,
-                    isFlaggedByAI: false,
-                    moderationNote: null,
-                    cleanedContent: null
-                });
-                titleInput.value = '';
-                contentInput.value = '';
-                console.log("Yeni gönderi Firestore'a eklendi.");
-            } catch (error) {
-                console.error("Firestore'a gönderi eklenirken hata: ", error);
-                showModal("Gönderi eklenirken bir hata oluştu.", false);
-            }
-        }
-
-        async function addReplyToPost(postId, replyContent) {
-            if (!currentUserId) {
-                alert("Yanıtlamak için kullanıcı kimliği gereklidir.");
-                return;
-            }
-            if (!replyContent) return;
-
-            const repliesCollectionPath = `${forumPostsCollectionPath}/${postId}/replies`;
-            try {
-                await addDoc(collection(db, repliesCollectionPath), {
-                    content: replyContent,
-                    originalContent: replyContent,
-                    author: currentUserId,
-                    timestamp: serverTimestamp(),
-                    isEditedByAI: false,
-                    isFlaggedByAI: false,
-                    moderationNote: null,
-                    cleanedContent: null
-                });
-                console.log(`Yanıt Firestore'a eklendi (Post ID: ${postId})`);
-            } catch (error) {
-                console.error("Firestore'a yanıt eklenirken hata: ", error);
-            }
-        }
-
-        function renderReplies(postId, repliesContainerElement) {
-            const repliesCollectionPath = `${forumPostsCollectionPath}/${postId}/replies`;
-            const q = query(collection(db, repliesCollectionPath), orderBy("timestamp", "asc"));
-
-            onSnapshot(q, (querySnapshot) => {
-                repliesContainerElement.innerHTML = ''; 
-                if (querySnapshot.empty) {
-                    repliesContainerElement.innerHTML = '<p class="text-xs text-gray-500 italic">Henüz yanıt yok.</p>';
-                }
-                querySnapshot.forEach((doc) => {
-                    const reply = { id: doc.id, ...doc.data() };
-                    const replyElement = document.createElement('div');
-                    replyElement.className = 'reply';
-                    const replyTimestamp = reply.timestamp?.toDate ? reply.timestamp.toDate().toLocaleString('tr-TR') : 'Bilinmeyen tarih';
-                    
-                    let replyContentHTML = escapeHTML(reply.content);
-                    if (reply.isEditedByAI) {
-                        replyContentHTML += `<p class="text-xs text-gray-400 mt-1">(AI ile düzenlendi)</p>`;
-                    }
-                     if (reply.isFlaggedByAI && reply.moderationNote) {
-                         replyContentHTML = `<p class="moderation-status text-xs"><i class="fas fa-exclamation-triangle mr-1"></i> Moderasyon: ${escapeHTML(reply.moderationNote)}</p><p class="text-gray-500 line-through text-sm">${escapeHTML(reply.originalContent || reply.content)}</p>`;
-                         if(reply.cleanedContent) {
-                            replyContentHTML = `<p class="moderation-status text-xs"><i class="fas fa-exclamation-triangle mr-1"></i> Moderasyon: ${escapeHTML(reply.moderationNote)}</p><p class="text-sm"><strong>Temizlenmiş:</strong> ${escapeHTML(reply.cleanedContent)}</p>`;
-                         }
-                    }
-
-                    replyElement.innerHTML = `
-                        <p class="forum-post-content text-sm">${replyContentHTML}</p>
-                        <p class="forum-post-meta text-xs">
-                            <span class="author"><i class="fas fa-user-astronaut mr-1"></i>${escapeHTML(reply.author || 'Anonim')}</span> | 
-                            <span class="timestamp"><i class="fas fa-clock mr-1"></i>${replyTimestamp}</span>
-                        </p>
-                        <div class="post-actions mt-2 flex gap-1">
-                             <button class="btn-primary btn-secondary !text-xs !p-1 ai-edit-reply-button" data-reply-id="${reply.id}"><i class="fas fa-magic"></i></button>
-                             <button class="btn-primary !text-xs !p-1 moderate-reply-button" data-reply-id="${reply.id}"><i class="fas fa-shield-alt"></i></button>
-                             ${reply.author === currentUserId || isAdminLoggedIn ? `<button class="btn-primary btn-danger !text-xs !p-1 delete-reply-button" data-reply-id="${reply.id}"><i class="fas fa-trash"></i></button>`: ''}
-                        </div>
-                    `;
-                    repliesContainerElement.appendChild(replyElement);
-
-                    replyElement.querySelector('.ai-edit-reply-button').addEventListener('click', (e) => aiCorrectReplyContent(postId, e.currentTarget.dataset.replyId, reply.content));
-                    replyElement.querySelector('.moderate-reply-button').addEventListener('click', (e) => aiModerateReplyContent(postId, e.currentTarget.dataset.replyId, reply.content));
-                    const deleteReplyButton = replyElement.querySelector('.delete-reply-button');
-                    if(deleteReplyButton) {
-                        deleteReplyButton.addEventListener('click', (e) => confirmAndDeleteReply(postId, e.currentTarget.dataset.replyId));
-                    }
-                });
-            });
-        }
-        
-        async function aiCorrectPostContent(postId, currentContent) {
-            const prompt = `Aşağıdaki forum gönderisini dilbilgisi, açıklık ve saygılı bir ifade açısından yeniden düzenle. Metnin ana fikrini koru. Sadece düzenlenmiş metni döndür:\n\n"${currentContent}"`;
-            try {
-                const correctedText = await callGeminiApi(prompt);
-                if (correctedText) {
-                    const postRef = doc(db, forumPostsCollectionPath, postId);
-                    await updateDoc(postRef, {
-                        content: correctedText,
-                        isEditedByAI: true,
-                    });
-                    console.log(`Gönderi (ID: ${postId}) AI ile düzeltildi.`);
-                }
-            } catch (error) {
-                console.error("AI düzeltme hatası:", error);
-                showModal("İçerik düzeltilirken bir hata oluştu.", false);
-            }
-        }
-         async function aiCorrectReplyContent(postId, replyId, currentContent) {
-            const prompt = `Aşağıdaki forum yanıtını dilbilgisi, açıklık ve saygılı bir ifade açısından yeniden düzenle. Metnin ana fikrini koru. Sadece düzenlenmiş metni döndür:\n\n"${currentContent}"`;
-            try {
-                const correctedText = await callGeminiApi(prompt);
-                if (correctedText) {
-                    const replyRef = doc(db, `${forumPostsCollectionPath}/${postId}/replies`, replyId);
-                    await updateDoc(replyRef, {
-                        content: correctedText,
-                        isEditedByAI: true,
-                    });
-                    console.log(`Yanıt (ID: ${replyId}) AI ile düzeltildi.`);
-                }
-            } catch (error) {
-                console.error("AI yanıt düzeltme hatası:", error);
-            }
-        }
-
-        async function aiModeratePostContent(postId, currentContent) {
-            const prompt = `Aşağıdaki metni analiz et. Küfür, hakaret, 18+ içerik veya saldırgan ifadeler içeriyorsa, '{"is_offensive": true, "reason": "Tespit edilen sorun (örn: küfür içeriyor)", "cleaned_text": "Sorunlu kısımları [KALDIRILDI] ile değiştirilmiş metin"}' formatında bir JSON yanıtı ver. Eğer metin uygunsa, '{"is_offensive": false, "reason": "Metin uygun.", "cleaned_text": "${currentContent}"}' formatında yanıt ver. Metin: "${currentContent}"`;
-            try {
-                const rawResponse = await callGeminiApi(prompt, true); 
-                let moderationResult;
-                try {
-                    const jsonString = rawResponse.replace(/^```json\s*|```\s*$/g, '');
-                    moderationResult = JSON.parse(jsonString);
-                } catch (parseError) {
-                    console.error("AI Moderasyon JSON parse hatası:", parseError, "Alınan yanıt:", rawResponse);
-                    showModal("AI moderasyon yanıtı işlenirken bir sorun oluştu.", false);
-                    return;
-                }
-
-                const postRef = doc(db, forumPostsCollectionPath, postId);
-                if (moderationResult.is_offensive) {
-                    await updateDoc(postRef, {
-                        content: moderationResult.cleaned_text, 
-                        originalContent: currentContent, 
-                        isFlaggedByAI: true,
-                        moderationNote: moderationResult.reason,
-                        cleanedContent: moderationResult.cleaned_text 
-                    });
-                    console.log(`Gönderi (ID: ${postId}) AI tarafından işaretlendi: ${moderationResult.reason}`);
-                } else {
-                    await updateDoc(postRef, {
-                        isFlaggedByAI: false,
-                        moderationNote: "Metin uygun bulundu.",
-                    });
-                    console.log(`Gönderi (ID: ${postId}) AI tarafından uygun bulundu.`);
-                }
-            } catch (error) {
-                console.error("AI moderasyon hatası:", error);
-                showModal("İçerik modere edilirken bir hata oluştu.", false);
-            }
-        }
-        async function aiModerateReplyContent(postId, replyId, currentContent) {
-            const prompt = `Aşağıdaki metni analiz et. Küfür, hakaret, 18+ içerik veya saldırgan ifadeler içeriyorsa, '{"is_offensive": true, "reason": "Tespit edilen sorun", "cleaned_text": "Temizlenmiş metin"}' formatında bir JSON yanıtı ver. Eğer metin uygunsa, '{"is_offensive": false, "reason": "Metin uygun.", "cleaned_text": "${currentContent}"}' formatında yanıt ver. Metin: "${currentContent}"`;
-            try {
-                const rawResponse = await callGeminiApi(prompt, true);
-                let moderationResult;
-                 try {
-                    const jsonString = rawResponse.replace(/^```json\s*|```\s*$/g, '');
-                    moderationResult = JSON.parse(jsonString);
-                } catch (parseError) {
-                    console.error("AI Yanıt Moderasyon JSON parse hatası:", parseError, "Alınan yanıt:", rawResponse); return;
-                }
-                const replyRef = doc(db, `${forumPostsCollectionPath}/${postId}/replies`, replyId);
-                 if (moderationResult.is_offensive) {
-                    await updateDoc(replyRef, {
-                        content: moderationResult.cleaned_text, 
-                        originalContent: currentContent,
-                        isFlaggedByAI: true,
-                        moderationNote: moderationResult.reason,
-                        cleanedContent: moderationResult.cleaned_text
-                    });
-                } else {
-                    await updateDoc(replyRef, { isFlaggedByAI: false, moderationNote: "Metin uygun bulundu." });
-                }
-            } catch (error) {
-                console.error("AI yanıt moderasyon hatası:", error);
-            }
-        }
-
-        async function callGeminiApi(promptText, expectJson = false) {
-            const payload = { contents: [{ role: "user", parts: [{ text: promptText }] }] };
-            if (expectJson) {
-                payload.generationConfig = { responseMimeType: "application/json" };
-            }
-            const apiKey = ""; 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-            
-            const loadingIndicator = document.getElementById('ai-loading-indicator'); 
-            if(loadingIndicator) loadingIndicator.classList.remove('hidden');
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error("Gemini API Error:", errorData, "Status:", response.status, "StatusText:", response.statusText);
-                    throw new Error(`Gemini API hatası: ${response.status} - ${response.statusText}. Detaylar için konsolu kontrol edin.`);
-                }
-                const result = await response.json();
-                if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
-                    return result.candidates[0].content.parts[0].text;
-                } else {
-                     console.warn("Gemini API'den beklenmedik yanıt yapısı:", result);
-                    throw new Error("Gemini API'den geçerli yanıt alınamadı.");
-                }
-            } catch(err) {
-                console.error("callGeminiApi içinde hata:", err);
-                throw err; // Hatanın yukarıya yayılmasını sağla
-            }
-            finally {
-                 if(loadingIndicator) loadingIndicator.classList.add('hidden');
-            }
-        }
-
-        function confirmAndDeletePost(postId) {
-            showModal(`Bu gönderiyi silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`, true, async () => {
-                try {
-                    const repliesCollectionPath = `${forumPostsCollectionPath}/${postId}/replies`;
-                    const repliesQuery = query(collection(db, repliesCollectionPath));
-                    const repliesSnapshot = await getDocs(repliesQuery); 
-                    const deletePromises = [];
-                    repliesSnapshot.forEach(replyDoc => {
-                        deletePromises.push(deleteDoc(doc(db, repliesCollectionPath, replyDoc.id)));
-                    });
-                    await Promise.all(deletePromises);
-                    console.log(`Gönderiye (ID: ${postId}) ait yanıtlar silindi.`);
-
-                    await deleteDoc(doc(db, forumPostsCollectionPath, postId));
-                    console.log(`Gönderi (ID: ${postId}) Firestore'dan silindi.`);
-                } catch (error) {
-                    console.error("Firestore'dan gönderi silinirken hata: ", error);
-                    showModal("Gönderi silinirken bir hata oluştu.", false);
-                }
-            });
-        }
-         function confirmAndDeleteReply(postId, replyId) {
-            showModal(`Bu yanıtı silmek istediğinize emin misiniz?`, true, async () => {
-                try {
-                    await deleteDoc(doc(db, `${forumPostsCollectionPath}/${postId}/replies`, replyId));
-                    console.log(`Yanıt (ID: ${replyId}) Firestore'dan silindi.`);
-                } catch (error) {
-                    console.error("Firestore'dan yanıt silinirken hata: ", error);
-                }
-            });
-        }
-
-        const modal = document.getElementById('confirmation-modal');
-        const modalMessage = document.getElementById('modal-message');
-        const modalConfirmButton = document.getElementById('modal-confirm-button');
-        const modalCancelButton = document.getElementById('modal-cancel-button');
-        let currentConfirmCallback = null;
-
-        function showModal(message, showConfirm = true, confirmCallback = null) {
-            if(!modal || !modalMessage || !modalConfirmButton || !modalCancelButton) return; 
-            modalMessage.textContent = message;
-            currentConfirmCallback = confirmCallback;
-            if (showConfirm) {
-                modalConfirmButton.classList.remove('hidden');
-            } else {
-                modalConfirmButton.classList.add('hidden');
-            }
-            modal.style.display = 'flex';
-        }
-
-        if(modalConfirmButton) modalConfirmButton.addEventListener('click', () => {
-            if (currentConfirmCallback) {
-                currentConfirmCallback();
-            }
-            if(modal) modal.style.display = 'none';
-        });
-
-        if(modalCancelButton) modalCancelButton.addEventListener('click', () => {
-            if(modal) modal.style.display = 'none';
-        });
-
-        function escapeHTML(str) { 
-            if (typeof str !== 'string') return '';
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#39;' 
+                return 'border-white/10 opacity-50';
             };
-            return str.replace(/[&<>"']/g, function(m) { return map[m]; });
-        }
-        
-        // --- Admin Paneli Fonksiyonları ---
-        const adminLoginContainer = document.getElementById('admin-login-container');
-        const adminDashboardContainer = document.getElementById('admin-dashboard-container');
-        const adminLoginForm = document.getElementById('admin-login-form');
-        const adminLogoutButton = document.getElementById('admin-logout-button');
-        const adminContentArea = document.getElementById('admin-content-area');
 
-        const videoFormModal = document.getElementById('video-form-modal');
-        const videoAdminForm = document.getElementById('video-admin-form');
-        const cancelVideoFormButton = document.getElementById('cancel-video-form');
-        const videoModalTitle = document.getElementById('video-modal-title');
-        
-        const quizFormModal = document.getElementById('quiz-form-modal');
-        const quizAdminForm = document.getElementById('quiz-admin-form');
-        const cancelQuizFormButton = document.getElementById('cancel-quiz-form');
-        const quizModalTitle = document.getElementById('quiz-modal-title');
-        const addQuizQuestionButton = document.getElementById('add-quiz-question-button');
-        const quizQuestionsContainer = document.getElementById('quiz-questions-container');
-        const aiGenerateQuizButton = document.getElementById('ai-generate-quiz-button');
+            const currentExplanation = activeFilter !== 'none' ? realityFilterContent.filters[activeFilter].explanation : null;
 
-
-        const mythFormModal = document.getElementById('myth-form-modal');
-        const mythAdminForm = document.getElementById('myth-admin-form');
-        const cancelMythFormButton = document.getElementById('cancel-myth-form');
-        const mythModalTitle = document.getElementById('myth-modal-title');
-        const aiGenerateMythButton = document.getElementById('ai-generate-myth-button');
-
-
-        function renderAdminPage() {
-            if (!adminLoginContainer || !adminDashboardContainer) return;
-            if (isAdminLoggedIn) {
-                adminLoginContainer.classList.add('hidden');
-                adminDashboardContainer.classList.remove('hidden');
-                if(adminContentArea) adminContentArea.innerHTML = '<p class="text-center text-lg">Lütfen yönetmek istediğiniz bir içerik türü seçin.</p>';
-            } else {
-                adminLoginContainer.classList.remove('hidden');
-                adminDashboardContainer.classList.add('hidden');
-            }
-        }
-
-        if (adminLoginForm) {
-            adminLoginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const username = document.getElementById('admin-username').value;
-                const password = document.getElementById('admin-password').value;
-                const errorEl = document.getElementById('admin-login-error');
-                if (username === SIMULATED_ADMIN_USERNAME && password === SIMULATED_ADMIN_PASSWORD) { 
-                    isAdminLoggedIn = true;
-                    sessionStorage.setItem('isAdminLoggedIn', 'true'); 
-                    renderAdminPage();
-                    if(errorEl) errorEl.textContent = '';
-                } else {
-                    if(errorEl) errorEl.textContent = 'Kullanıcı adı veya şifre hatalı!';
-                }
-            });
-        }
-
-        if (adminLogoutButton) {
-            adminLogoutButton.addEventListener('click', () => {
-                isAdminLoggedIn = false;
-                sessionStorage.removeItem('isAdminLoggedIn');
-                renderAdminPage();
-                showPage('home'); 
-            });
-        }
-        if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
-            isAdminLoggedIn = true;
-        }
-
-        const manageVideosButton = document.getElementById('manage-videos-button');
-        const manageQuizzesButton = document.getElementById('manage-quizzes-button');
-        const manageMythsButton = document.getElementById('manage-myths-button');
-
-        if(manageVideosButton) manageVideosButton.addEventListener('click', () => renderAdminVideoManagement());
-        if(manageQuizzesButton) manageQuizzesButton.addEventListener('click', () => renderAdminQuizManagement());
-        if(manageMythsButton) manageMythsButton.addEventListener('click', () => renderAdminMythManagement());
-
-        async function loadInitialDataFromFirestore() {
-            try {
-                const videosSnapshot = await getDocs(collection(db, managedVideosCollectionPath));
-                managedVideos = videosSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                console.log("Managed videos loaded:", managedVideos.length);
-                renderVideoListPage(); 
-
-                const quizzesSnapshot = await getDocs(collection(db, managedQuizzesCollectionPath));
-                miniQuizzes = {}; 
-                quizzesSnapshot.forEach(doc => {
-                    miniQuizzes[doc.id] = { id: doc.id, ...doc.data() };
-                });
-                console.log("Managed quizzes loaded:", Object.keys(miniQuizzes).length);
-                if (Object.keys(miniQuizzes).length > 0 && !miniQuizzes[currentQuizName]) { // Eğer currentQuizName geçerli değilse
-                     currentQuizName = Object.keys(miniQuizzes)[0]; 
-                } else if (Object.keys(miniQuizzes).length === 0){
-                    console.log("No quizzes found in Firestore for experiments page.");
-                    // Quizler yoksa, quiz bölümünü boş veya bir mesajla göster
-                    const quizContainerEl = document.getElementById('quiz-container');
-                    if(quizContainerEl) quizContainerEl.innerHTML = "<p class='text-center neon-text-danger'>Yüklenecek quiz bulunamadı.</p>";
-                }
-
-
-                const mythsSnapshot = await getDocs(collection(db, managedMythBusterStatementsCollectionPath));
-                mythBusterStatements = mythsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                console.log("Managed myth buster statements loaded:", mythBusterStatements.length);
-
-            } catch (error) {
-                console.error("Error loading initial admin data from Firestore:", error);
-            }
-        }
-        
-        // Admin Video Yönetimi
-        function renderAdminVideoManagement() { 
-            if (!adminContentArea) return;
-            adminContentArea.innerHTML = `
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-orbitron neon-text-blue">Videoları Yönet</h3>
-                    <button id="add-new-video-button" class="btn-primary btn-secondary"><i class="fas fa-plus mr-2"></i>Yeni Video Ekle</button>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Başlık</th>
-                                <th>YouTube ID</th>
-                                <th>İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-video-list-tbody">
-                            </tbody>
-                    </table>
-                </div>
-            `;
-            const videoTbody = document.getElementById('admin-video-list-tbody');
-            videoTbody.innerHTML = ''; 
-            managedVideos.forEach(video => {
-                const row = videoTbody.insertRow();
-                row.innerHTML = `
-                    <td>${escapeHTML(video.title)}</td>
-                    <td>${escapeHTML(video.youtubeVideoId)}</td>
-                    <td>
-                        <button class="btn-primary text-xs edit-video-btn" data-id="${video.id}"><i class="fas fa-edit"></i></button>
-                        <button class="btn-danger text-xs delete-video-btn" data-id="${video.id}"><i class="fas fa-trash"></i></button>
-                    </td>
-                `;
-                row.querySelector('.edit-video-btn').addEventListener('click', (e) => openVideoForm(e.currentTarget.dataset.id));
-                row.querySelector('.delete-video-btn').addEventListener('click', (e) => deleteManagedVideo(e.currentTarget.dataset.id));
-            });
-
-            document.getElementById('add-new-video-button').addEventListener('click', () => openVideoForm());
-        }
-
-        function openVideoForm(videoId = null) {
-            if (!videoFormModal || !videoAdminForm || !videoModalTitle) return;
-            videoAdminForm.reset();
-            document.getElementById('video-id-input').value = '';
-
-            if (videoId) {
-                videoModalTitle.textContent = "Videoyu Düzenle";
-                const video = managedVideos.find(v => v.id === videoId);
-                if (video) {
-                    document.getElementById('video-id-input').value = video.id;
-                    document.getElementById('video-title-input').value = video.title;
-                    document.getElementById('video-desc-input').value = video.description;
-                    document.getElementById('video-thumbnail-input').value = video.thumbnail;
-                    document.getElementById('video-youtubeid-input').value = video.youtubeVideoId;
-                    document.getElementById('video-views-input').value = video.views || '';
-                    document.getElementById('video-duration-input').value = video.duration || '';
-                }
-            } else {
-                videoModalTitle.textContent = "Yeni Video Ekle";
-            }
-            videoFormModal.style.display = 'flex';
-        }
-
-        if (videoAdminForm) {
-            videoAdminForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const id = document.getElementById('video-id-input').value;
-                const videoData = {
-                    title: document.getElementById('video-title-input').value,
-                    description: document.getElementById('video-desc-input').value,
-                    thumbnail: document.getElementById('video-thumbnail-input').value,
-                    youtubeVideoId: document.getElementById('video-youtubeid-input').value,
-                    views: document.getElementById('video-views-input').value,
-                    duration: document.getElementById('video-duration-input').value,
-                    timestamp: serverTimestamp() 
-                };
-
-                try {
-                    if (id) { 
-                        await updateDoc(doc(db, managedVideosCollectionPath, id), videoData);
-                    } else { 
-                        await addDoc(collection(db, managedVideosCollectionPath), videoData);
-                    }
-                    videoFormModal.style.display = 'none';
-                    await loadInitialDataFromFirestore(); 
-                    renderAdminVideoManagement(); 
-                } catch (error) {
-                    console.error("Video kaydedilirken hata:", error);
-                    showModal("Video kaydedilirken bir hata oluştu.", false);
-                }
-            });
-        }
-        
-        async function deleteManagedVideo(videoId) {
-            showModal("Bu videoyu silmek istediğinize emin misiniz?", true, async () => {
-                try {
-                    await deleteDoc(doc(db, managedVideosCollectionPath, videoId));
-                    await loadInitialDataFromFirestore();
-                    renderAdminVideoManagement();
-                } catch (error) {
-                    console.error("Video silinirken hata:", error);
-                    showModal("Video silinirken bir hata oluştu.", false);
-                }
-            });
-        }
-
-
-        // Admin Quiz Yönetimi
-        function renderAdminQuizManagement() { 
-            if (!adminContentArea || !quizQuestionsContainer) return;
-             adminContentArea.innerHTML = `
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-orbitron neon-text-blue">Quizleri Yönet</h3>
-                    <button id="add-new-quiz-button" class="btn-primary btn-secondary"><i class="fas fa-plus mr-2"></i>Yeni Quiz Ekle</button>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Quiz ID (Başlık)</th>
-                                <th>Soru Sayısı</th>
-                                <th>İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-quiz-list-tbody">
-                            </tbody>
-                    </table>
-                </div>
-            `;
-            const quizTbody = document.getElementById('admin-quiz-list-tbody');
-            quizTbody.innerHTML = ''; 
-            Object.keys(miniQuizzes).forEach(quizId => {
-                const quiz = miniQuizzes[quizId];
-                const row = quizTbody.insertRow();
-                row.innerHTML = `
-                    <td>${escapeHTML(quiz.id)}</td>
-                    <td>${quiz.questions ? quiz.questions.length : 0}</td>
-                    <td>
-                        <button class="btn-primary text-xs edit-quiz-btn" data-id="${quiz.id}"><i class="fas fa-edit"></i></button>
-                        <button class="btn-danger text-xs delete-quiz-btn" data-id="${quiz.id}"><i class="fas fa-trash"></i></button>
-                    </td>
-                `;
-                row.querySelector('.edit-quiz-btn').addEventListener('click', (e) => openQuizForm(e.currentTarget.dataset.id));
-                row.querySelector('.delete-quiz-btn').addEventListener('click', (e) => deleteManagedQuiz(e.currentTarget.dataset.id));
-            });
-            document.getElementById('add-new-quiz-button').addEventListener('click', () => openQuizForm());
-        }
-
-        function openQuizForm(quizId = null) {
-            if (!quizFormModal || !quizAdminForm || !quizModalTitle || !quizQuestionsContainer) return;
-            quizAdminForm.reset();
-            quizQuestionsContainer.innerHTML = ''; // Önceki soruları temizle
-            document.getElementById('quiz-id-input').value = '';
-            const quizTitleInput = document.getElementById('quiz-title-input');
-
-            if (quizId) {
-                quizModalTitle.textContent = "Quiz'i Düzenle";
-                quizTitleInput.value = quizId;
-                quizTitleInput.readOnly = true; // ID düzenlenemez
-                const quiz = miniQuizzes[quizId];
-                if (quiz && quiz.questions) {
-                    document.getElementById('quiz-id-input').value = quiz.id; // Hidden input'a ID'yi set et
-                    quiz.questions.forEach(q => addQuestionToQuizForm(q));
-                }
-            } else {
-                quizModalTitle.textContent = "Yeni Quiz Ekle";
-                quizTitleInput.readOnly = false;
-                addQuestionToQuizForm(); // Başlangıç için boş bir soru alanı ekle
-            }
-            quizFormModal.style.display = 'flex';
-        }
-        
-        function addQuestionToQuizForm(questionData = null) {
-            if(!quizQuestionsContainer) return;
-            const questionIndex = quizQuestionsContainer.children.length;
-            const questionDiv = document.createElement('div');
-            questionDiv.className = 'quiz-question-item mb-4';
-            questionDiv.innerHTML = `
-                <label for="q-text-${questionIndex}">Soru ${questionIndex + 1}:</label>
-                <input type="text" id="q-text-${questionIndex}" class="quiz-q-text" value="${questionData ? escapeHTML(questionData.question) : ''}" required>
-                
-                <label for="q-opt1-${questionIndex}">Seçenek 1:</label>
-                <input type="text" id="q-opt1-${questionIndex}" class="quiz-q-option" value="${questionData && questionData.options[0] ? escapeHTML(questionData.options[0]) : ''}" required>
-                
-                <label for="q-opt2-${questionIndex}">Seçenek 2:</label>
-                <input type="text" id="q-opt2-${questionIndex}" class="quiz-q-option" value="${questionData && questionData.options[1] ? escapeHTML(questionData.options[1]) : ''}" required>
-                
-                <label for="q-opt3-${questionIndex}">Seçenek 3:</label>
-                <input type="text" id="q-opt3-${questionIndex}" class="quiz-q-option" value="${questionData && questionData.options[2] ? escapeHTML(questionData.options[2]) : ''}">
-                
-                <label for="q-opt4-${questionIndex}">Seçenek 4 (Opsiyonel):</label>
-                <input type="text" id="q-opt4-${questionIndex}" class="quiz-q-option" value="${questionData && questionData.options[3] ? escapeHTML(questionData.options[3]) : ''}">
-
-                <label for="q-correct-${questionIndex}">Doğru Cevap (Seçeneklerden biriyle tam eşleşmeli):</label>
-                <input type="text" id="q-correct-${questionIndex}" class="quiz-q-correct" value="${questionData ? escapeHTML(questionData.correctAnswer) : ''}" required>
-                <button type="button" class="btn-danger btn-primary text-xs remove-quiz-question-btn mt-2">Bu Soruyu Sil</button>
-            `;
-            quizQuestionsContainer.appendChild(questionDiv);
-            questionDiv.querySelector('.remove-quiz-question-btn').addEventListener('click', () => questionDiv.remove());
-        }
-
-        if(addQuizQuestionButton) addQuizQuestionButton.addEventListener('click', () => addQuestionToQuizForm());
-
-        if(quizAdminForm) {
-            quizAdminForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const quizId = document.getElementById('quiz-title-input').value.trim(); 
-                const existingQuizId = document.getElementById('quiz-id-input').value; 
-                
-                if (!quizId) {
-                    showModal("Quiz ID (Başlık) boş bırakılamaz.", false);
-                    return;
-                }
-
-                const questions = [];
-                document.querySelectorAll('#quiz-questions-container .quiz-question-item').forEach(item => {
-                    const questionText = item.querySelector('.quiz-q-text').value.trim();
-                    const options = Array.from(item.querySelectorAll('.quiz-q-option')).map(opt => opt.value.trim()).filter(opt => opt); 
-                    const correctAnswer = item.querySelector('.quiz-q-correct').value.trim();
-
-                    if (questionText && options.length >= 2 && correctAnswer && options.includes(correctAnswer)) {
-                        questions.push({ question: questionText, options: options, correctAnswer: correctAnswer });
-                    }
-                });
-
-                if (questions.length === 0) {
-                    showModal("Lütfen en az bir geçerli soru ekleyin.", false);
-                    return;
-                }
-
-                const quizData = { title: quizId, questions: questions, timestamp: serverTimestamp() };
-
-                try {
-                    await setDoc(doc(db, managedQuizzesCollectionPath, quizId), quizData, { merge: true }); 
+            return (
+                <div className="w-full max-w-4xl mx-auto bg-black/20 border border-white/10 rounded-lg p-8">
+                    <p className="text-lg text-center text-gray-300 mb-6">Aşağıda nötr bir haber metni bulunmaktadır. Farklı filtrelere tıklayarak aynı bilginin nasıl tamamen farklı 'gerçekliklere' dönüştüğünü gözlemleyin.</p>
                     
-                    quizFormModal.style.display = 'none';
-                    await loadInitialDataFromFirestore();
-                    renderAdminQuizManagement();
-                } catch (error) {
-                    console.error("Quiz kaydedilirken hata:", error);
-                    showModal("Quiz kaydedilirken bir hata oluştu.", false);
-                }
-            });
-        }
+                    {/* Nötr Metin */}
+                    <div className="bg-gray-900/50 p-6 rounded-lg border border-white/10 mb-8">
+                        <p className="text-gray-300 leading-relaxed">{realityFilterContent.baseText}</p>
+                    </div>
 
-        async function deleteManagedQuiz(quizId) {
-             showModal(`"${quizId}" quizini silmek istediğinize emin misiniz?`, true, async () => {
-                try {
-                    await deleteDoc(doc(db, managedQuizzesCollectionPath, quizId));
-                    await loadInitialDataFromFirestore();
-                    renderAdminQuizManagement();
-                } catch (error) {
-                    console.error("Quiz silinirken hata:", error);
-                    showModal("Quiz silinirken bir hata oluştu.", false);
-                }
-            });
-        }
-        
-        if(aiGenerateQuizButton) {
-            aiGenerateQuizButton.addEventListener('click', async () => {
-                const topic = document.getElementById('ai-quiz-topic-input').value.trim();
-                if (!topic) {
-                    showModal("Lütfen quiz için bir konu girin.", false);
-                    return;
-                }
-                const prompt = `"${topic}" konusu hakkında 3 adet çoktan seçmeli (her biri için 4 seçenekli) quiz sorusu oluştur. Yanıtların JSON formatında, her soru için "question", "options" (bir dizi), ve "correctAnswer" (seçeneklerden biri) alanlarını içermeli. Örneğin: [{"question": "Soru 1?", "options": ["A", "B", "C", "D"], "correctAnswer": "A"}, ...]`;
-                
-                const quizQuestionsContainer = document.getElementById('quiz-questions-container');
-                if(!quizQuestionsContainer) return;
+                    {/* Filtre Butonları */}
+                    <div className="flex justify-center items-center gap-4 mb-8">
+                        {Object.keys(realityFilterContent.filters).map(key => {
+                            const filter = realityFilterContent.filters[key];
+                            return (
+                                <button
+                                    key={key}
+                                    onClick={() => setActiveFilter(key)}
+                                    className={`font-title px-6 py-2 border-2 rounded-md transition-all duration-300 ${getFilterStyle(key)}`}
+                                >
+                                    {filter.title}
+                                </button>
+                            );
+                        })}
+                    </div>
 
-                try {
-                    const rawResponse = await callGeminiApi(prompt, true);
-                    let generatedQuestions;
-                    try {
-                        const jsonString = rawResponse.replace(/^```json\s*|```\s*$/g, '');
-                        generatedQuestions = JSON.parse(jsonString);
-                    } catch (parseError) {
-                        console.error("AI Quiz JSON parse hatası:", parseError, "Alınan yanıt:", rawResponse);
-                        showModal("AI quiz yanıtı işlenirken bir sorun oluştu.", false);
-                        return;
-                    }
-
-                    if (Array.isArray(generatedQuestions) && generatedQuestions.length > 0) {
-                        quizQuestionsContainer.innerHTML = ''; 
-                        generatedQuestions.forEach(q => addQuestionToQuizForm(q));
-                    } else {
-                        showModal("AI'dan geçerli quiz soruları oluşturulamadı.", false);
-                    }
-                } catch (error) {
-                    console.error("AI Quiz oluşturma hatası:", error);
-                    showModal("AI ile quiz oluşturulurken bir hata oluştu.", false);
-                }
-            });
-        }
-
-
-        // Admin Efsane Yönetimi
-        function renderAdminMythManagement() { 
-            if (!adminContentArea) return;
-            adminContentArea.innerHTML = `
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-orbitron neon-text-blue">Efsane/Gerçek İfadelerini Yönet</h3>
-                    <button id="add-new-myth-button" class="btn-primary btn-secondary"><i class="fas fa-plus mr-2"></i>Yeni İfade Ekle</button>
+                    {/* Filtre Açıklaması */}
+                    <div className={`filter-explanation ${activeFilter !== 'none' ? 'show' : ''}`}>
+                         <div className="bg-gray-900/50 p-6 rounded-lg text-center border-t-2" style={{ borderColor: activeFilter !== 'none' ? realityFilterContent.filters[activeFilter].color.split('-')[0] : 'transparent' }}>
+                            <h4 className="font-title text-xl mb-3" style={{ color: activeFilter !== 'none' ? realityFilterContent.filters[activeFilter].color.split('-')[0] : 'white' }}>
+                                {activeFilter !== 'none' && realityFilterContent.filters[activeFilter].title} Yorumu
+                            </h4>
+                            <p className="text-gray-300">{currentExplanation}</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>İfade</th>
-                                <th>Efsane mi?</th>
-                                <th>İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-myth-list-tbody">
-                           </tbody>
-                    </table>
+            );
+        }
+
+        function ZihinLaboratuvariPage() {
+            return (
+                 <div className="container mx-auto px-4 pt-32 pb-16">
+                    <h1 className="font-title text-5xl text-center mb-4">Zihin Laboratuvarı</h1>
+                    <p className="text-center text-gray-400 mb-12 max-w-3xl mx-auto">Gerçekliği algılamak için kullandığınız en karmaşık aracın, yani zihninizin, sınırlarını ve yanılgılarını keşfedin.</p>
+                    
+                    <div className="flex flex-col items-center gap-16">
+                        <div className="w-full">
+                             <h2 className="font-title text-3xl text-center mb-6 border-b-2 border-[#00E5FF]/20 pb-3">Deney 1: Bilişsel Yanılgı Simülatörü</h2>
+                             <CognitiveBiasSimulator />
+                        </div>
+                        
+                        <div className="w-full">
+                             <h2 className="font-title text-3xl text-center mb-6 border-b-2 border-[#9370DB]/20 pb-3">Deney 2: Algı Kapıları</h2>
+                             <PerceptionGatesExperiment />
+                        </div>
+
+                        <div className="w-full">
+                             <h2 className="font-title text-3xl text-center mb-6 border-b-2 border-gray-500/20 pb-3">Deney 3: Gerçeklik Filtresi</h2>
+                             <RealityFilterExperiment />
+                        </div>
+                    </div>
                 </div>
-            `;
-            const mythTbody = document.getElementById('admin-myth-list-tbody');
-            mythTbody.innerHTML = '';
-            mythBusterStatements.forEach(item => {
-                const row = mythTbody.insertRow();
-                row.innerHTML = `
-                    <td class="truncate max-w-xs">${escapeHTML(item.statement)}</td>
-                    <td>${item.isMyth ? 'Evet' : 'Hayır'}</td>
-                    <td>
-                        <button class="btn-primary text-xs edit-myth-btn" data-id="${item.id}"><i class="fas fa-edit"></i></button>
-                        <button class="btn-danger text-xs delete-myth-btn" data-id="${item.id}"><i class="fas fa-trash"></i></button>
-                    </td>
-                `;
-                 row.querySelector('.edit-myth-btn').addEventListener('click', (e) => openMythForm(e.currentTarget.dataset.id));
-                 row.querySelector('.delete-myth-btn').addEventListener('click', (e) => deleteManagedMyth(e.currentTarget.dataset.id));
-            });
-            document.getElementById('add-new-myth-button').addEventListener('click', () => openMythForm());
+            );
         }
 
-        function openMythForm(mythId = null) {
-            if (!mythFormModal || !mythAdminForm || !mythModalTitle) return;
-            mythAdminForm.reset();
-            document.getElementById('myth-id-input').value = '';
-
-            if (mythId) {
-                mythModalTitle.textContent = "İfadeyi Düzenle";
-                const myth = mythBusterStatements.find(m => m.id === mythId);
-                if (myth) {
-                    document.getElementById('myth-id-input').value = myth.id;
-                    document.getElementById('myth-statement-input').value = myth.statement;
-                    document.getElementById('myth-isMyth-input').value = myth.isMyth.toString();
-                    document.getElementById('myth-explanation-input').value = myth.explanation;
+        // --- ANA UYGULAMA ---
+        function App() {
+            const [page, setPage] = React.useState('home');
+            const [selectedVideoId, setSelectedVideoId] = React.useState(null);
+            const [selectedArticleId, setSelectedArticleId] = React.useState(null);
+            const [isTransitioning, setIsTransitioning] = React.useState(false);
+            const handlePageChange = (newPage) => { if (page === newPage && !selectedVideoId && !selectedArticleId) return; setIsTransitioning(true); setTimeout(() => { setPage(newPage); window.scrollTo(0, 0); setIsTransitioning(false); }, 500); };
+            const handleVideoSelect = (id) => { setIsTransitioning(true); setTimeout(() => { setSelectedVideoId(id); setPage('videoDetail'); window.scrollTo(0, 0); setIsTransitioning(false); }, 500); };
+            const handleArticleSelect = (id) => { setIsTransitioning(true); setTimeout(() => { setSelectedArticleId(id); setPage('articleDetail'); window.scrollTo(0, 0); setIsTransitioning(false); }, 500); };
+            const selectedVideo = selectedVideoId ? mockVideos.find(v => v.id === selectedVideoId) : null;
+            const selectedArticle = selectedArticleId ? mockArticles.find(a => a.id === selectedArticleId) : null;
+            const renderPage = () => {
+                switch(page) {
+                    case 'home': return <HomePage setPage={handlePageChange} />;
+                    case 'sorusturmalar': return <SoruşturmalarPage handleVideoSelect={handleVideoSelect} />;
+                    case 'videoDetail': return <VideoDetailPage video={selectedVideo} />;
+                    case 'derinDalislar': return <DerinDalislarPage handleArticleSelect={handleArticleSelect} />;
+                    case 'articleDetail': return <ArticleDetailPage article={selectedArticle} />;
+                    case 'zihinLaboratuvari': return <ZihinLaboratuvariPage />;
+                    default: return <HomePage setPage={handlePageChange}/>;
                 }
-            } else {
-                mythModalTitle.textContent = "Yeni İfade Ekle";
-            }
-            mythFormModal.style.display = 'flex';
+            };
+            return ( <div> <Header setPage={handlePageChange} setSelectedVideoId={setSelectedVideoId} setSelectedArticleId={setSelectedArticleId} /> <main className={`page-container ${isTransitioning ? 'page-exit-active' : 'page-enter-active'}`}> {renderPage()} </main> </div> );
         }
 
-        if(mythAdminForm) {
-            mythAdminForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const id = document.getElementById('myth-id-input').value;
-                const mythData = {
-                    statement: document.getElementById('myth-statement-input').value,
-                    isMyth: document.getElementById('myth-isMyth-input').value === 'true',
-                    explanation: document.getElementById('myth-explanation-input').value,
-                    timestamp: serverTimestamp()
-                };
-                try {
-                    if (id) {
-                        await updateDoc(doc(db, managedMythBusterStatementsCollectionPath, id), mythData);
-                    } else {
-                        await addDoc(collection(db, managedMythBusterStatementsCollectionPath), mythData);
-                    }
-                    mythFormModal.style.display = 'none';
-                    await loadInitialDataFromFirestore();
-                    renderAdminMythManagement();
-                } catch (error) {
-                     console.error("Efsane/Gerçek kaydedilirken hata:", error);
-                     showModal("İfade kaydedilirken bir hata oluştu.", false);
-                }
-            });
-        }
-        
-        async function deleteManagedMyth(mythId) {
-            showModal("Bu ifadeyi silmek istediğinize emin misiniz?", true, async () => {
-                try {
-                    await deleteDoc(doc(db, managedMythBusterStatementsCollectionPath, mythId));
-                    await loadInitialDataFromFirestore();
-                    renderAdminMythManagement();
-                } catch (error) {
-                    console.error("İfade silinirken hata:", error);
-                    showModal("İfade silinirken bir hata oluştu.", false);
-                }
-            });
-        }
-
-        if(aiGenerateMythButton) {
-            aiGenerateMythButton.addEventListener('click', async () => {
-                const topic = document.getElementById('ai-myth-topic-input').value.trim();
-                if (!topic) {
-                    showModal("Lütfen bir konu veya fikir girin.", false);
-                    return;
-                }
-                const prompt = `"${topic}" konusuyla ilgili ilginç bir ifade oluştur. Bu ifadenin doğru mu yoksa bir efsane mi olduğunu belirle ve kısa bir açıklama ekle. Yanıtı JSON formatında şu alanlarla ver: "statement" (ifade), "isMyth" (boolean), "explanation" (açıklama).`;
-                
-                try {
-                    const rawResponse = await callGeminiApi(prompt, true);
-                    let generatedMyth;
-                    try {
-                        const jsonString = rawResponse.replace(/^```json\s*|```\s*$/g, '');
-                        generatedMyth = JSON.parse(jsonString);
-                    } catch (parseError) {
-                        console.error("AI Myth JSON parse hatası:", parseError, "Alınan yanıt:", rawResponse);
-                        showModal("AI ifade yanıtı işlenirken bir sorun oluştu.", false);
-                        return;
-                    }
-
-                    if (generatedMyth && generatedMyth.statement && typeof generatedMyth.isMyth !== 'undefined' && generatedMyth.explanation) {
-                        document.getElementById('myth-statement-input').value = generatedMyth.statement;
-                        document.getElementById('myth-isMyth-input').value = generatedMyth.isMyth.toString();
-                        document.getElementById('myth-explanation-input').value = generatedMyth.explanation;
-                    } else {
-                        showModal("AI'dan geçerli bir ifade oluşturulamadı.", false);
-                    }
-                } catch (error) {
-                    console.error("AI İfade oluşturma hatası:", error, error.stack); // Hata yığınını da logla
-                    showModal("AI ile ifade oluşturulurken bir hata oluştu. Detaylar için konsolu kontrol edin.", false);
-                }
-            });
-        }
-
-
-        // Modalları kapatma butonları
-        if(cancelVideoFormButton) cancelVideoFormButton.addEventListener('click', () => videoFormModal.style.display = 'none');
-        if(cancelQuizFormButton) cancelQuizFormButton.addEventListener('click', () => quizFormModal.style.display = 'none');
-        if(cancelMythFormButton) cancelMythFormButton.addEventListener('click', () => mythFormModal.style.display = 'none');
-
-
+        ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 </body>
 </html>

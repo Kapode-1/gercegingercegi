@@ -1,0 +1,37 @@
+backend:
+  name: github
+  repo: KULLANICI_ADI/tayyip-minsin-policy-atlas
+  branch: main
+  base_url: https://OAUTH-WORKER-ADRESI.workers.dev
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+site_url: https://SITE-ADRESI.pages.dev
+locale: tr
+collections:
+  - name: "yazilar"
+    label: "Policy Briefs"
+    folder: "content/posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Başlık", name: "title", widget: "string"}
+      - {label: "Dosya tipi", name: "type", widget: "select", options: ["Policy Brief", "Climate File", "Strategic Note", "Commentary"]}
+      - {label: "Yayın tarihi", name: "date", widget: "datetime"}
+      - {label: "Bölge", name: "region", widget: "string"}
+      - {label: "Özet", name: "summary", widget: "text"}
+      - {label: "Kapak", name: "image", widget: "image", required: false}
+      - {label: "Dış bağlantı", name: "external_url", widget: "string", required: false}
+      - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false}
+      - {label: "Metin", name: "body", widget: "markdown"}
+  - name: "projeler"
+    label: "Diplomatik Kayıt"
+    folder: "content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Başlık", name: "title", widget: "string"}
+      - {label: "Kayıt kodu", name: "code", widget: "string"}
+      - {label: "Tarih", name: "date", widget: "datetime"}
+      - {label: "Rol", name: "role", widget: "string"}
+      - {label: "Özet", name: "summary", widget: "text"}
+      - {label: "Metin", name: "body", widget: "markdown"}

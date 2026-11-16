@@ -2,36 +2,57 @@ backend:
   name: github
   repo: Kapode-1/gercegingerçegi
   branch: main
-  base_url: https://OAUTH-WORKER-ADRESI.workers.dev
+  base_url: https://TAYYIP-OAUTH-WORKER.workers.dev
+  auth_endpoint: auth
+  use_graphql: true
+
+site_url: https://tayyip-minsin-policy-atlas.pages.dev
+logo_url: /assets/tayyip-minsin-social.jpg
+locale: tr
+publish_mode: simple
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
-site_url: https://tayyip-minsin-policy-atlas.pages.dev
-locale: tr
+
 collections:
-  - name: "yazilar"
-    label: "Policy Briefs"
-    folder: "content/posts"
-    create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    fields:
-      - {label: "Başlık", name: "title", widget: "string"}
-      - {label: "Dosya tipi", name: "type", widget: "select", options: ["Policy Brief", "Climate File", "Strategic Note", "Commentary"]}
-      - {label: "Yayın tarihi", name: "date", widget: "datetime"}
-      - {label: "Bölge", name: "region", widget: "string"}
-      - {label: "Özet", name: "summary", widget: "text"}
-      - {label: "Kapak", name: "image", widget: "image", required: false}
-      - {label: "Dış bağlantı", name: "external_url", widget: "string", required: false}
-      - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false}
-      - {label: "Metin", name: "body", widget: "markdown"}
-  - name: "projeler"
-    label: "Diplomatik Kayıt"
-    folder: "content/projects"
-    create: true
-    slug: "{{slug}}"
-    fields:
-      - {label: "Başlık", name: "title", widget: "string"}
-      - {label: "Kayıt kodu", name: "code", widget: "string"}
-      - {label: "Tarih", name: "date", widget: "datetime"}
-      - {label: "Rol", name: "role", widget: "string"}
-      - {label: "Özet", name: "summary", widget: "text"}
-      - {label: "Metin", name: "body", widget: "markdown"}
+  - name: "site_content"
+    label: "Site İçeriği"
+    files:
+      - name: "publications"
+        label: "Yayınlar ve Yazılar"
+        file: "content/publications.json"
+        format: "json"
+        fields:
+          - label: "Yayınlar"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}} — {{fields.publisher}}"
+            add_to_top: true
+            fields:
+              - {label: "Başlık", name: "title", widget: "string"}
+              - {label: "URL kısa adı", name: "slug", widget: "string", hint: "Küçük harf, boşluksuz: ornek-yazi-basligi"}
+              - {label: "Yayıncı", name: "publisher", widget: "select", options: ["ODAP", "Objektürk", "Kişisel Site", "Diğer"]}
+              - {label: "Dosya türü", name: "type", widget: "select", options: ["Policy Brief", "Analiz", "Makale", "Commentary", "Climate File"]}
+              - {label: "Yayın tarihi", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false}
+              - {label: "Dil", name: "language", widget: "select", options: ["TR", "EN"]}
+              - {label: "Bölge", name: "region", widget: "string"}
+              - {label: "Özet", name: "summary", widget: "text"}
+              - {label: "Kapak görseli", name: "image", widget: "image", required: false}
+              - {label: "Dış bağlantı", name: "external_url", widget: "string", required: false, hint: "Yazı başka sitede yayımlandıysa tam bağlantı"}
+              - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false}
+              - {label: "Tam metin", name: "body", widget: "markdown", required: false}
+              - label: "Kaynakça"
+                name: "references"
+                widget: "list"
+                required: false
+                field: {label: "Kaynak", name: "reference", widget: "string"}
+      - name: "profile"
+        label: "Profil ve İletişim"
+        file: "content/profile.json"
+        format: "json"
+        fields:
+          - {label: "Kısa tanıtım", name: "intro", widget: "text"}
+          - {label: "Hakkımda", name: "about", widget: "markdown"}
+          - {label: "E-posta", name: "email", widget: "string"}
+          - {label: "Instagram", name: "instagram", widget: "string"}
+          - {label: "LinkedIn", name: "linkedin", widget: "string"}
+          - {label: "X", name: "x", widget: "string"}

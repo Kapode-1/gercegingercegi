@@ -1,1 +1,20 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Policy Atlas / Admin</title><style>body{background:#061518} [class*=AppHeader]{background:#061518!important}</style></head><body><script src="https://unpkg.com/decap-cms@3.8.3/dist/decap-cms.js"></script></body></html>
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Policy Atlas / Admin</title>
+  <style>
+    html,body{margin:0;min-height:100%;background:#061518;color:#ebe5d8;font-family:Arial,sans-serif}
+    #cms-loader{min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px}
+    #cms-loader b{display:block;font:42px Georgia,serif;margin-bottom:12px}
+    #cms-loader span{color:#d6bf93;font:12px 'Courier New',monospace;letter-spacing:.14em}
+    #cms-error{display:none;max-width:680px;line-height:1.5;color:#ebe5d8}
+  </style>
+</head>
+<body>
+  <div id="cms-loader"><div><b>Policy Atlas</b><span>YÖNETİM PANELİ YÜKLENİYOR</span><p id="cms-error">Yönetim paneli betiği yüklenemedi. Sayfayı Ctrl+F5 ile yenileyin.</p></div></div>
+  <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.8.4/dist/decap-cms.js" onload="document.getElementById('cms-loader').style.display='none'" onerror="document.getElementById('cms-error').style.display='block'"></script>
+</body>
+</html>

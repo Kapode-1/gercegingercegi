@@ -1,11 +1,11 @@
 backend:
   name: github
-  repo: KULLANICI_ADI/tayyip-minsin-policy-atlas
+  repo: Kapode-1/gercegingerçegi
   branch: main
   base_url: https://OAUTH-WORKER-ADRESI.workers.dev
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
-site_url: https://SITE-ADRESI.pages.dev
+site_url: https://tayyip-minsin-policy-atlas.pages.dev
 locale: tr
 collections:
   - name: "yazilar"

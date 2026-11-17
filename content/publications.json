@@ -1,16 +1,1 @@
-{
-  "items": [
-    {
-      "summary": "a",
-      "slug": "a",
-      "featured": false,
-      "date": "2026-11-17",
-      "region": "a",
-      "title": "a",
-      "language": "TR",
-      "type": "Policy Brief",
-      "external_url": "a",
-      "publisher": "ODAP"
-    }
-  ]
-}
+{"items":[{"title":"Türkiye, Körfez'in yeni güvenlik sağlayıcısı mı?","slug":"turkiye-korfezin-yeni-guvenlik-saglayicisi-mi","publisher":"Objektürk","type":"Analiz","date":"2026-11-15","language":"TR","region":"Türkiye / Körfez","summary":"Türkiye'nin Körfez'deki değişen rolünü savunma iş birlikleri, güvenlik mimarisi ve stratejik özerklik bağlamında ele alan analiz.","image":"/assets/policy-atlas.png","external_url":"https://objekturkhaber.com.tr/2026/11/15/turkiye-korfezin-yeni-guvenlik-saglayicisi-mi/","featured":true,"body":"","references":[]}]}

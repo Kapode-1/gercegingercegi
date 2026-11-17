@@ -39,11 +39,6 @@ collections:
               - {label: "Kapak görseli", name: "image", widget: "image", required: false}
               - {label: "Dış bağlantı", name: "external_url", widget: "string", required: false, hint: "Yazı başka sitede yayımlandıysa tam bağlantı"}
               - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false}
-              - {label: "SEO başlığı", name: "seo_title", widget: "string", required: false, hint: "Boşsa yazı başlığı kullanılır; ideal 50–60 karakter"}
-              - {label: "Meta açıklaması", name: "seo_description", widget: "text", required: false, hint: "Boşsa özet kullanılır; ideal 140–160 karakter"}
-              - {label: "Canonical URL", name: "canonical_url", widget: "string", required: false, hint: "Başka sitede tam metin yayımlandıysa asıl kaynak adresi"}
-              - {label: "Sosyal paylaşım görseli", name: "social_image", widget: "image", required: false, hint: "Önerilen ölçü 1200×630"}
-              - {label: "Google dizinine açık", name: "indexable", widget: "boolean", default: true, required: false}
               - {label: "Tam metin", name: "body", widget: "markdown", required: false}
               - label: "Kaynakça"
                 name: "references"
@@ -86,4 +81,22 @@ collections:
           - {label: "CV durumu", name: "cv_status", widget: "string", default: "CV / PUBLIC VERSION IN PREPARATION", required: false}
           - {label: "İş birliği durumu", name: "availability", widget: "string", default: "AVAILABLE FOR SELECTED COLLABORATIONS", required: false}
           - {label: "Google açıklaması", name: "seo_description", widget: "text", required: false}
-          - {label: "Varsayılan sosyal paylaşım görseli", name: "social_image", widget: "image", required: false, hint: "Önerilen ölçü 1200×630"}
+
+      - name: "social_dispatches"
+        label: "LinkedIn Gönderileri"
+        file: "content/social-dispatches.json"
+        format: "json"
+        fields:
+          - label: "Gönderiler"
+            name: "items"
+            widget: "list"
+            required: false
+            add_to_top: true
+            summary: "{{fields.title}} — {{fields.date}}"
+            fields:
+              - {label: "Başlık / kısa not", name: "title", widget: "string"}
+              - {label: "LinkedIn gönderi URL'si", name: "url", widget: "string", hint: "Herkese açık LinkedIn gönderisinin tam bağlantısı"}
+              - {label: "Tarih", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false}
+              - {label: "Kısa açıklama", name: "summary", widget: "text", required: false}
+              - {label: "Sitede göster", name: "visible", widget: "boolean", default: true, required: false}
+              - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false, required: false}

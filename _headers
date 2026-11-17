@@ -4,10 +4,13 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   X-Frame-Options: DENY
   Cross-Origin-Opener-Policy: same-origin-allow-popups
-  Content-Security-Policy: default-src 'self'; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-eval' 'unsafe-inline'; connect-src 'self' https://api.github.com https://*.githubusercontent.com https://unpkg.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self' https://unpkg.com https://cdn.jsdelivr.net https://platform.twitter.com 'unsafe-eval' 'unsafe-inline'; connect-src 'self' https://api.github.com https://*.githubusercontent.com https://unpkg.com https://cdn.jsdelivr.net https://tayyip-decap-oauth.mnsntayp.workers.dev https://cdn.syndication.twimg.com https://syndication.twitter.com https://www.linkedin.com; frame-src https://platform.twitter.com https://syndication.twitter.com https://www.linkedin.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'
+
 /admin/*
   Cross-Origin-Opener-Policy: same-origin-allow-popups
   Content-Security-Policy: default-src 'self'; script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://api.github.com https://*.githubusercontent.com https://unpkg.com https://cdn.jsdelivr.net https://tayyip-decap-oauth.mnsntayp.workers.dev; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
+
 /sitemap.xml
   Content-Type: application/xml; charset=utf-8
   Cache-Control: public, max-age=300
@@ -22,8 +25,18 @@
 
 /assets/*.webp
   Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.jpeg
+  Cache-Control: public, max-age=31536000, immutable
+
 /assets/*.css
   Cache-Control: public, max-age=604800
+
 /assets/*.js
   Cache-Control: public, max-age=604800
-

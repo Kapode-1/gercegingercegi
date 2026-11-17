@@ -98,3 +98,17 @@ async function optimizeHtmlFileV13(file){
 await optimizeHtmlFileV13(path.join(dist,'index.html'));
 for(const name of ['yayinlar.html','odap.html','404.html']){try{await optimizeHtmlFileV13(path.join(dist,name))}catch{}}
 for(const dir of ['yayinlar','odap']){try{for(const n of await fs.readdir(path.join(dist,dir)))if(n.endsWith('.html'))await optimizeHtmlFileV13(path.join(dist,dir,n))}catch{}}
+
+
+// V14 Social Dispatches: automatic X timeline + admin-managed LinkedIn posts
+const socialFile=JSON.parse(await fs.readFile(path.join(root,'content/social-dispatches.json'),'utf8'));
+const linkedInPosts=(socialFile.items||[]).filter(x=>x.visible!==false).sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,6);
+const xHandle=(profile.x||'https://x.com/MinsinIR').replace(/\/$/,'');
+const extractLinkedInId=(url)=>{const m=String(url||'').match(/activity[-:](\d{10,})|urn:li:(?:activity|share):(\d{10,})/);return m?.[1]||m?.[2]||''};
+const linkedInCards=linkedInPosts.map((x,i)=>{const id=extractLinkedInId(x.url);const embed=id?`<iframe src="https://www.linkedin.com/embed/feed/update/urn:li:activity:${id}" title="LinkedIn gönderisi: ${esc(x.title)}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`:`<a class="dispatch-fallback" href="${esc(x.url)}" target="_blank" rel="noopener"><span>LINKEDIN / ${esc(x.date)}</span><h3>${esc(x.title)}</h3><p>${esc(x.summary||'LinkedIn gönderisini aç.')}</p><b>LINKEDIN’DE AÇ ↗</b></a>`;return `<article class="dispatch-card linkedin ${x.featured?'featured':''}">${embed}</article>`}).join('');
+const dispatches=`<section id="dispatches" class="dispatches section" data-section="04"><div class="rail"><span>04</span><span>SOCIAL / DISPATCHES</span></div><header class="dispatch-head"><p class="overline">FIELD NOTES / LIVE CHANNELS</p><h2>Güncel<br><i>Notlar</i></h2><p>LinkedIn ve X üzerinden paylaşılan kısa değerlendirmeler, saha notları ve güncel çalışmalar.</p></header><div class="dispatch-grid"><div class="dispatch-column"><div class="dispatch-label"><span>X / LIVE</span><a href="${esc(xHandle)}" target="_blank" rel="noopener">TÜMÜNÜ GÖR ↗</a></div><div class="x-feed-shell"><a class="twitter-timeline" data-theme="dark" data-chrome="noheader nofooter noborders transparent" data-tweet-limit="4" data-dnt="true" href="${esc(xHandle)}">X paylaşımlarını görüntüle</a></div></div><div class="dispatch-column"><div class="dispatch-label"><span>LINKEDIN / SELECTED</span><a href="${esc(profile.linkedin||'https://www.linkedin.com/in/tayyip-minsin')}" target="_blank" rel="noopener">PROFİLİ AÇ ↗</a></div><div class="linkedin-feed">${linkedInCards||'<div class="dispatch-empty"><p>Seçilmiş LinkedIn gönderileri yakında burada.</p></div>'}</div></div></div></section>`;
+let dispatchHome=await fs.readFile(path.join(dist,'index.html'),'utf8');
+const recordsMarker='<section id="records"';
+if(dispatchHome.includes(recordsMarker)&&!dispatchHome.includes('id="dispatches"'))dispatchHome=dispatchHome.replace(recordsMarker,dispatches+'\n'+recordsMarker);
+if(!dispatchHome.includes('platform.twitter.com/widgets.js'))dispatchHome=dispatchHome.replace('</body>','<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></body>');
+await fs.writeFile(path.join(dist,'index.html'),dispatchHome);

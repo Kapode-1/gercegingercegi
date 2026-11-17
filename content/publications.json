@@ -9,8 +9,10 @@
       "region": "Türkiye",
       "title": "V8 Yayın Testi",
       "language": "TR",
+      "primary_country": "Yunanistan",
       "type": "Analiz",
-      "publisher": "Kişisel Site"
+      "publisher": "Kişisel Site",
+      "show_on_map": true
     },
     {
       "body": "",
@@ -22,10 +24,12 @@
       "region": "Türkiye / Körfez",
       "title": "Türkiye, Körfez'in yeni güvenlik sağlayıcısı mı?",
       "language": "TR",
+      "primary_country": "Körfez",
       "type": "Analiz",
       "image": "/assets/policy-atlas.png",
       "external_url": "https://objekturkhaber.com.tr/2026/11/15/turkiye-korfezin-yeni-guvenlik-saglayicisi-mi/",
-      "publisher": "Objektürk"
+      "publisher": "Objektürk",
+      "show_on_map": true
     }
   ]
 }

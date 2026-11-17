@@ -1,1 +1,31 @@
-{"items":[{"title":"Türkiye, Körfez'in yeni güvenlik sağlayıcısı mı?","slug":"turkiye-korfezin-yeni-guvenlik-saglayicisi-mi","publisher":"Objektürk","type":"Analiz","date":"2026-11-15","language":"TR","region":"Türkiye / Körfez","summary":"Türkiye'nin Körfez'deki değişen rolünü savunma iş birlikleri, güvenlik mimarisi ve stratejik özerklik bağlamında ele alan analiz.","image":"/assets/policy-atlas.png","external_url":"https://objekturkhaber.com.tr/2026/11/15/turkiye-korfezin-yeni-guvenlik-saglayicisi-mi/","featured":true,"body":"","references":[]}]}
+{
+  "items": [
+    {
+      "body": "\nBu metin admin panelinden yayımlandı ve Cloudflare tarafından otomatik olarak sayfaya dönüştürüldü.",
+      "summary": "Admin panelinden otomatik yayın sisteminin test kaydıdır.",
+      "slug": "v8-yayin-testi",
+      "featured": false,
+      "date": "2026-11-17",
+      "region": "Türkiye",
+      "title": "V8 Yayın Testi",
+      "language": "TR",
+      "type": "Analiz",
+      "publisher": "Kişisel Site"
+    },
+    {
+      "body": "",
+      "summary": "Türkiye'nin Körfez'deki değişen rolünü savunma iş birlikleri, güvenlik mimarisi ve stratejik özerklik bağlamında ele alan analiz.",
+      "references": [],
+      "slug": "turkiye-korfezin-yeni-guvenlik-saglayicisi-mi",
+      "featured": true,
+      "date": "2026-11-15",
+      "region": "Türkiye / Körfez",
+      "title": "Türkiye, Körfez'in yeni güvenlik sağlayıcısı mı?",
+      "language": "TR",
+      "type": "Analiz",
+      "image": "/assets/policy-atlas.png",
+      "external_url": "https://objekturkhaber.com.tr/2026/11/15/turkiye-korfezin-yeni-guvenlik-saglayicisi-mi/",
+      "publisher": "Objektürk"
+    }
+  ]
+}

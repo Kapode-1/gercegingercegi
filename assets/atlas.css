@@ -5,3 +5,254 @@
 /* V4: published-analysis coverage map */
 .atlas-stage-expanded{grid-template-columns:minmax(0,2.15fr) minmax(360px,.85fr)}.coverage-map{min-height:680px}.coverage-map>img{filter:saturate(.55) contrast(1.08) brightness(.82)}.map-caption{position:absolute;left:22px;top:20px;z-index:4;display:flex;flex-direction:column;background:rgba(6,21,24,.72);border-left:2px solid var(--copper);padding:10px 13px;backdrop-filter:blur(8px)}.map-caption span{font:8px var(--mono);letter-spacing:.15em;color:var(--sand)}.map-caption b{font:10px var(--mono);margin-top:5px}.coverage-node{position:absolute;z-index:5;background:none;border:0;color:var(--ivory);display:flex;align-items:center;gap:7px;font:8px var(--mono);letter-spacing:.1em;text-shadow:0 2px 5px #000;cursor:none;white-space:nowrap}.coverage-node i{width:11px;height:11px;border:1px solid var(--sand);border-radius:50%;box-shadow:0 0 0 3px rgba(6,21,24,.55);position:relative;flex:none}.coverage-node i:after{content:"";position:absolute;inset:2px;border-radius:50%;background:var(--copper);transform:scale(0);transition:.25s}.coverage-node:hover i:after,.coverage-node.active i:after{transform:scale(1)}.coverage-node.active span{color:var(--sand)}.c-colombia{left:1.5%;top:43%}.c-morocco{left:9%;top:62%}.c-sahara{left:6%;top:72%}.c-algeria{left:23%;top:61%}.c-niger{left:28%;top:78%}.c-chad{left:39%;top:81%}.c-libya{left:38%;top:64%}.c-italy{left:34%;top:39%}.c-turkiye{left:54%;top:43%}.c-syria{left:61%;top:51%}.c-jerusalem{left:56%;top:59%}.c-gulf{left:72%;top:72%}.coverage-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.coverage-lines path{fill:none;stroke:rgba(184,100,63,.4);stroke-width:1;stroke-dasharray:4 9}.coverage-panel{position:relative;min-height:680px;background:var(--graphite);overflow:hidden}.coverage-head{height:72px;border-bottom:1px solid var(--line);padding:0 32px;display:flex;align-items:center;justify-content:space-between;font:8px var(--mono);letter-spacing:.14em;color:var(--muted)}.coverage-head b{color:var(--copper)}.coverage-detail{position:absolute;left:0;right:0;top:72px;bottom:0;padding:48px 35px;opacity:0;transform:translateX(25px);pointer-events:none;transition:.4s}.coverage-detail.active{opacity:1;transform:none;pointer-events:auto}.coverage-detail h3{font:54px/1 var(--serif);margin:70px 0 24px}.coverage-detail>p:not(.micro){font:18px/1.5 var(--serif);color:#adb7b4}.coverage-links{position:absolute;left:35px;right:35px;bottom:35px;display:grid}.coverage-links a{padding:13px 0;border-top:1px solid var(--line);font:9px var(--mono);letter-spacing:.08em;text-decoration:none;color:var(--sand)}.coverage-links a:hover{color:var(--copper)}@media(max-width:900px){.atlas-stage-expanded{display:block}.coverage-map{min-height:560px}.coverage-panel{min-height:520px}.coverage-node span{display:none}.coverage-detail h3{margin-top:45px}.c-colombia span{display:block}}@media(max-width:560px){.coverage-map{min-height:420px}.coverage-panel{min-height:500px}.map-caption{left:12px;top:12px}.coverage-node i{width:10px;height:10px}.coverage-detail{padding:38px 24px}.coverage-detail h3{font-size:44px}.coverage-links{left:24px;right:24px}.c-colombia{left:1%;top:41%}}
 .profile-portrait{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(230px,.6fr);gap:1px;background:rgba(6,21,24,.25);margin:0 0 80px}.portrait-frame{position:relative;min-height:620px;overflow:hidden;background:var(--abyss)}.portrait-frame img{width:100%;height:100%;object-fit:cover;object-position:center 34%;filter:saturate(.72) contrast(1.04)}.portrait-frame:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,21,24,.7),transparent 42%),linear-gradient(90deg,rgba(6,21,24,.18),transparent)}.portrait-frame>span{position:absolute;z-index:2;left:22px;bottom:20px;color:var(--ivory);font:9px var(--mono);letter-spacing:.15em}.portrait-note{background:var(--abyss);color:var(--ivory);padding:32px;display:flex;flex-direction:column;justify-content:space-between}.portrait-note b{font:clamp(45px,7vw,95px)/.8 var(--serif);writing-mode:vertical-rl;color:transparent;-webkit-text-stroke:1px var(--copper)}.portrait-note span{font:9px var(--mono);letter-spacing:.13em;color:var(--sand)}@media(max-width:760px){.profile-portrait{grid-template-columns:1fr}.portrait-frame{min-height:500px}.portrait-note{min-height:130px}.portrait-note b{writing-mode:horizontal-tb}.portrait-note span{margin-top:25px}}
+
+
+/* =========================================================
+   POLICY ATLAS - MOBILE LAYOUT HOTFIX
+   Fixes horizontal map drift and off-center mobile typography
+   ========================================================= */
+
+@media (max-width: 900px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  main,
+  .hero,
+  .section,
+  .atlas,
+  .atlas-stage,
+  .atlas-stage-expanded,
+  .map-frame,
+  .coverage-map,
+  .coverage-panel {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .hero-copy {
+    left: 50%;
+    right: auto;
+    width: calc(100% - 32px);
+    max-width: 680px;
+    transform: translate(-50%, -48%);
+    text-align: center;
+  }
+
+  .hero-copy > .overline,
+  .hero-under,
+  .section-title,
+  .brief-head,
+  .record-head,
+  .manifesto-lead,
+  .contact-copy {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .hero-copy > .overline {
+    justify-content: center;
+  }
+
+  .hero-copy > .overline span:last-child {
+    display: none;
+  }
+
+  .hero h1,
+  .section-title h2,
+  .brief-head h2,
+  .record-head h2,
+  .contact h2 {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero h1 .outline,
+  .contact h2 i {
+    padding-left: 0;
+  }
+
+  .hero-under {
+    justify-items: center;
+    border-top-color: rgba(214, 191, 147, .28);
+  }
+
+  .hero-under p {
+    max-width: 33rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-title > p:last-child,
+  .brief-head > p:last-child {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .atlas-stage-expanded {
+    display: block;
+    overflow: hidden;
+  }
+
+  .coverage-map {
+    position: relative;
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .coverage-map > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 53% 50%;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .coverage-map .map-grid,
+  .coverage-map .coverage-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .coverage-node {
+    transform: translate(-50%, -50%);
+    touch-action: manipulation;
+  }
+
+  .coverage-node span {
+    display: none !important;
+  }
+
+  .coverage-node i {
+    width: 14px;
+    height: 14px;
+    box-shadow: 0 0 0 5px rgba(6, 21, 24, .58);
+  }
+
+  .map-caption {
+    left: 14px;
+    right: 14px;
+    top: 14px;
+    width: auto;
+    max-width: calc(100% - 28px);
+  }
+
+  .coverage-panel {
+    min-height: 500px;
+  }
+
+  .coverage-detail {
+    text-align: center;
+  }
+
+  .coverage-detail > p:not(.micro) {
+    max-width: 34rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .coverage-links {
+    text-align: left;
+  }
+}
+
+@media (max-width: 560px) {
+  .nav {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero {
+    min-height: 680px;
+  }
+
+  .hero-copy {
+    top: 49%;
+    width: calc(100% - 24px);
+  }
+
+  .hero h1 {
+    font-size: clamp(62px, 21vw, 96px);
+    line-height: .78;
+    margin: 34px 0;
+  }
+
+  .hero-under {
+    padding-top: 14px;
+  }
+
+  .section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .manifesto-lead h2,
+  .section-title h2,
+  .brief-head h2,
+  .record-head h2,
+  .contact h2 {
+    font-size: clamp(50px, 17vw, 78px);
+    line-height: .84;
+    overflow-wrap: anywhere;
+  }
+
+  .coverage-map {
+    aspect-ratio: 4 / 3;
+  }
+
+  .coverage-map > img {
+    object-position: 55% 50%;
+  }
+
+  .map-caption span {
+    font-size: 7px;
+  }
+
+  .map-caption b {
+    font-size: 9px;
+  }
+
+  .coverage-panel {
+    min-height: 470px;
+  }
+
+  .coverage-detail {
+    padding: 36px 22px 130px;
+  }
+
+  .coverage-detail h3 {
+    margin: 38px 0 20px;
+    font-size: 44px;
+  }
+
+  .coverage-links {
+    left: 22px;
+    right: 22px;
+    bottom: 24px;
+  }
+
+  .archive-hero,
+  .article-hero-copy,
+  .article-layout,
+  .profile-grid,
+  .contact-copy {
+    text-align: center;
+  }
+
+  .article-meta,
+  .socials {
+    justify-content: center;
+  }
+}

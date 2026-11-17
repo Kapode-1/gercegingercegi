@@ -12,6 +12,26 @@ let home=await fs.readFile(path.join(dist,'index.html'),'utf8');
 home=home.replace(/<!--PROFILE_INTRO_START-->[\s\S]*?<!--PROFILE_INTRO_END-->/,`<!--PROFILE_INTRO_START-->${esc(profile.intro)}<!--PROFILE_INTRO_END-->`);
 home=home.replace(/<!--PROFILE_ABOUT_START-->[\s\S]*?<!--PROFILE_ABOUT_END-->/,`<!--PROFILE_ABOUT_START-->${paras(profile.about)}<!--PROFILE_ABOUT_END-->`);
 home=home.replaceAll('mailto:minsinjr@gmail.com',`mailto:${esc(profile.email)}`).replaceAll('minsinjr@gmail.com',esc(profile.email));
+// V10 fully automated profile
+const jobTitle=profile.job_title||'İklim ve Enerji Politikaları Araştırmacısı';
+const affiliation=profile.affiliation||'İÜ Siyaset Bilimi ve Uluslararası İlişkiler';
+const portrait=profile.portrait||'/assets/tayyip-minsin-portrait.jpg';
+const focus=(profile.focus_areas||['AB İklim Politikaları','Enerji Güvenliği','Ortadoğu Jeopolitiği','Politika Analizi']).slice(0,6);
+const socials=[
+  ['Instagram',profile.instagram],['LinkedIn',profile.linkedin],['X / Twitter',profile.x],['Objektürk',profile.objekturk]
+].filter(([,url])=>url).map(([name,url])=>`<a href="${esc(url)}" target="_blank" rel="noopener">${esc(name)}</a>`).join('');
+home=home.replace(/<title>[\s\S]*?<\/title>/,`<title>Tayyip Minsin | ${esc(jobTitle)}</title>`);
+home=home.replace(/<p class="role">[\s\S]*?<\/p>/,`<p class="role">${esc(jobTitle)} <span>|</span> ${esc(affiliation)}</p>`);
+home=home.replace(/<p class="lede">[\s\S]*?<\/p>/,`<p class="lede">${esc(profile.intro||'')}</p>`);
+home=home.replace(/<div class="manifesto-lead"><p>[\s\S]*?<\/p><h2>[\s\S]*?<\/h2><\/div>/,`<div class="manifesto-lead"><p>${esc(profile.manifesto_kicker||'POLICY / STRATEGY / GOVERNANCE')}</p><h2>${esc(profile.manifesto||'Gücün, ticaretin ve iklimin aynı masada yeniden kurulduğu alanı araştırıyorum.')}</h2></div>`);
+home=home.replace(/<div class="portrait-frame"><img[^>]*>/,`<div class="portrait-frame"><img src="${esc(portrait)}" alt="Tayyip Minsin portresi">`);
+home=home.replace(/<div class="portrait-note">[\s\S]*?<\/div><\/div><div class="profile-grid">/,`<div class="portrait-note"><b>${esc(profile.location||'İSTANBUL')}</b><span>${esc(profile.portrait_note||'RESEARCH • WRITING • DIPLOMACY')}</span></div></div><div class="profile-grid">`);
+const focusHtml=focus.map((x,i)=>`<div><span>${i===focus.length-1?'METHOD':`FOCUS ${String(i+1).padStart(2,'0')}`}</span><b>${esc(x)}</b></div>`).join('');
+home=home.replace(/<aside class="profile-data">[\s\S]*?<\/aside>/,`<aside class="profile-data">${focusHtml}</aside>`);
+home=home.replace(/<section class="statement">[\s\S]*?<\/section>/,`<section class="statement"><p>“${esc(profile.quote||'İklim politikası yalnızca çevre meselesi değildir. Ticaretin, güvenliğin ve diplomasinin yeniden kurulduğu alandır.')}”</p></section>`);
+home=home.replace(/<div class="socials">[\s\S]*?<\/div>/,`<div class="socials">${socials}</div>`);
+home=home.replace(/<div class="contact-foot">[\s\S]*?<\/div><\/section>/,`<div class="contact-foot"><span>${esc(profile.cv_status||'CV / PUBLIC VERSION IN PREPARATION')}</span><span>${esc(profile.availability||'AVAILABLE FOR SELECTED COLLABORATIONS')}</span></div></section>`);
+if(profile.seo_description)home=home.replace(/<meta name="description" content="[^"]*">/,`<meta name="description" content="${esc(profile.seo_description)}">`);
 const featured=[...pubs].filter(x=>x.featured).sort((a,b)=>String(b.date).localeCompare(String(a.date)))[0]||[...pubs].sort((a,b)=>String(b.date).localeCompare(String(a.date)))[0];
 if(featured){
   const href=featured.external_url||`yayinlar/${featured.slug}.html`;

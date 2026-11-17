@@ -9,3 +9,5 @@ const canvas=$('#routes'),ctx=canvas?.getContext('2d');let dots=[];function resi
 const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('seen')}),{threshold:.12});$$('.section').forEach(s=>obs.observe(s));
 
 $$('.coverage-node').forEach(n=>n.addEventListener('click',()=>{$$('.coverage-node,.coverage-detail').forEach(x=>x.classList.remove('active'));n.classList.add('active');const p=$(`.coverage-detail[data-panel="${n.dataset.topic}"]`);p?.classList.add('active');const count=p?.querySelectorAll('.coverage-links a').length||1;const cc=$('#coverage-count');if(cc)cc.textContent=String(count).padStart(2,'0')+' DOSYA'}));
+
+$$('.auto-map-node').forEach(n=>n.addEventListener('click',()=>{$$('.auto-map-node,.auto-map-panel').forEach(x=>x.classList.remove('active'));n.classList.add('active');const p=$(`.auto-map-panel[data-panel="${n.dataset.topic}"]`);p?.classList.add('active');const c=p?.querySelectorAll('.coverage-links a').length||0;const o=$('#coverage-count');if(o)o.textContent=String(c).padStart(2,'0')+' DOSYA'}));

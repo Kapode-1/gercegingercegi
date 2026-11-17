@@ -7,11 +7,9 @@ backend:
   use_graphql: true
 
 site_url: https://tayyip-minsin-policy-atlas.pages.dev
-display_url: https://tayyip-minsin-policy-atlas.pages.dev
 logo_url: /assets/tayyip-minsin-social.jpg
 locale: tr
 publish_mode: simple
-
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
@@ -30,111 +28,37 @@ collections:
             summary: "{{fields.title}} — {{fields.publisher}}"
             add_to_top: true
             fields:
-              - label: "Başlık"
-                name: "title"
-                widget: "string"
-
-              - label: "URL kısa adı"
-                name: "slug"
-                widget: "string"
-                hint: "Küçük harf ve boşluksuz yaz: ornek-yazi-basligi"
-
-              - label: "Yayıncı"
-                name: "publisher"
-                widget: "select"
-                options:
-                  - "ODAP"
-                  - "Objektürk"
-                  - "Kişisel Site"
-                  - "Diğer"
-
-              - label: "Dosya türü"
-                name: "type"
-                widget: "select"
-                options:
-                  - "Policy Brief"
-                  - "Analiz"
-                  - "Makale"
-                  - "Commentary"
-                  - "Climate File"
-
-              - label: "Yayın tarihi"
-                name: "date"
-                widget: "datetime"
-                format: "YYYY-MM-DD"
-                date_format: "DD.MM.YYYY"
-                time_format: false
-
-              - label: "Dil"
-                name: "language"
-                widget: "select"
-                options:
-                  - "TR"
-                  - "EN"
-
-              - label: "Bölge"
-                name: "region"
-                widget: "string"
-
-              - label: "Özet"
-                name: "summary"
-                widget: "text"
-
-              - label: "Kapak görseli"
-                name: "image"
-                widget: "image"
-                required: false
-
-              - label: "Dış bağlantı"
-                name: "external_url"
-                widget: "string"
-                required: false
-                hint: "Yazı başka bir sitede yayımlandıysa tam bağlantıyı gir."
-
-              - label: "Öne çıkar"
-                name: "featured"
-                widget: "boolean"
-                default: false
-
-              - label: "Tam metin"
-                name: "body"
-                widget: "markdown"
-                required: false
-
+              - {label: "Başlık", name: "title", widget: "string"}
+              - {label: "URL kısa adı", name: "slug", widget: "string", hint: "Küçük harf, boşluksuz: ornek-yazi-basligi"}
+              - {label: "Yayıncı", name: "publisher", widget: "select", options: ["ODAP", "Objektürk", "Kişisel Site", "Diğer"]}
+              - {label: "Dosya türü", name: "type", widget: "select", options: ["Policy Brief", "Analiz", "Makale", "Commentary", "Climate File"]}
+              - {label: "Yayın tarihi", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false}
+              - {label: "Dil", name: "language", widget: "select", options: ["TR", "EN"]}
+              - {label: "Bölge", name: "region", widget: "string"}
+              - {label: "Özet", name: "summary", widget: "text"}
+              - {label: "Kapak görseli", name: "image", widget: "image", required: false}
+              - {label: "Dış bağlantı", name: "external_url", widget: "string", required: false, hint: "Yazı başka sitede yayımlandıysa tam bağlantı"}
+              - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false}
+              - {label: "Tam metin", name: "body", widget: "markdown", required: false}
               - label: "Kaynakça"
                 name: "references"
                 widget: "list"
                 required: false
-                field:
-                  label: "Kaynak"
-                  name: "reference"
-                  widget: "string"
-
+                field: {label: "Kaynak", name: "reference", widget: "string"}
+              - {label: "Haritada göster", name: "show_on_map", widget: "boolean", default: true}
+              - {label: "Ana ülke / bölge", name: "primary_country", widget: "select", required: false, options: ["Türkiye", "Libya", "Körfez", "Suudi Arabistan", "Kolombiya", "İsrail / Kudüs", "Fas", "Batı Sahra", "Cezayir", "Nijer", "Çad", "İtalya", "Suriye", "Irak", "İran", "Mısır", "Ürdün", "Lübnan", "Katar", "BAE", "Kuveyt", "Yunanistan", "Brüksel / AB", "Panama"]}
+              - {label: "İlgili ülkeler", name: "related_countries", widget: "select", multiple: true, required: false, options: ["Türkiye", "Libya", "Körfez", "Suudi Arabistan", "Kolombiya", "İsrail / Kudüs", "Fas", "Batı Sahra", "Cezayir", "Nijer", "Çad", "İtalya", "Suriye", "Irak", "İran", "Mısır", "Ürdün", "Lübnan", "Katar", "BAE", "Kuveyt", "Yunanistan", "Brüksel / AB", "Panama"]}
+              - {label: "Harita paneli açıklaması", name: "map_description", widget: "text", required: false}
+              - {label: "Özel yatay konum (%)", name: "map_x", widget: "number", required: false, min: 0, max: 100, value_type: "float"}
+              - {label: "Özel dikey konum (%)", name: "map_y", widget: "number", required: false, min: 0, max: 100, value_type: "float"}
       - name: "profile"
         label: "Profil ve İletişim"
         file: "content/profile.json"
         format: "json"
         fields:
-          - label: "Kısa tanıtım"
-            name: "intro"
-            widget: "text"
-
-          - label: "Hakkımda"
-            name: "about"
-            widget: "markdown"
-
-          - label: "E-posta"
-            name: "email"
-            widget: "string"
-
-          - label: "Instagram"
-            name: "instagram"
-            widget: "string"
-
-          - label: "LinkedIn"
-            name: "linkedin"
-            widget: "string"
-
-          - label: "X"
-            name: "x"
-            widget: "string"
+          - {label: "Kısa tanıtım", name: "intro", widget: "text"}
+          - {label: "Hakkımda", name: "about", widget: "markdown"}
+          - {label: "E-posta", name: "email", widget: "string"}
+          - {label: "Instagram", name: "instagram", widget: "string"}
+          - {label: "LinkedIn", name: "linkedin", widget: "string"}
+          - {label: "X", name: "x", widget: "string"}

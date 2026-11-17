@@ -2,7 +2,7 @@ backend:
   name: github
   repo: Kapode-1/gercegingerçegi
   branch: main
-  base_url: https://TAYYIP-OAUTH-WORKER.workers.dev
+  base_url: base_url: https://tayyip-decap-oauth.mnsntayp.workers.dev
   auth_endpoint: auth
   use_graphql: true
 

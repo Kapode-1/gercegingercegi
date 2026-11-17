@@ -1,6 +1,9 @@
 {
   "items": [
     {
+      "related_countries": [
+        "Türkiye"
+      ],
       "body": "\nBu metin admin panelinden yayımlandı ve Cloudflare tarafından otomatik olarak sayfaya dönüştürüldü.",
       "summary": "Admin panelinden otomatik yayın sisteminin test kaydıdır.",
       "slug": "v8-yayin-testi",

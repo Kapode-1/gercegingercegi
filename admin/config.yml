@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: Kapode-1/gercegingerçegi
+  repo: Kapode-1/gercegingercegi
   branch: main
   base_url: https://tayyip-decap-oauth.mnsntayp.workers.dev
   auth_endpoint: auth

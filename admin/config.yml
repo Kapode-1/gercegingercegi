@@ -56,27 +56,28 @@ collections:
         file: "content/profile.json"
         format: "json"
         fields:
-          - {label: "Ana unvan", name: "job_title", widget: "string", default: "İklim ve Enerji Politikaları Araştırmacısı"}
-          - {label: "Kurum / eğitim satırı", name: "affiliation", widget: "string", default: "İÜ Siyaset Bilimi ve Uluslararası İlişkiler"}
-          - {label: "Kısa tanıtım", name: "intro", widget: "text"}
-          - {label: "Hakkımda", name: "about", widget: "markdown"}
+          - {label: "Ana unvan", name: "job_title", widget: "string", default: "İklim ve Enerji Politikaları Araştırmacısı", required: false}
+          - {label: "Kurum / eğitim satırı", name: "affiliation", widget: "string", default: "İÜ Siyaset Bilimi ve Uluslararası İlişkiler", required: false}
+          - {label: "Kısa tanıtım", name: "intro", widget: "text", required: false}
+          - {label: "Hakkımda", name: "about", widget: "markdown", required: false}
           - label: "Araştırma odakları"
             name: "focus_areas"
             widget: "list"
-            min: 1
+            min: 0
+            required: false
             max: 6
             field: {label: "Odak", name: "focus", widget: "string"}
           - {label: "Profil fotoğrafı", name: "portrait", widget: "image", required: false, default: "/assets/tayyip-minsin-portrait.jpg"}
-          - {label: "Konum etiketi", name: "location", widget: "string", default: "İSTANBUL"}
-          - {label: "Portre alt etiketi", name: "portrait_note", widget: "string", default: "RESEARCH • WRITING • DIPLOMACY"}
-          - {label: "Manifesto üst etiketi", name: "manifesto_kicker", widget: "string", default: "POLICY / STRATEGY / GOVERNANCE"}
-          - {label: "Manifesto cümlesi", name: "manifesto", widget: "text"}
-          - {label: "Ana alıntı", name: "quote", widget: "text"}
-          - {label: "E-posta", name: "email", widget: "string"}
+          - {label: "Konum etiketi", name: "location", widget: "string", default: "İSTANBUL", required: false}
+          - {label: "Portre alt etiketi", name: "portrait_note", widget: "string", default: "RESEARCH • WRITING • DIPLOMACY", required: false}
+          - {label: "Manifesto üst etiketi", name: "manifesto_kicker", widget: "string", default: "POLICY / STRATEGY / GOVERNANCE", required: false}
+          - {label: "Manifesto cümlesi", name: "manifesto", widget: "text", required: false}
+          - {label: "Ana alıntı", name: "quote", widget: "text", required: false}
+          - {label: "E-posta", name: "email", widget: "string", required: false}
           - {label: "Instagram", name: "instagram", widget: "string", required: false}
           - {label: "LinkedIn", name: "linkedin", widget: "string", required: false}
           - {label: "X", name: "x", widget: "string", required: false}
           - {label: "Objektürk profili", name: "objekturk", widget: "string", required: false}
-          - {label: "CV durumu", name: "cv_status", widget: "string", default: "CV / PUBLIC VERSION IN PREPARATION"}
-          - {label: "İş birliği durumu", name: "availability", widget: "string", default: "AVAILABLE FOR SELECTED COLLABORATIONS"}
+          - {label: "CV durumu", name: "cv_status", widget: "string", default: "CV / PUBLIC VERSION IN PREPARATION", required: false}
+          - {label: "İş birliği durumu", name: "availability", widget: "string", default: "AVAILABLE FOR SELECTED COLLABORATIONS", required: false}
           - {label: "Google açıklaması", name: "seo_description", widget: "text", required: false}

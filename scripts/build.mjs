@@ -63,3 +63,23 @@ const ns=regs.map((r,i)=>`<button class="coverage-node auto-map-node ${i?'':'act
 const ps=regs.map((r,i)=>`<article class="coverage-detail auto-map-panel ${i?'':'active'}" data-panel="m-${slug(r.name)}"><p class="micro">PUBLISHED ANALYSIS / ${esc(r.name)}</p><h3>${esc(r.label||r.name)}</h3><p>${esc(r.description||'İlgili analiz dosyaları.')}</p><div class="coverage-links">${r.links.map(l=>`<a href="${esc(l.href)}">${esc(l.title)} →</a>`).join('')}</div></article>`).join('');
 const mapHtml=`<div class="atlas-stage atlas-stage-expanded"><div class="map-frame coverage-map"><img src="assets/policy-atlas.png" alt="Yayın coğrafyası"><div class="map-grid"></div><div class="map-caption"><span>AUTOMATIC PUBLICATION MAP</span><b>${regs.length} ÜLKE / BÖLGE</b></div>${ns}</div><div class="coverage-panel"><div class="coverage-head"><span>REGIONAL INDEX</span><b id="coverage-count">${String(regs[0]?.links.length||0).padStart(2,'0')} DOSYA</b></div>${ps}</div></div>`;
 const a0=home.indexOf('<div class="atlas-stage'),b0=home.indexOf('<section id="briefs"',a0);if(a0>=0&&b0>a0){home=home.slice(0,a0)+mapHtml+'\n</section>\n'+home.slice(b0);await fs.writeFile(path.join(dist,'index.html'),home)}
+
+// V11 SEO and social sharing post-processing
+const absolute=(u)=>{if(!u)return `${base}/assets/tayyip-minsin-social.jpg`;if(/^https?:\/\//.test(u))return u;return `${base}${u.startsWith('/')?'':'/'}${u}`};
+const injectHead=(html,{title,description,canonical,image,type='article',indexable=true,published})=>{
+ const cleanTitle=esc(title||'Tayyip Minsin | Policy Atlas');
+ const cleanDesc=esc(String(description||'').slice(0,170));
+ const canon=esc(canonical);
+ const img=esc(absolute(image));
+ const robots=indexable===false?'noindex,follow':'index,follow,max-image-preview:large';
+ let tags=`<link rel="canonical" href="${canon}"><meta name="robots" content="${robots}"><meta property="og:type" content="${type}"><meta property="og:title" content="${cleanTitle}"><meta property="og:description" content="${cleanDesc}"><meta property="og:url" content="${canon}"><meta property="og:image" content="${img}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${cleanTitle}"><meta name="twitter:description" content="${cleanDesc}"><meta name="twitter:image" content="${img}">`;
+ if(published)tags+=`<meta property="article:published_time" content="${esc(published)}">`;
+ html=html.replace(/<title>[\s\S]*?<\/title>/,`<title>${cleanTitle}</title>`);
+ html=html.replace('</head>',`${tags}</head>`);
+ return html;
+};
+let finalHome=await fs.readFile(path.join(dist,'index.html'),'utf8');
+if(!finalHome.includes('twitter:card')){finalHome=injectHead(finalHome,{title:`Tayyip Minsin | ${profile.job_title||'Policy Atlas'}`,description:profile.seo_description||profile.intro,canonical:`${base}/`,image:profile.social_image||'/assets/tayyip-minsin-social.jpg',type:'website'});await fs.writeFile(path.join(dist,'index.html'),finalHome)}
+let finalArchive=await fs.readFile(path.join(dist,'yayinlar.html'),'utf8');
+finalArchive=injectHead(finalArchive,{title:'Yayınlar | Tayyip Minsin',description:'İklim politikaları, enerji güvenliği, Ortadoğu jeopolitiği ve diplomasi üzerine analizler.',canonical:`${base}/yayinlar.html`,image:profile.social_image||'/assets/tayyip-minsin-social.jpg',type:'website'});await fs.writeFile(path.join(dist,'yayinlar.html'),finalArchive);
+for(const x of sorted){if(x.external_url&&!x.body)continue;const file=path.join(dist,'yayinlar',`${x.slug}.html`);let h=await fs.readFile(file,'utf8');const canonical=x.canonical_url||`${base}/yayinlar/${x.slug}.html`;h=injectHead(h,{title:x.seo_title||`${x.title} | Tayyip Minsin`,description:x.seo_description||x.summary,canonical,image:x.social_image||x.image||profile.social_image,indexable:x.indexable!==false,published:x.date});const ld={"@context":"https://schema.org","@type":"Article","headline":x.title,"description":x.seo_description||x.summary,"datePublished":x.date,"inLanguage":x.language==='EN'?'en':'tr',"author":{"@type":"Person","name":"Tayyip Minsin","url":`${base}/`},"publisher":{"@type":"Organization","name":x.publisher||'Tayyip Minsin Policy Atlas'},"mainEntityOfPage":canonical,"image":[absolute(x.social_image||x.image||profile.social_image)]};h=h.replace('</head>',`<script type="application/ld+json">${JSON.stringify(ld).replace(/</g,'\\u003c')}</script></head>`);await fs.writeFile(file,h)}

@@ -4,7 +4,7 @@
       "body": "\nBu metin admin panelinden yayımlandı ve Cloudflare tarafından otomatik olarak sayfaya dönüştürüldü.",
       "summary": "Admin panelinden otomatik yayın sisteminin test kaydıdır.",
       "slug": "v8-yayin-testi",
-      "featured": false,
+      "featured": true,
       "date": "2026-11-17",
       "region": "Türkiye",
       "title": "V8 Yayın Testi",

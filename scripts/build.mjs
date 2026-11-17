@@ -83,3 +83,18 @@ if(!finalHome.includes('twitter:card')){finalHome=injectHead(finalHome,{title:`T
 let finalArchive=await fs.readFile(path.join(dist,'yayinlar.html'),'utf8');
 finalArchive=injectHead(finalArchive,{title:'Yayınlar | Tayyip Minsin',description:'İklim politikaları, enerji güvenliği, Ortadoğu jeopolitiği ve diplomasi üzerine analizler.',canonical:`${base}/yayinlar.html`,image:profile.social_image||'/assets/tayyip-minsin-social.jpg',type:'website'});await fs.writeFile(path.join(dist,'yayinlar.html'),finalArchive);
 for(const x of sorted){if(x.external_url&&!x.body)continue;const file=path.join(dist,'yayinlar',`${x.slug}.html`);let h=await fs.readFile(file,'utf8');const canonical=x.canonical_url||`${base}/yayinlar/${x.slug}.html`;h=injectHead(h,{title:x.seo_title||`${x.title} | Tayyip Minsin`,description:x.seo_description||x.summary,canonical,image:x.social_image||x.image||profile.social_image,indexable:x.indexable!==false,published:x.date});const ld={"@context":"https://schema.org","@type":"Article","headline":x.title,"description":x.seo_description||x.summary,"datePublished":x.date,"inLanguage":x.language==='EN'?'en':'tr',"author":{"@type":"Person","name":"Tayyip Minsin","url":`${base}/`},"publisher":{"@type":"Organization","name":x.publisher||'Tayyip Minsin Policy Atlas'},"mainEntityOfPage":canonical,"image":[absolute(x.social_image||x.image||profile.social_image)]};h=h.replace('</head>',`<script type="application/ld+json">${JSON.stringify(ld).replace(/</g,'\\u003c')}</script></head>`);await fs.writeFile(file,h)}
+
+
+// V13 performance and accessibility post-processing
+async function optimizeHtmlFileV13(file){
+ let h=await fs.readFile(file,'utf8');
+ h=h.replaceAll('policy-atlas.png','policy-atlas.webp').replaceAll('tayyip-minsin-portrait.jpg','tayyip-minsin-portrait.webp');
+ h=h.replace(/<img class="hero-map"([^>]*?)>/,`<img class="hero-map"$1 width="1600" height="1024" fetchpriority="high" decoding="async">`);
+ h=h.replace(/<div class="portrait-frame"><img([^>]*?)>/,`<div class="portrait-frame"><img$1 width="900" height="1200" loading="lazy" decoding="async">`);
+ h=h.replace(/<button class="coverage-node auto-map-node ([^"]*)" data-topic="([^"]+)" style="([^"]+)"><i><\/i><span>([^<]+)<\/span><\/button>/g,`<button class="coverage-node auto-map-node $1" data-topic="$2" style="$3" aria-label="$4 bölgesindeki analizleri göster" title="$4"><i aria-hidden="true"></i><span>$4</span></button>`);
+ h=h.replace('<script src="assets/atlas.js"></script>','<script src="assets/atlas.js" defer></script>');
+ await fs.writeFile(file,h);
+}
+await optimizeHtmlFileV13(path.join(dist,'index.html'));
+for(const name of ['yayinlar.html','odap.html','404.html']){try{await optimizeHtmlFileV13(path.join(dist,name))}catch{}}
+for(const dir of ['yayinlar','odap']){try{for(const n of await fs.readdir(path.join(dist,dir)))if(n.endsWith('.html'))await optimizeHtmlFileV13(path.join(dist,dir,n))}catch{}}

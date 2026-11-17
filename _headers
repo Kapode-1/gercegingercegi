@@ -19,3 +19,11 @@
 /robots.txt
   Content-Type: text/plain; charset=utf-8
   Cache-Control: public, max-age=300
+
+/assets/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.css
+  Cache-Control: public, max-age=604800
+/assets/*.js
+  Cache-Control: public, max-age=604800
+

@@ -256,3 +256,6 @@
     justify-content: center;
   }
 }
+
+/* V13 accessibility */
+.manifesto-lead>p,.profile-data span{color:#854124}.rail,.record-code,.quote-index,.quote-meta{color:#425653}.briefs .overline,.briefs .micro,.briefs .stamp{color:#70241f}.coverage-head,.coverage-head b{color:#d6bf93}.policy-file .stamp{color:#70241f;border-color:#70241f;opacity:1}:focus-visible{outline:3px solid #d6bf93;outline-offset:4px}.coverage-node:focus-visible{border-radius:3px}.boot{transition:opacity .45s ease}.boot.done{opacity:0;visibility:hidden}@media(prefers-reduced-motion:reduce){.boot{display:none!important}}

@@ -147,3 +147,25 @@ if(contactEnabled)contactHtml=contactHtml.replace('</body>',`<script>(()=>{const
 await fs.writeFile(path.join(dist,'index.html'),contactHtml);
 
 
+// V18.4 Build a complete AI index from static ODAP articles and admin publications
+const stripTags=s=>String(s||'').replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/\s+/g,' ').trim();
+const pick=(html,re)=>html.match(re)?.[1]?.trim()||'';
+const aiItems=[...sorted];
+try{
+ const odapDir=path.join(dist,'odap');
+ for(const file of await fs.readdir(odapDir)){
+  if(!file.endsWith('.html'))continue;
+  const html=await fs.readFile(path.join(odapDir,file),'utf8');
+  const title=stripTags(pick(html,/<h1[^>]*>([\s\S]*?)<\/h1>/i)||pick(html,/<title>([\s\S]*?)<\/title>/i));
+  const description=pick(html,/<meta\s+name="description"\s+content="([^"]*)"/i)||pick(html,/<meta\s+content="([^"]*)"\s+name="description"/i);
+  const article=pick(html,/<article[^>]*class="[^"]*(?:article-body|odap-article-body)[^"]*"[^>]*>([\s\S]*?)<\/article>/i)||pick(html,/<main[^>]*>([\s\S]*?)<\/main>/i);
+  const body=stripTags(article).slice(0,24000);
+  const lang=(html.match(/<html[^>]+lang="([^"]+)"/i)?.[1]||'tr').toUpperCase().startsWith('EN')?'EN':'TR';
+  const canonical=pick(html,/<link\s+rel="canonical"\s+href="([^"]+)"/i)||`${base}/odap/${file}`;
+  if(title&&body)aiItems.push({title,slug:file.replace(/\.html$/,''),publisher:'ODAP',type:'Analiz',language:lang,region:'Policy Atlas / ODAP',summary:description||body.slice(0,420),body,external_url:canonical});
+ }
+}catch(e){console.warn('ODAP AI index warning:',e.message)}
+await fs.mkdir(path.join(dist,'content'),{recursive:true});
+await fs.writeFile(path.join(dist,'content','ai-index.json'),JSON.stringify({generated_at:new Date().toISOString(),count:aiItems.length,items:aiItems},null,2));
+console.log(`AI index built with ${aiItems.length} records.`);
+

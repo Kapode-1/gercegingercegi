@@ -39,6 +39,9 @@ collections:
               - {label: "Kapak görseli", name: "image", widget: "image", required: false}
               - {label: "Dış bağlantı", name: "external_url", widget: "string", required: false, hint: "Yazı başka sitede yayımlandıysa tam bağlantı"}
               - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false}
+              - {label: "Yorumları aç", name: "comments_enabled", widget: "boolean", default: true, required: false}
+              - {label: "Yorum bölümü başlığı", name: "comments_title", widget: "string", default: "Tartışma / Okur Notları", required: false}
+              - {label: "Yorum çağrısı", name: "comments_intro", widget: "text", default: "Bu analiz hakkında düşünceni paylaş. Katkıların konuya ilişkin ve saygılı olmasını rica ederim.", required: false}
               - {label: "Tam metin", name: "body", widget: "markdown", required: false}
               - label: "Kaynakça"
                 name: "references"

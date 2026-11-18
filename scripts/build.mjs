@@ -145,3 +145,20 @@ contactHtml=contactHtml.replace(/<a class="mail"[\s\S]*?<\/a><div class="socials
 if(contactEnabled&&!contactHtml.includes('challenges.cloudflare.com/turnstile'))contactHtml=contactHtml.replace('</head>','<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script></head>');
 if(contactEnabled)contactHtml=contactHtml.replace('</body>',`<script>(()=>{const f=document.getElementById('policy-contact-form'),s=document.getElementById('contact-status');if(!f)return;f.addEventListener('submit',async e=>{e.preventDefault();if(f.website.value)return;s.textContent='Gönderiliyor…';const b=f.querySelector('button[type=submit]');b.disabled=true;try{const r=await fetch(f.action,{method:'POST',body:new FormData(f),headers:{Accept:'application/json'}});if(r.ok){f.reset();if(window.turnstile)turnstile.reset();s.textContent=${JSON.stringify(profile.contact_success_message||'Mesajın ulaştı. En kısa sürede dönüş yapacağım.')};}else{const j=await r.json().catch(()=>({}));s.textContent=j?.errors?.map(x=>x.message).join(', ')||'Mesaj gönderilemedi. Lütfen daha sonra yeniden dene.'}}catch{s.textContent='Bağlantı kurulamadı. Lütfen e-posta üzerinden ulaş.'}finally{b.disabled=false}})})();</script></body>`);
 await fs.writeFile(path.join(dist,'index.html'),contactHtml);
+
+// V16 Giscus comments for personal publication pages
+const giscusConfig={repo:'Kapode-1/policy-atlas-comments',repoId:'R_kgDOVykIFA',category:'Announcements',categoryId:'DIC_kwDOVykIFM4DLY9e'};
+for(const publication of sorted){
+  if(publication.comments_enabled===false) continue;
+  if(publication.external_url&&!publication.body) continue;
+  const commentFile=path.join(dist,'yayinlar',`${publication.slug}.html`);
+  try{
+    let commentHtml=await fs.readFile(commentFile,'utf8');
+    if(commentHtml.includes('class="giscus-comments"')) continue;
+    const title=publication.comments_title||'Tartışma / Okur Notları';
+    const intro=publication.comments_intro||'Bu analiz hakkında düşünceni paylaş. Katkıların konuya ilişkin ve saygılı olmasını rica ederim.';
+    const comments=`<section class="giscus-comments" aria-labelledby="comments-${esc(publication.slug)}"><div class="comments-head"><p class="micro">PUBLIC DISCUSSION / GITHUB</p><h2 id="comments-${esc(publication.slug)}">${esc(title)}</h2><p>${esc(intro)}</p></div><div class="giscus"></div><script src="https://giscus.app/client.js" data-repo="${giscusConfig.repo}" data-repo-id="${giscusConfig.repoId}" data-category="${giscusConfig.category}" data-category-id="${giscusConfig.categoryId}" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="1" data-input-position="top" data-theme="transparent_dark" data-lang="tr" data-loading="lazy" crossorigin="anonymous" async></script><noscript>Yorumları görüntülemek için JavaScript etkin olmalıdır.</noscript></section>`;
+    commentHtml=commentHtml.replace('</main>',comments+'</main>');
+    await fs.writeFile(commentFile,commentHtml);
+  }catch{}
+}

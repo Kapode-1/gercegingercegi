@@ -1,0 +1,3 @@
+
+/* V16 Giscus comments */
+.giscus-comments{background:var(--abyss);color:var(--ivory);padding:90px 7vw 120px;border-top:1px solid var(--line)}.comments-head{max-width:900px;margin:0 auto 45px;text-align:center}.comments-head .micro{color:var(--copper)}.comments-head h2{font:500 clamp(48px,7vw,92px)/.9 var(--serif);letter-spacing:-.05em;margin:22px 0}.comments-head>p:last-child{max-width:680px;margin:0 auto;color:#b8c2bf;font:18px/1.55 var(--serif)}.giscus{max-width:980px;margin:0 auto}.giscus-frame{color-scheme:dark}@media(max-width:700px){.giscus-comments{padding:70px 18px 90px}.comments-head h2{font-size:52px}.comments-head>p:last-child{font-size:16px}}

@@ -1,26 +1,6 @@
 {
   "items": [
     {
-      "related_countries": [
-        "Türkiye"
-      ],
-      "body": "\nBu metin admin panelinden yayımlandı ve Cloudflare tarafından otomatik olarak sayfaya dönüştürüldü.",
-      "summary": "Admin panelinden otomatik yayın sisteminin test kaydıdır.",
-      "slug": "v8-yayin-testi",
-      "featured": true,
-      "date": "2026-11-17",
-      "region": "Türkiye",
-      "seo_title": "V8 Yayın Testi",
-      "comments_enabled": true,
-      "title": "V8 Yayın Testi",
-      "language": "TR",
-      "primary_country": "Yunanistan",
-      "seo_description": "V8 Yayın Testi",
-      "type": "Analiz",
-      "publisher": "Kişisel Site",
-      "show_on_map": true
-    },
-    {
       "body": "",
       "summary": "Türkiye'nin Körfez'deki değişen rolünü savunma iş birlikleri, güvenlik mimarisi ve stratejik özerklik bağlamında ele alan analiz.",
       "references": [],

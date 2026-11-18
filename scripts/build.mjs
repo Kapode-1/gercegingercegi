@@ -112,3 +112,15 @@ const recordsMarker='<section id="records"';
 if(dispatchHome.includes(recordsMarker)&&!dispatchHome.includes('id="dispatches"'))dispatchHome=dispatchHome.replace(recordsMarker,dispatches+'\n'+recordsMarker);
 if(!dispatchHome.includes('platform.twitter.com/widgets.js'))dispatchHome=dispatchHome.replace('</body>','<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></body>');
 await fs.writeFile(path.join(dist,'index.html'),dispatchHome);
+
+
+// V14.1 X timeline compatibility fix
+// X profile links are normalized to twitter.com because widgets.js still resolves profile timelines through the legacy embed endpoint.
+let xFixed=await fs.readFile(path.join(dist,'index.html'),'utf8');
+const configuredX=profile.x||'https://x.com/MinsinIR';
+const xUser=(configuredX.match(/(?:x\.com|twitter\.com)\/([^/?#]+)/i)?.[1]||'MinsinIR').replace(/^@/,'');
+const legacyTimeline=`https://twitter.com/${xUser}`;
+xFixed=xFixed.replace(/<a class="twitter-timeline"[\s\S]*?<\/a>/,`<a class="twitter-timeline" data-theme="dark" data-chrome="noheader nofooter noborders transparent" data-tweet-limit="4" data-dnt="true" href="${legacyTimeline}">Posts by @${xUser}</a>`);
+xFixed=xFixed.replace(/<script async src="https:\/\/platform\.twitter\.com\/widgets\.js"[^>]*><\/script>/g,'');
+xFixed=xFixed.replace('</body>',`<script>window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";js.async=true;fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f)};return t}(document,"script","twitter-wjs"));</script></body>`);
+await fs.writeFile(path.join(dist,'index.html'),xFixed);

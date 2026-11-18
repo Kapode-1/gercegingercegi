@@ -1,0 +1,29 @@
+
+// V19 - Dosyayı 60 Saniyede Anla
+const plainWords=s=>String(s||'').replace(/[#*_>`~\[\]()]/g,' ').replace(/\s+/g,' ').trim().split(' ').filter(Boolean);
+for(const publication of sorted){
+  if(publication.external_url&&!publication.body) continue;
+  const articleFile=path.join(dist,'yayinlar',`${publication.slug}.html`);
+  try{
+    let articleHtml=await fs.readFile(articleFile,'utf8');
+    if(articleHtml.includes('class="sixty-summary"')) continue;
+    const wordCount=plainWords(publication.body).length;
+    const readingTime=Math.max(1,Math.ceil(wordCount/(publication.language==='EN'?220:200)));
+    const actors=Array.isArray(publication.key_actors)?publication.key_actors:[];
+    const concepts=Array.isArray(publication.key_concepts)?publication.key_concepts:[];
+    const hasSummary=publication.quick_summary||publication.what_happened||publication.why_it_matters||publication.watch_next||actors.length||concepts.length;
+    if(!hasSummary) continue;
+    const row=(label,value,cls='')=>value?`<div class="sixty-row ${cls}"><span>${label}</span><p>${esc(value)}</p></div>`:'';
+    const pills=(label,items)=>items.length?`<div class="sixty-row sixty-pills"><span>${label}</span><div>${items.map(x=>`<b>${esc(typeof x==='string'?x:(x.actor||x.concept||''))}</b>`).join('')}</div></div>`:'';
+    const box=`<section class="sixty-summary" aria-labelledby="sixty-${esc(publication.slug)}"><header><div><p class="micro">EXECUTIVE BRIEF / 60 SECONDS</p><h2 id="sixty-${esc(publication.slug)}">Dosyayı 60 Saniyede Anla</h2></div><div class="sixty-meta"><span><b>${readingTime}</b> DK OKUMA</span><span><b>${esc(publication.depth||'ANALİZ')}</b> DOSYA DERİNLİĞİ</span><span><b>${esc(publication.language||'TR')}</b> DİL</span></div></header>${publication.quick_summary?`<p class="sixty-lead">${esc(publication.quick_summary)}</p>`:''}<div class="sixty-grid">${row('NE OLDU?',publication.what_happened)}${row('NEDEN ÖNEMLİ?',publication.why_it_matters)}${row('TAKİP EDİLMESİ GEREKEN',publication.watch_next,'sixty-wide')}${pills('ANA AKTÖRLER',actors)}${pills('TEMEL KAVRAMLAR',concepts)}</div><a class="sixty-read" href="#full-analysis">TAM ANALİZE GEÇ ↓</a></section>`;
+    articleHtml=articleHtml.replace('<section class="article-layout">','<section class="article-layout" id="full-analysis">');
+    articleHtml=articleHtml.replace('<section class="article-layout" id="full-analysis">',box+'<section class="article-layout" id="full-analysis">');
+    await fs.writeFile(articleFile,articleHtml);
+  }catch(e){console.warn('60-second summary warning:',publication.slug,e.message)}
+}
+// Public launch: ensure AI is discoverable in homepage menu.
+let launchNav=await fs.readFile(path.join(dist,'index.html'),'utf8');
+if(!launchNav.includes('href="ask.html"')&&!launchNav.includes('href="/ask.html"')){
+  launchNav=launchNav.replace('</nav>',`<a href="/ask.html"><b>AI</b>Atlas’a Sor</a></nav>`);
+  await fs.writeFile(path.join(dist,'index.html'),launchNav);
+}

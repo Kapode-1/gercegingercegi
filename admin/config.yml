@@ -39,6 +39,23 @@ collections:
               - {label: "Kapak görseli", name: "image", widget: "image", required: false}
               - {label: "Dış bağlantı", name: "external_url", widget: "string", required: false, hint: "Yazı başka sitede yayımlandıysa tam bağlantı"}
               - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false}
+              - {label: "Kısa dosya özeti", name: "quick_summary", widget: "text", required: false, hint: "Yazının ana tezini 2–3 cümlede özetleyin."}
+              - {label: "Ne oldu?", name: "what_happened", widget: "text", required: false}
+              - {label: "Neden önemli?", name: "why_it_matters", widget: "text", required: false}
+              - {label: "Takip edilmesi gereken", name: "watch_next", widget: "text", required: false}
+              - {label: "Dosya derinliği", name: "depth", widget: "select", required: false, default: "ANALİZ", options: ["KISA DEĞERLENDİRME", "ANALİZ", "DERİNLEMESİNE İNCELEME", "POLİTİKA NOTU"]}
+              - label: "Ana aktörler"
+                name: "key_actors"
+                widget: "list"
+                required: false
+                max: 8
+                field: {label: "Aktör", name: "actor", widget: "string"}
+              - label: "Temel kavramlar"
+                name: "key_concepts"
+                widget: "list"
+                required: false
+                max: 8
+                field: {label: "Kavram", name: "concept", widget: "string"}
               - {label: "Tam metin", name: "body", widget: "markdown", required: false}
               - label: "Kaynakça"
                 name: "references"

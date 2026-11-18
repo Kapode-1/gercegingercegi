@@ -178,3 +178,23 @@ if(aiLaunchHome.includes(contactMarker)&&!aiLaunchHome.includes('id="policy-atla
 aiLaunchHome=aiLaunchHome.replace(/<a href="\/ask\.html"[^>]*>[^<]*<\/a>/g,'');
 await fs.writeFile(path.join(dist,'index.html'),aiLaunchHome);
 
+
+
+// V19.1 Mobile cache-busting for CSS and JavaScript
+// A fresh version query is added to local CSS/JS references on every build.
+const assetVersion=Date.now().toString(36);
+async function bustHtmlAssets(file){
+  let html=await fs.readFile(file,'utf8');
+  html=html.replace(/(["'])(\.\.\/|\/|)assets\/atlas\.css(?:\?v=[^"']*)?\1/g,(_,q,prefix)=>`${q}${prefix}assets/atlas.css?v=${assetVersion}${q}`);
+  html=html.replace(/(["'])(\.\.\/|\/|)assets\/atlas\.js(?:\?v=[^"']*)?\1/g,(_,q,prefix)=>`${q}${prefix}assets/atlas.js?v=${assetVersion}${q}`);
+  await fs.writeFile(file,html);
+}
+async function walkHtml(dir){
+  for(const entry of await fs.readdir(dir,{withFileTypes:true})){
+    const full=path.join(dir,entry.name);
+    if(entry.isDirectory())await walkHtml(full);
+    else if(entry.name.endsWith('.html'))await bustHtmlAssets(full);
+  }
+}
+await walkHtml(dist);
+console.log(`Asset cache version: ${assetVersion}`);

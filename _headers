@@ -10,3 +10,17 @@
 /admin/*
   Cross-Origin-Opener-Policy: same-origin-allow-popups
   Content-Security-Policy: default-src 'self'; script-src 'self' https://unpkg.com https://cdn.jsdelivr.net 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https://api.github.com https://*.githubusercontent.com https://unpkg.com https://cdn.jsdelivr.net https://tayyip-decap-oauth.mnsntayp.workers.dev; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
+
+
+# V19.1 - HTML and mutable assets must revalidate
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*.js
+  Cache-Control: public, max-age=0, must-revalidate

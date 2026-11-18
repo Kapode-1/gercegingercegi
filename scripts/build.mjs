@@ -124,3 +124,13 @@ xFixed=xFixed.replace(/<a class="twitter-timeline"[\s\S]*?<\/a>/,`<a class="twit
 xFixed=xFixed.replace(/<script async src="https:\/\/platform\.twitter\.com\/widgets\.js"[^>]*><\/script>/g,'');
 xFixed=xFixed.replace('</body>',`<script>window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";js.async=true;fjs.parentNode.insertBefore(js,fjs);t._e=[];t.ready=function(f){t._e.push(f)};return t}(document,"script","twitter-wjs"));</script></body>`);
 await fs.writeFile(path.join(dist,'index.html'),xFixed);
+
+
+// V14.3 LinkedIn-only Social Dispatches
+let linkedinOnly=await fs.readFile(path.join(dist,'index.html'),'utf8');
+const socialData=(socialFile.items||[]).filter(x=>x.visible!==false&&(!x.platform||x.platform==='LinkedIn')).sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,8);
+const liCard=x=>`<article class="dispatch-card linkedin"><a class="dispatch-fallback" href="${esc(x.url)}" target="_blank" rel="noopener"><span>LINKEDIN / ${esc(x.date||'')}</span><h3>${esc(x.title||'LinkedIn gönderisi')}</h3>${x.summary?`<p>${esc(x.summary)}</p>`:''}<b>LINKEDIN’DE AÇ ↗</b></a></article>`;
+const linkedinSection=`<section id="dispatches" class="dispatches section linkedin-only" data-section="04"><div class="rail"><span>04</span><span>SOCIAL / DISPATCHES</span></div><header class="dispatch-head"><p class="overline">FIELD NOTES / LINKEDIN</p><h2>Güncel<br><i>Notlar</i></h2><p>LinkedIn üzerinden paylaşılan kısa değerlendirmeler, saha notları ve güncel çalışmalar.</p></header><div class="linkedin-only-head"><span>LINKEDIN / SELECTED</span><a href="${esc(profile.linkedin||'https://www.linkedin.com/in/tayyip-minsin')}" target="_blank" rel="noopener">PROFİLİ AÇ ↗</a></div><div class="linkedin-only-grid">${socialData.length?socialData.map(liCard).join(''):'<div class="dispatch-empty"><p>Seçilmiş LinkedIn gönderileri yakında burada.</p></div>'}</div></section>`;
+linkedinOnly=linkedinOnly.replace(/<section id="dispatches"[\s\S]*?<section id="records"/,linkedinSection+'\n<section id="records"');
+linkedinOnly=linkedinOnly.replace(/<script[^>]*platform\.twitter\.com\/widgets\.js[\s\S]*?<\/script>/g,'').replace(/<script>window\.twttr=[\s\S]*?<\/script>/g,'');
+await fs.writeFile(path.join(dist,'index.html'),linkedinOnly);

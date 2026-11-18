@@ -81,6 +81,11 @@ collections:
           - {label: "CV durumu", name: "cv_status", widget: "string", default: "CV / PUBLIC VERSION IN PREPARATION", required: false}
           - {label: "İş birliği durumu", name: "availability", widget: "string", default: "AVAILABLE FOR SELECTED COLLABORATIONS", required: false}
           - {label: "Google açıklaması", name: "seo_description", widget: "text", required: false}
+          - {label: "İletişim formu aktif", name: "contact_form_enabled", widget: "boolean", required: false, default: false}
+          - {label: "Formspree Form ID", name: "formspree_form_id", widget: "string", required: false, hint: "Örnek: xabcdeyz. Yalnızca ID; tam URL değil."}
+          - {label: "Turnstile Site Key", name: "turnstile_site_key", widget: "string", required: false, hint: "Cloudflare Turnstile public site key. Secret key buraya yazılmaz."}
+          - {label: "Form başarı mesajı", name: "contact_success_message", widget: "string", required: false, default: "Mesajın ulaştı. En kısa sürede dönüş yapacağım."}
+          - {label: "KVKK / aydınlatma kısa metni", name: "contact_privacy_text", widget: "text", required: false, default: "Paylaştığım bilgilerin yalnızca bu iletişim talebine yanıt verilmesi amacıyla işlenmesini kabul ediyorum."}
 
       - name: "social_dispatches"
         label: "LinkedIn Gönderileri"

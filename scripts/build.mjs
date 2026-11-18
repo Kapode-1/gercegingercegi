@@ -169,3 +169,12 @@ await fs.mkdir(path.join(dist,'content'),{recursive:true});
 await fs.writeFile(path.join(dist,'content','ai-index.json'),JSON.stringify({generated_at:new Date().toISOString(),count:aiItems.length,items:aiItems},null,2));
 console.log(`AI index built with ${aiItems.length} records.`);
 
+
+// V18.6 Homepage AI launch section
+let aiLaunchHome=await fs.readFile(path.join(dist,'index.html'),'utf8');
+const aiLaunch=`<section id="policy-atlas-ai" class="ai-launch section" data-section="05"><div class="rail"><span>05</span><span>AI / RESEARCH ASSISTANT</span></div><div class="ai-launch-copy"><p class="overline">SOURCE-GROUNDED RESEARCH ASSISTANT / BETA</p><h2>Atlas’a<br><i>Sor</i></h2><p>Policy Atlas arşivindeki analizleri karşılaştır, ilgili yayınları keşfet veya canlı web kaynaklarıyla birlikte güncel bağlamı araştır.</p><div class="ai-launch-actions"><a href="/ask.html?mode=atlas">YALNIZCA ATLAS’TA ARA →</a><a href="/ask.html?mode=web">ATLAS + WEB →</a></div><div class="ai-launch-chips"><span>KAYNAKLI YANITLAR</span><span>10+ YAYIN</span><span>TR / EN</span><span>BETA</span></div></div><aside class="ai-launch-terminal"><div class="terminal-top"><span>POLICY ATLAS AI</span><i></i><b>ONLINE</b></div><p class="terminal-question">“Libya analizlerini karşılaştır.”</p><div class="terminal-lines"><span></span><span></span><span></span></div><p class="terminal-source">[K1] ODAP &nbsp; [K2] POLICY ATLAS &nbsp; [W1] WEB</p><a href="/ask.html">ARAŞTIRMA ASİSTANINI AÇ ↗</a></aside></section>`;
+const contactMarker='<section id="contact"';
+if(aiLaunchHome.includes(contactMarker)&&!aiLaunchHome.includes('id="policy-atlas-ai"'))aiLaunchHome=aiLaunchHome.replace(contactMarker,aiLaunch+'\n'+contactMarker);
+aiLaunchHome=aiLaunchHome.replace(/<a href="\/ask\.html"[^>]*>[^<]*<\/a>/g,'');
+await fs.writeFile(path.join(dist,'index.html'),aiLaunchHome);
+

@@ -651,3 +651,19 @@ try{
   if(!existing.includes('V22.3 FINAL CACHE RULES'))await fs.writeFile(path.join(dist,'_headers'),existing+'\n# V22.3 FINAL CACHE RULES\n'+finalHeaders);
 }catch{}
 console.log(`V22.3 menu and cache version: ${v223}`);
+
+
+// V23 Policy Atlas Article Audio Reader
+for(const publication of sorted){
+  if(!publication.body || (publication.external_url && !publication.body)) continue;
+  const articleFile=path.join(dist,'yayinlar',`${publication.slug}.html`);
+  try{
+    let html=await fs.readFile(articleFile,'utf8');
+    if(html.includes('class="audio-reader"')) continue;
+    const reader=`<section class="audio-reader" data-lang="${esc(publication.language||'TR')}" aria-label="Yazıyı sesli dinle"><div class="audio-reader-brand"><i></i><div><span>AUDIO BRIEF / ${esc(publication.language||'TR')}</span><b>Bu analizi dinle</b></div></div><div class="audio-reader-controls"><button type="button" class="audio-play" aria-label="Sesli okumayı başlat"><i></i><span>BAŞLAT</span></button><button type="button" class="audio-pause" aria-label="Sesli okumayı duraklat" disabled>DURAKLAT</button><button type="button" class="audio-stop" aria-label="Sesli okumayı durdur" disabled>DURDUR</button><label>HIZ<select class="audio-rate" aria-label="Okuma hızı"><option value="0.85">0.85×</option><option value="1" selected>1×</option><option value="1.15">1.15×</option><option value="1.3">1.30×</option><option value="1.5">1.50×</option></select></label><label>SES<select class="audio-voice" aria-label="Okuma sesi"><option value="">Otomatik</option></select></label></div><div class="audio-reader-progress"><span><i></i></span><b class="audio-status" role="status" aria-live="polite">DİNLEMEYE HAZIR</b><em class="audio-time">~ ${Math.max(1,Math.ceil(String(publication.body).split(/\s+/).length/170))} DK</em></div><p class="audio-reader-note">Ses, cihazındaki tarayıcı ve sistem konuşma motoru tarafından üretilir. Metin sunucuya gönderilmez.</p></section>`;
+    const marker='<section class="article-layout"';
+    html=html.replace(marker,reader+marker);
+    if(!html.includes('article-reader.js'))html=html.replace('</body>','<script src="../assets/article-reader.js" defer></script></body>');
+    await fs.writeFile(articleFile,html);
+  }catch(e){console.warn('Audio reader warning:',publication.slug,e.message)}
+}

@@ -1,0 +1,43 @@
+
+// V22.3 FINAL menu rebuild + per-deployment HTML/CSS/JS cache versioning
+const v223=Date.now().toString(36);
+async function v223PatchHtml(file,isHome=false){
+  let html=await fs.readFile(file,'utf8');
+  // Every deployment receives fresh local asset URLs, including timeline assets.
+  html=html.replace(/(["'])(\.\.\/|\/|)assets\/(atlas\.css|atlas\.js|timeline\.js|archive-filters\.js)(?:\?v=[^"']*)?\1/g,(_,q,prefix,name)=>`${q}${prefix}assets/${name}?v=${v223}${q}`);
+  if(isHome){
+    // Rebuild the menu list as one canonical block. Removes links accidentally appended outside .nav-links.
+    const canonical=`<div class="nav-links"><a href="#manifesto"><b>01</b><span>Profil</span></a><a href="#atlas"><b>02</b><span>Araştırma Atlası</span></a><a href="yayinlar.html?v=${v223}"><b>03</b><span>Yayınlar</span></a><a href="#records"><b>04</b><span>Diplomatik Kayıt</span></a><a href="ask.html?v=${v223}"><b>05</b><span>Atlas’a Sor</span></a><a href="timeline.html?v=${v223}"><b>06</b><span>Zaman Çizelgesi</span></a><a href="#contact"><b>07</b><span>Temas</span></a></div>`;
+    html=html.replace(/<div class="nav-links">[\s\S]*?<\/div>/,canonical);
+    html=html.replace(/<a class="nav-extra nav-(?:ai|timeline)"[\s\S]*?<\/a>/g,'');
+    html=html.replace(/<a href="\/?(?:ask|timeline)\.html(?:\?[^\"]*)?"[^>]*>\s*(?:<b>[^<]*<\/b>)?\s*(?:<span>)?(?:Atlas[’']a Sor|Zaman Çizelgesi)(?:<\/span>)?\s*<\/a>(?=\s*<\/nav>)/gi,'');
+  }
+  // Meta directives protect against normal-tab stale HTML when a CDN/browser retains an old document.
+  if(!html.includes('http-equiv="Cache-Control"'))html=html.replace('<head>','<head><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">');
+  await fs.writeFile(file,html);
+}
+await v223PatchHtml(path.join(dist,'index.html'),true);
+for(const file of ['timeline.html','yayinlar.html','ask.html']){try{await v223PatchHtml(path.join(dist,file))}catch{}}
+for(const dirName of ['yayinlar','odap']){try{for(const f of await fs.readdir(path.join(dist,dirName)))if(f.endsWith('.html'))await v223PatchHtml(path.join(dist,dirName,f))}catch{}}
+// Cloudflare Pages serves this final _headers file from dist.
+const finalHeaders=`/*
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
+/assets/*.css
+  Cache-Control: no-cache, must-revalidate
+
+/assets/*.js
+  Cache-Control: no-cache, must-revalidate
+`;
+try{
+  const existing=await fs.readFile(path.join(dist,'_headers'),'utf8').catch(()=> '');
+  if(!existing.includes('V22.3 FINAL CACHE RULES'))await fs.writeFile(path.join(dist,'_headers'),existing+'\n# V22.3 FINAL CACHE RULES\n'+finalHeaders);
+}catch{}
+console.log(`V22.3 menu and cache version: ${v223}`);

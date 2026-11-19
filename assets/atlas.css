@@ -864,3 +864,14 @@ nav .nav-extra{display:grid!important;grid-template-columns:30px minmax(0,1fr)!i
 nav .nav-extra b{display:block!important;width:auto!important;margin:0!important;font:9px 'Courier New',monospace!important;letter-spacing:.1em!important;color:#b8643f!important}
 nav .nav-extra span{display:block!important;min-width:0!important;margin:0!important;line-height:1.25!important;overflow-wrap:anywhere!important}
 @media(max-width:760px){nav .nav-extra{grid-template-columns:28px minmax(0,1fr)!important;gap:10px!important;padding-block:12px!important}nav .nav-extra span{font-size:16px!important}}
+
+
+/* V22.3 canonical navigation layout */
+.nav-panel .nav-links{display:flex!important;flex-direction:column!important;min-width:0!important}
+.nav-panel .nav-links>a{display:grid!important;grid-template-columns:60px minmax(0,1fr)!important;align-items:baseline!important;width:100%!important;box-sizing:border-box!important;gap:12px!important;padding:9px 0!important;white-space:normal!important}
+.nav-panel .nav-links>a:hover{padding-left:28px!important}
+.nav-panel .nav-links>a>b{display:block!important;width:auto!important;margin:0!important;font:10px var(--mono)!important;color:#061518!important}
+.nav-panel .nav-links>a>span{display:block!important;min-width:0!important;line-height:.94!important;overflow-wrap:anywhere!important}
+.nav-panel>a.nav-extra{display:none!important}
+@media(max-width:900px){.nav-panel .nav-links>a{grid-template-columns:42px minmax(0,1fr)!important;gap:8px!important}.nav-panel .nav-links>a:hover{padding-left:0!important}}
+@media(max-width:560px){.nav-panel .nav-links>a{grid-template-columns:34px minmax(0,1fr)!important}.nav-panel .nav-links>a>span{font-size:clamp(36px,11vw,54px)!important}}

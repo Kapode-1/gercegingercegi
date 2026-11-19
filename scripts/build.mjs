@@ -530,3 +530,22 @@ try {
   for(const file of allPages){let h=await fs.readFile(file,'utf8');if(!h.includes('pointer-hardening.js')){h=h.replace('</body>','<script src="/assets/pointer-hardening.js" defer></script></body>');await fs.writeFile(file,h)}}
   console.log('V24 English interface and pointer hardening generated.');
 } catch(e){console.warn('V24 warning:',e.message)}
+
+
+// V24.2 FINAL post-build cache versioning
+// This block must remain at the very end of build.mjs because V23/V24 create /en pages after earlier cache patches.
+try {
+  const crypto=await import('node:crypto');
+  const cssBytes=await fs.readFile(path.join(dist,'assets','atlas.css'));
+  const jsBytes=await fs.readFile(path.join(dist,'assets','atlas.js')).catch(()=>Buffer.from(''));
+  const version=crypto.createHash('sha256').update(cssBytes).update(jsBytes).digest('hex').slice(0,12);
+  const htmlFiles=[];
+  const collect=async dir=>{for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=path.join(dir,e.name);if(e.isDirectory())await collect(f);else if(e.name.endsWith('.html'))htmlFiles.push(f)}};
+  await collect(dist);
+  for(const file of htmlFiles){
+    let h=await fs.readFile(file,'utf8');
+    h=h.replace(/((?:href|src)=["'](?:\.\.\/|\.\/|\/)*assets\/(?:atlas\.css|atlas\.js))(?:\?v=[^"']*)?(["'])/g,`$1?v=${version}$2`);
+    await fs.writeFile(file,h);
+  }
+  console.log(`V24.2 final asset version ${version} applied to ${htmlFiles.length} HTML files.`);
+} catch(e){console.warn('V24.2 final cache version warning:',e.message)}

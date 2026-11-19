@@ -696,3 +696,25 @@ for(const publication of sorted){
   try{let h=await fs.readFile(f,'utf8');h=h.replace(/<script src="\.\.\/assets\/article-reader(?:-v231)?\.js(?:\?v=[^"]*)?" defer><\/script>/g,'');h=h.replace('</body>',`<script src="../assets/article-reader-v231.js?v=${audioRepairVersion}" defer></script></body>`);await fs.writeFile(f,h)}catch{}
 }
 console.log(`Audio reader repair version: ${audioRepairVersion}`);
+
+
+// V23.2 remove duplicate audio readers and normalize placement
+const audioLayoutVersion=Date.now().toString(36);
+for(const publication of sorted){
+  if(!publication.body || (publication.external_url&&!publication.body))continue;
+  const file=path.join(dist,'yayinlar',`${publication.slug}.html`);
+  try{
+    let html=await fs.readFile(file,'utf8');
+    const panels=[...html.matchAll(/<section class="audio-reader"[\s\S]*?<\/section>/g)].map(m=>m[0]);
+    if(panels.length){
+      const canonical=panels[0];
+      html=html.replace(/<section class="audio-reader"[\s\S]*?<\/section>/g,'');
+      const target=html.includes('<section class="sixty-summary"')?'<section class="sixty-summary"':'<section class="article-layout"';
+      html=html.replace(target,canonical+target);
+    }
+    html=html.replace(/<script src="\.\.\/assets\/article-reader(?:-v231|-v232)?\.js(?:\?v=[^"]*)?" defer><\/script>/g,'');
+    html=html.replace('</body>',`<script src="../assets/article-reader-v232.js?v=${audioLayoutVersion}" defer></script></body>`);
+    await fs.writeFile(file,html);
+  }catch(e){console.warn('V23.2 audio layout warning:',publication.slug,e.message)}
+}
+console.log(`Audio layout cleanup version: ${audioLayoutVersion}`);

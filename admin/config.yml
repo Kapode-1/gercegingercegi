@@ -110,6 +110,19 @@ collections:
           - {label: "CV durumu", name: "cv_status", widget: "string", default: "CV / PUBLIC VERSION IN PREPARATION", required: false}
           - {label: "İş birliği durumu", name: "availability", widget: "string", default: "AVAILABLE FOR SELECTED COLLABORATIONS", required: false}
           - {label: "Google açıklaması", name: "seo_description", widget: "text", required: false}
+          - label: "İngilizce Site Profili"
+            name: "english"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "English introduction", name: "intro", widget: "text", required: false}
+              - {label: "English manifesto", name: "manifesto", widget: "text", required: false}
+              - {label: "English profile quote", name: "quote", widget: "text", required: false}
+              - label: "English research focus areas"
+                name: "focus_areas"
+                widget: "list"
+                required: false
+                field: {label: "Focus area", name: "focus", widget: "string"}
           - {label: "İletişim formu aktif", name: "contact_form_enabled", widget: "boolean", required: false, default: false}
           - {label: "Formspree Form ID", name: "formspree_form_id", widget: "string", required: false, hint: "Örnek: xabcdeyz. Yalnızca ID; tam URL değil."}
           - {label: "Turnstile Site Key", name: "turnstile_site_key", widget: "string", required: false, hint: "Cloudflare Turnstile public site key. Secret key buraya yazılmaz."}

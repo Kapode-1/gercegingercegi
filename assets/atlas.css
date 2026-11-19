@@ -809,3 +809,13 @@
 .lang-control,.lang-control *{visibility:visible!important;opacity:1!important;transform:none!important}.lang-control a,.lang-control button{pointer-events:auto!important}.lang-control:hover{cursor:auto!important}
 @media(max-width:760px){.lang-control{top:10px;right:10px}.lang-trigger{height:36px}.lang-menu{width:148px}}
 @media print{.lang-control{display:none!important}}
+
+
+/* V24 English interface and universal pointer reliability */
+html,body{cursor:auto}.cursor,.cursor-dot,.cursor-ring{pointer-events:none!important}.force-native-cursor,.force-native-cursor *{cursor:auto!important}.force-native-cursor a,.force-native-cursor button,.force-native-cursor [role=button],.force-native-cursor select,.force-native-cursor summary{cursor:pointer!important}.force-native-cursor input,.force-native-cursor textarea{cursor:text!important}
+/* Disable fragile custom cursor on touch, pen, coarse pointers and reduced-motion environments. */
+@media(hover:none),(pointer:coarse),(prefers-reduced-motion:reduce){.cursor,.cursor-dot,.cursor-ring{display:none!important}html,body,a,button,input,textarea,select{cursor:auto!important}}
+/* If the custom cursor script stalls, native cursor remains visible. */
+body:not(.custom-cursor-ready),body:not(.custom-cursor-ready) *{cursor:auto!important}body:not(.custom-cursor-ready) a,body:not(.custom-cursor-ready) button{cursor:pointer!important}
+.english-focus-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;margin-top:45px;background:rgba(214,191,147,.2);border:1px solid rgba(214,191,147,.2)}.english-focus-grid article{display:grid;gap:18px;min-height:120px;padding:24px;background:#081d20}.english-focus-grid span{color:#b8643f;font:8px 'Courier New',monospace;letter-spacing:.1em}.english-focus-grid b{font:22px/1.2 Georgia,serif}.english-contact-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px}.english-contact-actions a{border:1px solid #b8643f;color:#d6bf93;padding:13px 16px;text-decoration:none;font:9px 'Courier New',monospace}.english-home,.language-archive,.cite-this,.sixty-summary,.ai-page,.publication-filters{isolation:isolate}.lang-control{isolation:isolate}.lang-control,.lang-control *{cursor:auto!important}.lang-control a,.lang-control button{cursor:pointer!important}
+@media(max-width:760px){.english-focus-grid{grid-template-columns:1fr}.english-contact-actions{display:grid}.english-contact-actions a{text-align:center}}

@@ -902,3 +902,14 @@ nav .nav-extra span{display:block!important;min-width:0!important;margin:0!impor
 .audio-reader-brand,.audio-reader-controls,.audio-reader-progress,.audio-reader-note{position:relative;z-index:1}
 body>.audio-reader,.article-layout .audio-reader,.sixty-summary .audio-reader{display:none!important}
 @media(max-width:840px){.audio-reader{overflow:hidden!important}.audio-reader-controls label{min-width:0!important}.audio-reader-controls select{width:100%!important;max-width:100%!important}}
+
+
+/* V23.4 hide every orphan audio fragment, then restore only canonical controls */
+.audio-voice,.audio-rate,.audio-reader-controls,.audio-reader-progress,.audio-reader-brand,.audio-reader-note{display:none!important}
+.audio-reader-canonical .audio-voice,.audio-reader-canonical .audio-rate{display:block!important}
+.audio-reader-canonical .audio-reader-controls{display:flex!important}
+.audio-reader-canonical .audio-reader-progress{display:grid!important}
+.audio-reader-canonical .audio-reader-brand{display:flex!important}
+.audio-reader-canonical .audio-reader-note{display:block!important}
+select.audio-voice:not(.audio-reader-canonical select),select.audio-rate:not(.audio-reader-canonical select){display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important}
+@media(max-width:840px){.audio-reader-canonical .audio-reader-controls{display:grid!important}}

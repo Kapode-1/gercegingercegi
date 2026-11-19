@@ -1,0 +1,16 @@
+
+// V23.4 ORPHAN AUDIO CONTROL KILL SWITCH
+const audioKillVersion=Date.now().toString(36);
+async function patchAudioKill(file){
+  let html=await fs.readFile(file,'utf8');
+  if(!(html.includes('article-layout')||html.includes('odap-article')||html.includes('article-body')))return;
+  // Remove old standalone select/control fragments that escaped earlier malformed panel cleanup.
+  html=html.replace(/<select[^>]*class="audio-(?:voice|rate)"[^>]*>[\s\S]*?<\/select>/gi,m=>m.includes('data-v233-canonical')?m:'');
+  html=html.replace(/<label[^>]*>\s*(?:SES|VOICE|HIZ|SPEED)\s*<\/label>/gi,'');
+  html=html.replace(/<div[^>]*class="audio-reader-(?:controls|progress|brand)"[^>]*>\s*<\/div>/gi,'');
+  html=html.replace(/<script src="(?:\.\.\/|\/)?assets\/audio-orphan-killer\.js(?:\?v=[^"]*)?" defer><\/script>/gi,'');
+  html=html.replace('</body>',`<script src="../assets/audio-orphan-killer.js?v=${audioKillVersion}" defer></script></body>`);
+  await fs.writeFile(file,html);
+}
+for(const dirName of ['yayinlar','odap']){try{for(const name of await fs.readdir(path.join(dist,dirName)))if(name.endsWith('.html'))await patchAudioKill(path.join(dist,dirName,name))}catch{}}
+console.log(`Audio orphan kill version: ${audioKillVersion}`);

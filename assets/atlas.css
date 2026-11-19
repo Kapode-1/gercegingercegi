@@ -713,3 +713,82 @@
 
   a{color:#111!important;text-decoration:none!important}
 }
+
+
+/* V21.3 - Force branded footer and images into browser/mobile PDF */
+@media print{
+  /* Overrides footer:not(.print-article-footer){display:none!important} with higher/equal specificity later in cascade. */
+  footer.print-article-footer{
+    display:grid!important;
+    visibility:visible!important;
+    opacity:1!important;
+    grid-template-columns:40mm minmax(0,1fr) 40mm!important;
+    gap:4mm!important;
+    align-items:center!important;
+    position:static!important;
+    float:none!important;
+    clear:both!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-height:24mm!important;
+    height:auto!important;
+    margin:9mm 0 0!important;
+    padding:4mm 0 0!important;
+    overflow:visible!important;
+    border-top:.3mm solid #8b928f!important;
+    background:#fff!important;
+    color:#061518!important;
+    box-shadow:none!important;
+    transform:none!important;
+    break-inside:avoid-page!important;
+    page-break-inside:avoid!important;
+  }
+
+  footer.print-article-footer .print-brand-lockup,
+  footer.print-article-footer .print-footer-center,
+  footer.print-article-footer .print-partners{
+    display:flex!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+
+  footer.print-article-footer .print-footer-center{
+    display:grid!important;
+  }
+
+  footer.print-article-footer img{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    max-width:none!important;
+    break-inside:avoid!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+
+  footer.print-article-footer .print-brand-lockup img{
+    width:12mm!important;
+    height:12mm!important;
+    object-fit:cover!important;
+  }
+
+  footer.print-article-footer .print-partners{
+    justify-content:flex-end!important;
+  }
+
+  footer.print-article-footer .print-partners img{
+    width:11mm!important;
+    height:11mm!important;
+    object-fit:cover!important;
+    border-radius:50%!important;
+  }
+
+  footer.print-article-footer .print-partners img.article-qr{
+    width:17mm!important;
+    height:17mm!important;
+    padding:1mm!important;
+    border-radius:0!important;
+    background:#fff!important;
+    image-rendering:auto!important;
+  }
+}

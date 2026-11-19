@@ -594,3 +594,16 @@ try {
   timelineHtml=timelineHtml.replace('<section class="timeline-toolbar">',intelligence+'<section class="timeline-toolbar">');
   await fs.writeFile(timelineFile,timelineHtml);
 } catch(e){ console.warn('V22.1 Context Capsule warning:',e.message); }
+
+
+// V22.2 Stable mobile menu normalization
+async function normalizePolicyNav(file){
+  let html=await fs.readFile(file,'utf8');
+  html=html.replace(/<a href="\/?ask\.html"[^>]*>\s*(?:<b>[^<]*<\/b>)?\s*(?:<span>)?Atlas[’']a Sor(?:<\/span>)?\s*<\/a>/gi,'<a class="nav-extra nav-ai" href="/ask.html"><b>05</b><span>Atlas’a Sor</span></a>');
+  html=html.replace(/<a href="\/?timeline\.html"[^>]*>\s*(?:<b>[^<]*<\/b>)?\s*(?:<span>)?Zaman Çizelgesi(?:<\/span>)?\s*<\/a>/gi,'<a class="nav-extra nav-timeline" href="/timeline.html"><b>06</b><span>Zaman Çizelgesi</span></a>');
+  // Remove accidental duplicates while preserving the first normalized item.
+  let aiSeen=false,timelineSeen=false;
+  html=html.replace(/<a class="nav-extra nav-(ai|timeline)"[\s\S]*?<\/a>/g,m=>{const isAi=m.includes('nav-ai');if(isAi){if(aiSeen)return '';aiSeen=true}else{if(timelineSeen)return '';timelineSeen=true}return m});
+  await fs.writeFile(file,html);
+}
+await normalizePolicyNav(path.join(dist,'index.html'));

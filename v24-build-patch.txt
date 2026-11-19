@@ -1,43 +1,15 @@
 
-// V24 Complete English interface + reliable pointer behavior
-try {
-  const enRoot=path.join(dist,'en');
-  const exists=async p=>fs.access(p).then(()=>true).catch(()=>false);
-  const translateUi=html=>{
-    const pairs=[
-      ['PROFİL / POZİSYON','PROFILE / POSITION'],['ARAŞTIRMA / ATLAS','RESEARCH / ATLAS'],['YAZILAR / YAYINLANMIŞ ANALİZ','WRITING / PUBLISHED ANALYSIS'],['SAHA / DİPLOMATİK KAYIT','FIELD / DIPLOMATIC RECORD'],['İLETİŞİM / BAĞLANTI','CONTACT / CONNECTION'],
-      ['Ana Sayfa','Home'],['Profil','Profile'],['Araştırma Atlası','Research Atlas'],['Yayınlar','Publications'],['Diplomatik Kayıt','Diplomatic Record'],['Güncel Notlar','Current Notes'],['İletişim','Contact'],['Atlas’a Sor','Ask the Atlas'],
-      ['Araştırma Atlası','Research Atlas'],['Haritadaki eksenler','Thematic Corridors'],['Analiz Dosyaları','Analysis Files'],['Tüm Analizler','All Analysis'],['Dosyayı Aç','Open File'],['Profili Aç','Open Profile'],
-      ['Seçilmiş İş Birliklerine Açık','Available for Selected Collaborations'],['CV / KAMUSAL SÜRÜM HAZIRLANIYOR','CV / PUBLIC VERSION IN PREPARATION'],['Mesajı Gönder','Send Message'],['Gönderiliyor…','Sending…'],['Mesajınız başarıyla iletildi. En kısa sürede e-posta yoluyla dönüş sağlayacağım.','Your message has been sent successfully. I will respond by email as soon as possible.'],
-      ['AD SOYAD','FULL NAME'],['E-POSTA','EMAIL'],['KURUM','ORGANISATION'],['İLETİŞİM NEDENİ','REASON FOR CONTACT'],['MESAJ','MESSAGE'],['Seçiniz','Select'],['Araştırma iş birliği','Research collaboration'],['Yayın / dosya teklifi','Publication / dossier proposal'],['Etkinlik veya konuşmacı daveti','Event or speaking invitation'],['Basın görüşü','Media inquiry'],['Cemre çalışmaları','Cemre initiatives'],['Diğer','Other'],
-      ['DOSYA','FILE'],['YAYINCI','PUBLISHER'],['FORMAT','FORMAT'],['DİL','LANGUAGE'],['YIL','YEAR'],['SIRALA','SORT'],['Tümü','All'],['En yeni','Newest'],['En eski','Oldest'],['ARAŞTIRMA ARŞİVİNDE ARA','SEARCH THE RESEARCH ARCHIVE'],['Başlık, kavram, ülke veya aktör…','Title, concept, country or actor…'],['TEMİZLE','RESET'],['TÜM ARŞİV','FULL ARCHIVE'],['KAVRAM RADARI','CONCEPT RADAR'],
-      ['Dosyayı 60 Saniyede Anla','Understand This Brief in 60 Seconds'],['DK OKUMA','MIN READ'],['DOSYA DERİNLİĞİ','DEPTH'],['NE OLDU?','WHAT HAPPENED?'],['NEDEN ÖNEMLİ?','WHY IT MATTERS'],['TAKİP EDİLMESİ GEREKEN','WHAT TO WATCH'],['ANA AKTÖRLER','KEY ACTORS'],['TEMEL KAVRAMLAR','KEY CONCEPTS'],['TAM ANALİZE GEÇ ↓','READ THE FULL ANALYSIS ↓'],
-      ['Bu Yazıya Atıf Yap','Cite This Article'],['Kaynakçanıza eklemek için atıf stilini seçin ve tek tıkla kopyalayın.','Select a citation style and copy the reference in one click.'],['ATIFI KOPYALA','COPY CITATION'],['KALICI BAĞLANTI ↗','PERMALINK ↗'],['KOPYALANDI','COPIED'],
-      ['Yalnızca Atlas’ta Ara','SEARCH POLICY ATLAS'],['Atlas + Web','ATLAS + WEB'],['Araştırma Asistanını Aç','OPEN RESEARCH ASSISTANT'],['Kaynaklı Yanıtlar','SOURCE-GROUNDED ANSWERS'],['Yayın','PUBLICATIONS']
-    ];
-    for(const [tr,en] of pairs)html=html.replaceAll(tr,en);
-    return html;
-  };
-  const applyEnglishMeta=html=>html.replace(/<html[^>]*lang=["'][^"']+["']/i,m=>m.replace(/lang=["'][^"']+["']/i,'lang="en"')).replace(/<meta name="description" content="[^"]*">/i,'<meta name="description" content="Research and analysis by Tayyip Minsin on climate policy, energy security, international law and Middle East geopolitics.">');
-  if(await exists(enRoot)){
-    const files=[];const walk=async d=>{for(const e of await fs.readdir(d,{withFileTypes:true})){const f=path.join(d,e.name);e.isDirectory()?await walk(f):e.name.endsWith('.html')&&files.push(f)}};await walk(enRoot);
-    for(const file of files){let h=await fs.readFile(file,'utf8');h=translateUi(applyEnglishMeta(h));if(!h.includes('pointer-hardening.js'))h=h.replace('</body>','<script src="/assets/pointer-hardening.js" defer></script></body>');await fs.writeFile(file,h)}
-  }
-  // English homepage is rebuilt from verified profile data, without translating articles.
-  let profile={};try{profile=JSON.parse(await fs.readFile(path.join(root,'content','profile.json'),'utf8'))}catch{}
-  const englishProfile=profile.english||{};
-  const enIndex=path.join(enRoot,'index.html');
-  if(await exists(enIndex)){
-    let h=await fs.readFile(enIndex,'utf8');
-    const intro=englishProfile.intro||'Research and analysis at the intersection of climate policy, energy security, international law and Middle East geopolitics.';
-    const manifesto=englishProfile.manifesto||'I examine the space where power, trade, security and climate governance are being rebuilt.';
-    const quote=englishProfile.quote||'Climate policy is not only an environmental question. It is where trade, security and diplomacy are being reconstructed.';
-    h=h.replace(/<header>[\s\S]*?<\/header>/,`<header><p class="micro">POLICY / STRATEGY / GOVERNANCE</p><h1>Tayyip<br><i>Minsin</i></h1><p>${esc(intro)}</p><div><a href="/en/publications.html">VIEW ENGLISH PUBLICATIONS →</a><a href="/en/ask.html?mode=web">ASK POLICY ATLAS AI →</a></div></header>`);
-    h=h.replace(/<section>[\s\S]*?<\/section>/,`<section><p class="micro">RESEARCH PROFILE</p><h2>${esc(manifesto)}</h2><p>${esc(quote)}</p><div class="english-focus-grid">${(englishProfile.focus_areas||['Climate Policy','Energy Security','Middle East Geopolitics','International Law','Policy Analysis']).map((x,i)=>`<article><span>FOCUS ${String(i+1).padStart(2,'0')}</span><b>${esc(x)}</b></article>`).join('')}</div><div class="english-contact-actions"><a href="/en/publications.html">PUBLICATIONS →</a><a href="/en/ask.html">POLICY ATLAS AI →</a><a href="mailto:${esc(profile.email||'minsinjr@gmail.com')}">CONTACT →</a></div></section>`);
-    h=translateUi(applyEnglishMeta(h));if(!h.includes('pointer-hardening.js'))h=h.replace('</body>','<script src="/assets/pointer-hardening.js" defer></script></body>');await fs.writeFile(enIndex,h);
-  }
-  // Ensure all interactive pages, including TR, receive reliable native pointer fallback.
-  const allPages=[];const walkAll=async d=>{for(const e of await fs.readdir(d,{withFileTypes:true})){const f=path.join(d,e.name);e.isDirectory()?await walkAll(f):e.name.endsWith('.html')&&allPages.push(f)}};await walkAll(dist);
-  for(const file of allPages){let h=await fs.readFile(file,'utf8');if(!h.includes('pointer-hardening.js')){h=h.replace('</body>','<script src="/assets/pointer-hardening.js" defer></script></body>');await fs.writeFile(file,h)}}
-  console.log('V24 English interface and pointer hardening generated.');
-} catch(e){console.warn('V24 warning:',e.message)}
+// V24 ISOLATED AUDIO READER - only injects one independent script into article pages
+const v24AudioVersion=Date.now().toString(36);
+async function injectV24Audio(file){
+  let html=await fs.readFile(file,'utf8');
+  const isArticle=html.includes('article-layout')||html.includes('odap-article')||html.includes('article-body');
+  if(!isArticle)return;
+  html=html.replace(/<script src="(?:\.\.\/|\/)?assets\/pa-audio-reader\.js(?:\?v=[^"]*)?" defer><\/script>/gi,'');
+  html=html.replace('</body>',`<script src="../assets/pa-audio-reader.js?v=${v24AudioVersion}" defer></script></body>`);
+  await fs.writeFile(file,html);
+}
+for(const dirName of ['yayinlar','odap']){
+  try{for(const name of await fs.readdir(path.join(dist,dirName)))if(name.endsWith('.html'))await injectV24Audio(path.join(dist,dirName,name))}catch{}
+}
+console.log(`V24 isolated audio version: ${v24AudioVersion}`);

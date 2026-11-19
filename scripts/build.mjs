@@ -651,3 +651,19 @@ try{
   if(!existing.includes('V22.3 FINAL CACHE RULES'))await fs.writeFile(path.join(dist,'_headers'),existing+'\n# V22.3 FINAL CACHE RULES\n'+finalHeaders);
 }catch{}
 console.log(`V22.3 menu and cache version: ${v223}`);
+
+
+// V24 ISOLATED AUDIO READER - only injects one independent script into article pages
+const v24AudioVersion=Date.now().toString(36);
+async function injectV24Audio(file){
+  let html=await fs.readFile(file,'utf8');
+  const isArticle=html.includes('article-layout')||html.includes('odap-article')||html.includes('article-body');
+  if(!isArticle)return;
+  html=html.replace(/<script src="(?:\.\.\/|\/)?assets\/pa-audio-reader\.js(?:\?v=[^"]*)?" defer><\/script>/gi,'');
+  html=html.replace('</body>',`<script src="../assets/pa-audio-reader.js?v=${v24AudioVersion}" defer></script></body>`);
+  await fs.writeFile(file,html);
+}
+for(const dirName of ['yayinlar','odap']){
+  try{for(const name of await fs.readdir(path.join(dist,dirName)))if(name.endsWith('.html'))await injectV24Audio(path.join(dist,dirName,name))}catch{}
+}
+console.log(`V24 isolated audio version: ${v24AudioVersion}`);

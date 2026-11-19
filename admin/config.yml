@@ -33,6 +33,8 @@ collections:
               - {label: "Yayıncı", name: "publisher", widget: "select", options: ["ODAP", "Objektürk", "Kişisel Site", "Diğer"]}
               - {label: "Dosya türü", name: "type", widget: "select", options: ["Policy Brief", "Analiz", "Makale", "Commentary", "Climate File"]}
               - {label: "Yayın tarihi", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false}
+              - {label: "Atıf yazarı", name: "citation_author", widget: "string", required: false, default: "Tayyip Minsin"}
+              - {label: "Atıf tarihi", name: "citation_date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false, required: false, hint: "Boşsa yayın tarihi kullanılır."}
               - {label: "Dil", name: "language", widget: "select", options: ["TR", "EN"]}
               - {label: "Bölge", name: "region", widget: "string"}
               - {label: "Özet", name: "summary", widget: "text"}

@@ -1,0 +1,6 @@
+import { promises as fs } from 'node:fs';
+for(const p of ['scripts/build.mjs','assets/atlas.css','admin/config.yml'])await fs.access(p).catch(()=>{throw new Error(`Eksik: ${p}. Repo kökünde çalıştır.`)});
+const append=async(f,p,m)=>{let s=await fs.readFile(f,'utf8');if(!s.includes(m)){s+='\n'+await fs.readFile(p,'utf8');await fs.writeFile(f,s)}};
+await append('scripts/build.mjs','v20-build-patch.txt','V20 Dynamic Publication Intelligence Filters');await append('assets/atlas.css','v20-css-patch.txt','V20 Dynamic Publication Intelligence Filters');await fs.copyFile('archive-filters.js','assets/archive-filters.js');
+let cfg=await fs.readFile('admin/config.yml','utf8');if(!cfg.includes('name: "topics"')){const n='              - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false}';const a=`${n}\n              - label: "Tematik etiketler"\n                name: "topics"\n                widget: "list"\n                required: false\n                max: 12\n                field: {label: "Etiket", name: "topic", widget: "string"}`;if(cfg.includes(n)){cfg=cfg.replace(n,a);await fs.writeFile('admin/config.yml',cfg)}}
+console.log('V20 kuruldu: dinamik yayın filtreleri, kavram radarı ve URL ile paylaşılabilir filtre durumu eklendi.');

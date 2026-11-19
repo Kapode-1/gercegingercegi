@@ -686,3 +686,13 @@ try {
   for(const file of files){let h=await fs.readFile(file,'utf8');const lang=(h.match(/<html[^>]+lang=["']([^"']+)/i)?.[1]||'tr').toLowerCase().startsWith('en')?'en':'tr';h=injectVoice(h,lang);await fs.writeFile(file,h)}
   console.log('V24.3 Turkish/English article voice controls and layout stability generated.');
 } catch(e){console.warn('V24.3 warning:',e.message)}
+
+
+// V23.1 force repaired audio reader asset on every article
+const audioRepairVersion=Date.now().toString(36);
+for(const publication of sorted){
+  if(!publication.body || (publication.external_url&&!publication.body))continue;
+  const f=path.join(dist,'yayinlar',`${publication.slug}.html`);
+  try{let h=await fs.readFile(f,'utf8');h=h.replace(/<script src="\.\.\/assets\/article-reader(?:-v231)?\.js(?:\?v=[^"]*)?" defer><\/script>/g,'');h=h.replace('</body>',`<script src="../assets/article-reader-v231.js?v=${audioRepairVersion}" defer></script></body>`);await fs.writeFile(f,h)}catch{}
+}
+console.log(`Audio reader repair version: ${audioRepairVersion}`);

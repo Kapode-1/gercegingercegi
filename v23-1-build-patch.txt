@@ -1,58 +1,9 @@
 
-// V23.1 polished bilingual experience: stable language control + localized modules + language sitemaps
-try {
-  const SITE='https://tayyip-minsin-policy-atlas.pages.dev';
-  const langButton=(current,trUrl,enUrl)=>`<div class="lang-control" data-lang-control><button type="button" class="lang-trigger" aria-expanded="false" aria-controls="lang-menu"><span>${current.toUpperCase()}</span><i aria-hidden="true">▾</i></button><div class="lang-menu" id="lang-menu" hidden><a href="${trUrl}" hreflang="tr" lang="tr"${current==='tr'?' aria-current="page"':''}><b>TR</b><span>Türkçe</span></a><a href="${enUrl}" hreflang="en" lang="en"${current==='en'?' aria-current="page"':''}><b>EN</b><span>English</span></a></div></div>`;
-  const replaceSwitcher=(html,current,trUrl,enUrl)=>{
-    html=html.replace(/<nav class="language-switcher"[\s\S]*?<\/nav>/gi,'');
-    if(!html.includes('data-lang-control'))html=html.replace('<body>',`<body>${langButton(current,trUrl,enUrl)}`);
-    if(!html.includes('language-control.js'))html=html.replace('</body>','<script src="/assets/language-control.js" defer></script></body>');
-    return html;
-  };
-  const localizeModules=(html,lang)=>{
-    if(lang!=='en')return html;
-    const pairs=[
-      ['Dosyayı 60 Saniyede Anla','Understand This Brief in 60 Seconds'],['DK OKUMA','MIN READ'],['DOSYA DERİNLİĞİ','DEPTH'],['DİL','LANGUAGE'],['DOSYANIN KONUSU','WHAT THIS BRIEF EXAMINES'],['ANA SONUÇ','KEY TAKEAWAY'],['NE OLDU?','WHAT HAPPENED?'],['NEDEN ÖNEMLİ?','WHY IT MATTERS'],['TAKİP EDİLMESİ GEREKEN','WHAT TO WATCH'],['ANA AKTÖRLER','KEY ACTORS'],['TEMEL KAVRAMLAR','KEY CONCEPTS'],['TAM ANALİZE GEÇ ↓','READ THE FULL ANALYSIS ↓'],
-      ['Bu Yazıya Atıf Yap','Cite This Article'],['Kaynakçanıza eklemek için atıf stilini seçin ve tek tıkla kopyalayın.','Select a citation style and copy the reference in one click.'],['ATIFI KOPYALA','COPY CITATION'],['KALICI BAĞLANTI ↗','PERMALINK ↗'],['Atıf bilgileri yayın metadatasından otomatik oluşturulmuştur. Kurumunuzun yazım kılavuzuna göre son kontrol önerilir.','Citation data is generated from publication metadata. Please verify it against your institution’s style guide.'],['Bu makalenin çevrimiçi sürümünü ve güncel kaynaklarını açmak için QR kodu tarayın.','Scan the QR code to open the online version and current sources.']
-    ];
-    for(const [a,b] of pairs)html=html.replaceAll(a,b);
-    return html;
-  };
-  const pages=[];
-  const walk=async dir=>{for(const e of await fs.readdir(dir,{withFileTypes:true})){const f=path.join(dir,e.name);if(e.isDirectory())await walk(f);else if(e.name.endsWith('.html'))pages.push(f)}};
-  await walk(dist);
-  for(const file of pages){
-    const rel=path.relative(dist,file).replaceAll('\\','/');
-    const isEn=rel==='en/index.html'||rel.startsWith('en/');
-    const isTr=rel==='index.html'||rel.startsWith('tr/')||rel.startsWith('yayinlar/')||rel.startsWith('odap/');
-    if(!isEn&&!isTr)continue;
-    let html=await fs.readFile(file,'utf8');
-    const slug=path.basename(file,'.html');
-    const current=isEn?'en':'tr';
-    let trUrl='/',enUrl='/en/';
-    if(rel==='tr/yayinlar.html'||rel==='yayinlar.html'||rel==='odap.html'){trUrl='/tr/yayinlar.html';enUrl='/en/publications.html'}
-    else if(rel==='en/publications.html'){trUrl='/tr/yayinlar.html';enUrl='/en/publications.html'}
-    else if(rel.startsWith('tr/yayinlar/')){trUrl=`/tr/yayinlar/${slug}.html`;enUrl='/en/publications.html'}
-    else if(rel.startsWith('en/publications/')){trUrl='/tr/yayinlar.html';enUrl=`/en/publications/${slug}.html`}
-    else if(rel.startsWith('yayinlar/')||rel.startsWith('odap/')){trUrl=`/${rel}`;enUrl='/en/publications.html'}
-    html=replaceSwitcher(html,current,trUrl,enUrl);
-    html=localizeModules(html,current);
-    await fs.writeFile(file,html);
-  }
-  // Localized Ask interface duplicate. The underlying AI already answers in the query language.
-  const askSrc=path.join(dist,'ask.html');
-  if(await fs.access(askSrc).then(()=>true).catch(()=>false)){
-    let ask=await fs.readFile(askSrc,'utf8');
-    const trAsk=replaceSwitcher(ask,'tr','/ask.html','/en/ask.html');await fs.writeFile(askSrc,trAsk);
-    let enAsk=ask;
-    const askPairs=[['Atlas’a Sor','Ask the Atlas'],['Policy Atlas’taki yayınlar, araştırma alanları ve analizler hakkında soru sor. Yanıtlar yalnızca sitedeki mevcut kaynaklara dayanır.','Ask questions about Policy Atlas publications, research areas and analysis. Answers are grounded in the available sources.'],['Yalnızca Policy Atlas','Policy Atlas only'],['Policy Atlas + Web','Policy Atlas + Web'],['Sorunu yaz…','Type your question…'],['ATLAS’A SOR ↗','ASK THE ATLAS ↗'],['Yanıt','Answer'],['KAYNAKLAR','SOURCES'],['Lütfen insan doğrulamasını tamamla.','Please complete the human verification.'],['Kaynaklar taranıyor…','Searching the sources…']];for(const [a,b] of askPairs)enAsk=enAsk.replaceAll(a,b);
-    enAsk=enAsk.replace('<html lang="tr">','<html lang="en">').replace(/<title>[^<]*<\/title>/,'<title>Policy Atlas AI Beta | Tayyip Minsin</title>');
-    enAsk=replaceSwitcher(enAsk,'en','/ask.html','/en/ask.html');await fs.writeFile(path.join(dist,'en','ask.html'),enAsk);
-  }
-  // Localized XML sitemaps and index. Existing sitemap remains valid.
-  const urls=[];for(const file of pages){const rel=path.relative(dist,file).replaceAll('\\','/');if(rel.startsWith('tr/')||rel.startsWith('en/'))urls.push(`${SITE}/${rel.replace(/index\.html$/,'')}`)}
-  const xml=list=>`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${list.map(u=>`<url><loc>${u}</loc></url>`).join('')}</urlset>`;
-  await fs.writeFile(path.join(dist,'sitemap-tr.xml'),xml(urls.filter(u=>u.includes('/tr/'))));await fs.writeFile(path.join(dist,'sitemap-en.xml'),xml(urls.filter(u=>u.includes('/en/'))));
-  await fs.writeFile(path.join(dist,'sitemap-languages.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>${SITE}/sitemap-tr.xml</loc></sitemap><sitemap><loc>${SITE}/sitemap-en.xml</loc></sitemap></sitemapindex>`);
-  console.log('V23.1 bilingual UX, localized modules, AI page and language sitemaps generated.');
-} catch(e){console.warn('V23.1 warning:',e.message)}
+// V23.1 force repaired audio reader asset on every article
+const audioRepairVersion=Date.now().toString(36);
+for(const publication of sorted){
+  if(!publication.body || (publication.external_url&&!publication.body))continue;
+  const f=path.join(dist,'yayinlar',`${publication.slug}.html`);
+  try{let h=await fs.readFile(f,'utf8');h=h.replace(/<script src="\.\.\/assets\/article-reader(?:-v231)?\.js(?:\?v=[^"]*)?" defer><\/script>/g,'');h=h.replace('</body>',`<script src="../assets/article-reader-v231.js?v=${audioRepairVersion}" defer></script></body>`);await fs.writeFile(f,h)}catch{}
+}
+console.log(`Audio reader repair version: ${audioRepairVersion}`);

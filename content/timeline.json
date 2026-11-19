@@ -1,1 +1,48 @@
-{"events":[]} 
+{
+  "events": [
+    {
+      "summary": "COP21’de kabul edilen Paris Anlaşması, iklim değişikliğiyle mücadelede bütün tarafları ortak bir hukuki çerçeve altında bir araya getirdi. Anlaşma, ortalama sıcaklık artışını sanayi öncesi seviyelerin oldukça altında 2°C ile sınırlamayı ve artışı 1,5°C ile sınırlamak için çaba göstermeyi temel hedef olarak belirledi.",
+      "legacy": "Paris mimarisi bugün ulusal iklim planlarının, net sıfır hedeflerinin, iklim finansmanı tartışmalarının, karbon piyasalarının ve iklim bağlantılı ticaret araçlarının temel siyasi ve hukuki referansı olmaya devam ediyor.",
+      "scale": "KÜRESEL",
+      "display_date": "12 Aralık 2015",
+      "start_date": "2015-12-12",
+      "signals": [
+        "Yeni NDC döngüleri",
+        "Küresel Durum Değerlendirmesi",
+        "İklim finansmanı hedefleri",
+        "1,5°C uyumlu politikalar"
+      ],
+      "impact_level": "SİSTEMİK",
+      "after_state": "Bütün taraflar ulusal katkı beyanları hazırlayan, ilerlemeyi raporlayan ve katkıları zaman içinde güçlendirmesi beklenen ortak bir iklim yönetişimi döngüsüne dahil oldu.",
+      "before_state": "Uluslararası iklim rejimi gelişmiş ve gelişmekte olan ülkeler arasında daha keskin yükümlülük ayrımlarına dayanıyor; küresel katılım ile hukuki bağlayıcılık arasında kalıcı bir uzlaşma kurulamıyordu.",
+      "visible": true,
+      "structural_change": "İklim yönetişimi, yalnızca gelişmiş ülkelere yukarıdan yükümlülükler tanımlayan modelden; bütün tarafların ulusal katkı beyanları sunduğu, beş yıllık ilerleme döngüsüne ve ortak şeffaflık çerçevesine dayanan evrensel bir modele geçti.",
+      "importance": "SİSTEM DEĞİŞİKLİĞİ",
+      "region": "Küresel / Paris",
+      "primary_source": "https://unfccc.int/process-and-meetings/the-paris-agreement",
+      "open_questions": [
+        "Ulusal katkılar 1,5°C hedefiyle uyumlu hızda güçlendirilebilecek mi?",
+        "Gelişmekte olan ülkelerin finansman ve teknoloji ihtiyaçları karşılanabilecek mi?",
+        "Paris hedefleri ticaret ve sanayi politikalarına adil biçimde nasıl aktarılacak?",
+        "Şeffaflık sistemi uygulama ile siyasi taahhüt arasındaki boşluğu kapatabilecek mi?"
+      ],
+      "trigger": "Kyoto Protokolü’nün sınırlı ülke kapsamı, 2009 Kopenhag sürecinin bağlayıcı ve ortak bir sonuç üretememesi ve küresel emisyonların artmaya devam etmesi, daha kapsayıcı bir iklim rejimi ihtiyacını güçlendirdi.",
+      "title": "Paris Anlaşması’nın Kabulü: Küresel İklim Yönetişiminde Ortak Çerçeve",
+      "counterfactual": "Paris Anlaşması kabul edilmeseydi iklim rejimi, daha dar katılımlı Kyoto modeli ile gönüllü siyasi taahhütler arasında parçalı kalabilir; ulusal iklim planlarını karşılaştıran ve düzenli biçimde güçlendiren ortak bir küresel döngü oluşmayabilirdi.",
+      "mechanism": "DİPLOMASİ",
+      "affected_areas": [
+        "EMİSYON",
+        "UYUM",
+        "FİNANSMAN"
+      ],
+      "category": "İklim Diplomasisi",
+      "actors": [
+        "UNFCCC",
+        "COP21",
+        "BM"
+      ],
+      "why_turning_point": "Paris Anlaşması, yukarıdan belirlenen tek tip emisyon hedefleri yerine ülkelerin kendi ulusal katkılarını belirlediği, bu katkıları beş yıllık döngülerle güçlendirdiği ve ortak şeffaflık kuralları altında raporladığı hibrit bir yönetişim modeli kurdu. Böylece iklim politikası yalnızca çevre diplomasisinin değil; ticaret, finans, sanayi, enerji ve kalkınma politikalarının da kalıcı bir referans çerçevesine dönüştü.",
+      "direction": "GENİŞLEME"
+    }
+  ]
+}

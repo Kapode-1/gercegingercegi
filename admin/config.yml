@@ -80,6 +80,45 @@ collections:
               - {label: "Harita paneli açıklaması", name: "map_description", widget: "text", required: false}
               - {label: "Özel yatay konum (%)", name: "map_x", widget: "number", required: false, min: 0, max: 100, value_type: "float"}
               - {label: "Özel dikey konum (%)", name: "map_y", widget: "number", required: false, min: 0, max: 100, value_type: "float"}
+
+      - name: "timeline"
+        label: "Politika Zaman Çizelgesi"
+        file: "content/timeline.json"
+        format: "json"
+        fields:
+          - label: "Olaylar"
+            name: "events"
+            widget: "list"
+            required: false
+            add_to_top: true
+            summary: "{{fields.display_date}} — {{fields.title}}"
+            fields:
+              - {label: "Başlangıç tarihi", name: "start_date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false}
+              - {label: "Ekranda gösterilecek tarih", name: "display_date", widget: "string", hint: "Örnek: 1991, 2023–2026 veya 1 Ekim 2023"}
+              - {label: "Başlık", name: "title", widget: "string"}
+              - {label: "Kategori", name: "category", widget: "select", options: ["İklim Diplomasisi", "Avrupa Birliği", "Türkiye", "Libya", "Körfez", "Suriye", "Batı Sahra", "Uluslararası Hukuk", "Enerji Güvenliği"]}
+              - {label: "Bölge", name: "region", widget: "string", required: false}
+              - {label: "Kısa açıklama", name: "summary", widget: "text"}
+              - {label: "Neden kırılma noktası?", name: "why_turning_point", widget: "text"}
+              - {label: "Önem seviyesi", name: "importance", widget: "select", options: ["ARKA PLAN", "ÖNEMLİ GELİŞME", "KIRILMA NOKTASI", "SİSTEM DEĞİŞİKLİĞİ"]}
+              - label: "Ana aktörler"
+                name: "actors"
+                widget: "list"
+                required: false
+                field: {label: "Aktör", name: "actor", widget: "string"}
+              - label: "Etkilenen alanlar"
+                name: "affected_areas"
+                widget: "list"
+                required: false
+                field: {label: "Alan", name: "area", widget: "string"}
+              - {label: "Birincil kaynak URL", name: "primary_source", widget: "string", required: false}
+              - label: "İlgili yayın slugları"
+                name: "related_publications"
+                widget: "list"
+                required: false
+                field: {label: "Slug", name: "slug", widget: "string", hint: "Örnek: irakta-milis-paradoksu"}
+              - {label: "Sitede göster", name: "visible", widget: "boolean", default: true, required: false}
+
       - name: "profile"
         label: "Profil ve İletişim"
         file: "content/profile.json"

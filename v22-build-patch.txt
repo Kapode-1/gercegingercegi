@@ -1,36 +1,17 @@
 
-// V22 Academic Citation / Cite This module
+// V22 Policy Timeline - standalone context atlas
 try {
-  const SITE='https://tayyip-minsin-policy-atlas.pages.dev';
-  const escAttr=s=>esc(String(s||'')).replace(/\n/g,' ');
-  const monthsTR=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-  const monthsEN=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const dateParts=value=>{const m=String(value||'').match(/^(\d{4})-(\d{2})-(\d{2})/);return m?{year:m[1],month:Number(m[2]),day:Number(m[3])}:null};
-  const citationFor=(item,url)=>{
-    const d=dateParts(item.citation_date||item.date),year=d?.year||'t.y.',author=item.citation_author||'Tayyip Minsin',publisher=item.publisher||'Policy Atlas',title=String(item.title||'').trim();
-    const initials=author.split(/\s+/).filter(Boolean).map((x,i,a)=>i===a.length-1?x:`${x[0]}.`).reverse().join(', ').replace(/^([^,]+), (.*)$/,'$1, $2');
-    const apaDate=d?`${d.year}, ${monthsTR[d.month-1]} ${d.day}`:'t.y.';
-    const chicagoDate=d?`${d.day} ${monthsTR[d.month-1]} ${d.year}`:'tarih yok';
-    const apa=`Minsin, T. (${apaDate}). ${title}. ${publisher}. ${url}`;
-    const chicago=`Minsin, Tayyip. “${title}.” ${publisher}, ${chicagoDate}. ${url}`;
-    const mla=`Minsin, Tayyip. “${title}.” ${publisher}, ${d?`${d.day} ${monthsEN[d.month-1]} ${d.year}`:'n.d.'}, ${url}.`;
-    const bibtex=`@article{minsin${year}${String(item.slug||'policy-atlas').replace(/[^a-z0-9]/gi,'')},\n  author = {Minsin, Tayyip},\n  title = {${title.replace(/[{}]/g,'')}},\n  journal = {${publisher.replace(/[{}]/g,'')}},\n  year = {${d?.year||''}},\n  url = {${url}}\n}`;
-    return {apa,chicago,mla,bibtex};
-  };
-  let indexItems=[];try{indexItems=(JSON.parse(await fs.readFile(path.join(dist,'content','ai-index.json'),'utf8')).items||[])}catch{}
-  const findItem=(slug,kind)=>indexItems.find(x=>x.slug===slug)||sorted.find(x=>x.slug===slug)||{slug,title:'Policy Atlas Analizi',publisher:kind==='odap'?'ODAP':'Policy Atlas'};
-  for(const [dir,kind] of [['odap','odap'],['yayinlar','publication']]){
-    const folder=path.join(dist,dir);try{for(const name of await fs.readdir(folder)){
-      if(!name.endsWith('.html'))continue;
-      const slug=name.replace(/\.html$/,''),file=path.join(folder,name);let html=await fs.readFile(file,'utf8');
-      if(html.includes('class="cite-this"'))continue;
-      const item=findItem(slug,kind),url=item.external_url&&String(item.external_url).includes(SITE)?item.external_url:`${SITE}/${dir}/${name}`;
-      const c=citationFor(item,url);
-      const module=`<section class="cite-this" aria-labelledby="cite-${escAttr(slug)}"><header><p class="micro">ACADEMIC REFERENCE / CITE THIS</p><h2 id="cite-${escAttr(slug)}">Bu Yazıya Atıf Yap</h2><p>Kaynakçanıza eklemek için atıf stilini seçin ve tek tıkla kopyalayın.</p></header><div class="citation-tabs" role="tablist" aria-label="Atıf biçimleri"><button type="button" class="active" data-cite-tab="apa">APA 7</button><button type="button" data-cite-tab="chicago">Chicago</button><button type="button" data-cite-tab="mla">MLA 9</button><button type="button" data-cite-tab="bibtex">BibTeX</button></div><div class="citation-box"><pre class="citation-text" data-cite-value="apa">${esc(c.apa)}</pre><pre class="citation-text" data-cite-value="chicago" hidden>${esc(c.chicago)}</pre><pre class="citation-text" data-cite-value="mla" hidden>${esc(c.mla)}</pre><pre class="citation-text" data-cite-value="bibtex" hidden>${esc(c.bibtex)}</pre><div class="citation-actions"><button type="button" class="citation-copy">ATIFI KOPYALA</button><a href="${escAttr(url)}" target="_blank" rel="canonical noopener">KALICI BAĞLANTI ↗</a><span class="citation-status" role="status" aria-live="polite"></span></div></div><p class="citation-note">Atıf bilgileri yayın metadatasından otomatik oluşturulmuştur. Kurumunuzun yazım kılavuzuna göre son kontrol önerilir.</p></section>`;
-      const footerMarker='<footer class="print-article-footer">';
-      html=html.includes(footerMarker)?html.replace(footerMarker,module+footerMarker):html.replace('</main>',module+'</main>');
-      await fs.writeFile(file,html);
-    }}catch(e){console.warn('Citation directory warning:',dir,e.message)}
-  }
-  console.log('V22 academic citation modules generated.');
-} catch(e){console.warn('V22 citation warning:',e.message)}
+  const timelineData=JSON.parse(await fs.readFile(path.join(root,'content','timeline.json'),'utf8'));
+  const events=(timelineData.events||[]).filter(x=>x.visible!==false).sort((a,b)=>String(a.start_date||'').localeCompare(String(b.start_date||'')));
+  const categories=[...new Set(events.map(x=>x.category).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'tr'));
+  const eventHtml=events.map((x,i)=>{
+    const related=(x.related_publications||[]).map(slug=>sorted.find(p=>p.slug===slug)).filter(Boolean);
+    return `<article class="timeline-event" data-category="${esc(x.category||'Diğer')}" data-search="${esc([x.title,x.summary,x.why_turning_point,x.region,x.category,...(x.actors||[])].join(' ').toLocaleLowerCase('tr'))}"><div class="timeline-date"><b>${esc(x.display_date||x.start_date||'')}</b><span>${esc(x.importance||'ÖNEMLİ GELİŞME')}</span></div><button class="timeline-node" type="button" aria-expanded="${i===0?'true':'false'}" aria-controls="timeline-detail-${i}" aria-label="${esc(x.title)} ayrıntılarını göster"><i></i></button><div class="timeline-card"><p class="timeline-code">${esc(x.code||`EVT-${String(i+1).padStart(3,'0')}`)} / ${esc(x.category||'POLICY')}</p><h2>${esc(x.title)}</h2><p>${esc(x.summary||'')}</p><div class="timeline-tags">${(x.actors||[]).slice(0,5).map(a=>`<span>${esc(a)}</span>`).join('')}</div><div class="timeline-detail ${i===0?'active':''}" id="timeline-detail-${i}">${x.why_turning_point?`<section><b>NEDEN KIRILMA NOKTASI?</b><p>${esc(x.why_turning_point)}</p></section>`:''}${x.affected_areas?.length?`<section><b>ETKİLENEN ALANLAR</b><p>${x.affected_areas.map(a=>esc(a)).join(' • ')}</p></section>`:''}${related.length?`<section><b>İLGİLİ ANALİZLER</b>${related.map(p=>`<a href="${esc(p.external_url||`yayinlar/${p.slug}.html`)}">${esc(p.title)} →</a>`).join('')}</section>`:''}${x.primary_source?`<a class="timeline-source" href="${esc(x.primary_source)}" target="_blank" rel="noopener">BİRİNCİL KAYNAK ↗</a>`:''}</div></div></article>`;
+  }).join('');
+  const controls=categories.map(c=>`<button type="button" data-category="${esc(c)}">${esc(c)}</button>`).join('');
+  const page=`<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#061518"><title>Politika Zaman Çizelgesi | Tayyip Minsin</title><meta name="description" content="İklim, güvenlik, enerji, diplomasi ve uluslararası hukuk alanlarındaki temel kırılma noktaları."><link rel="stylesheet" href="assets/atlas.css"></head><body class="timeline-page"><header class="nav"><a class="sig" href="index.html"><b>TM</b><i></i><span>POLICY ATLAS</span></a><div class="nav-center"><span>CHRONOLOGY / CONTEXT ATLAS</span><span class="live"><i></i> ${events.length} EVENTS</span></div><a class="menu" href="index.html"><span>ANA SAYFA</span><i></i></a></header><main><section class="timeline-hero"><p class="overline">POLICY HISTORY / STRUCTURAL BREAKS</p><h1>Politika<br><i>Zamanı</i></h1><div><p>Bugünün gündemini şekillendiren anlaşmalar, krizler, kurum kararları ve diplomatik kırılmalar.</p><p>Bu sayfa yayın arşivinin kronolojisi değil; konuların tarihsel bağlam atlasıdır.</p></div></section><section class="timeline-toolbar"><input id="timeline-search" type="search" placeholder="Olay, aktör, ülke veya kavram ara…"><button type="button" class="active" data-category="">TÜMÜ</button>${controls}</section><section class="timeline-stream" id="timeline-stream">${eventHtml||'<div class="timeline-empty"><b>CONTEXT FILE / 000</b><p>Zaman çizelgesi olayları editoryal doğrulama sonrasında burada yayımlanacak.</p></div>'}</section></main><script src="assets/timeline.js" defer></script></body></html>`;
+  await fs.writeFile(path.join(dist,'timeline.html'),page);
+  let home=await fs.readFile(path.join(dist,'index.html'),'utf8');
+  if(!home.includes('href="timeline.html"'))home=home.replace('</nav>',`<a href="timeline.html"><b>06</b>Zaman Çizelgesi</a></nav>`);
+  await fs.writeFile(path.join(dist,'index.html'),home);
+} catch(e) { console.warn('V22 timeline warning:',e.message); }

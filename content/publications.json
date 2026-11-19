@@ -1,6 +1,34 @@
 {
   "items": [
     {
+      "translation_status": "ORIGINAL",
+      "body": "\nOn the 11th November 2026 a total of 602 people were deported from several towns in Eastern Libya, to the border with Chad. This action, taking approximately one and a half days to complete, was carried out by security officials in areas controlled by the Libyan National Army (LNA), led by Khalifa Haftar. The action has been framed as part of an effort to protect the “protect the homeland and its borders”, however, there will be continued house raids targeting properties rented by migrants at the order of Saddam Haftar. There are many unanswered questions around this action. The security officials did not specify the nationalities of those deported, nor did they specify if they had been assessed on their protection needs. Or if they had any recourse to challenge this decision.\n\nThis is not the first time this kind of action has occurred. Multiple groups have been documented arriving in Northern Chad in October and November by the International Organization for Migration. These groups include Sudanese, South Sudanese, Chadians and Nigerians. They include vulnerable groups such as children, elderly and people requiring medical support. A group of 46 people were reportedly left with very limited access to food, funds or essential services close to the border after being deported from Kufra. It is important to note the difference between voluntary return and deportation. A voluntary return involves informed consent, nationality checking and assessment of health and protection needs. It is unclear whether this occurred in this instance.\n\nFrom a political perspective, this campaign reflects the bifurcation of Libya. Usually activities such as house raids, detention, border control and deportation are managed by a centralised state. However, the military\\-political authorities in the East are conducting these activities without guidance from Tripoli. This shows that there is more than just a military presence in Eastern Libya. They are creating their own administration. The involvement of Saddam Haftar in this campaign could indicate that the domestic security decisions in the East are becoming more closely linked to the military command. However, similar actions have occurred in Western Libya.\n\nThe fact that the authorities can deport hundreds of people across a border highlights their power in terms of security and logistics. To be considered as having state capacity, there should be an individual assessment, asylum processes, ID checks, child protection and an opportunity to appeal against official decisions. There should also be some form of monitoring. If the Eastern authorities implement these measures then migration management could be seen as part of a functional administration. However, if house raids and mass deportation continues without legal oversight then this campaign will show that the military command has increased its powers into the civilian government.",
+      "citation_author": "Tayyip Minsin",
+      "depth": "ANALİZ",
+      "topics": [
+        "Libya"
+      ],
+      "citation_date": "2026-11-19",
+      "summary": "On the 11th November 2026 a total of 602 people were deported from several towns in Eastern Libya, to the border with Chad. This action, taking approximate",
+      "references": [
+        "Amnesty International. (2026, June 23). Libya/EU: Rival authorities intensify xenophobic and racist crackdown on refugees and migrants in Libya as EU seeks to deepen ties. https://www.amnesty.org/en/latest/news/2026/06/libya-eu-rival-authorities-intensify-xenophobic-and-racist-crackdown-on-refugees-and-migrants-in-libya-as-eu-seeks-to-deepen-ties/",
+        "International Organization for Migration. (n.d.). Libya crisis response plan 2025–2026. https://crisisresponse.iom.int/response/libya-crisis-response-plan-2025-2026",
+        "International Organization for Migration. (2026, August 11). Assisted to return to 53 countries: Voluntary humanitarian return snapshot, 2015–2026. https://libya.iom.int/resources/vhr-snapshot-2015-2026",
+        "International Organization for Migration. (2026, October 16). Tchad—Suivi des urgences 232. Displacement Tracking Matrix. https://dtm.iom.int/reports/tchad-suivi-des-urgences-232-octobre-2026"
+      ],
+      "slug": "eastern-libya-deporting-migrant",
+      "translation_approved_at": "2026-11-19",
+      "featured": true,
+      "date": "2026-11-19",
+      "region": "Lİbya",
+      "quick_summary": "On the 11th November 2026 a total of 602 people were deported from several towns in Eastern Libya, to the border with Chad. This action, taking approximately one and a half days to complete, was carried out by security officials in areas controlled by the Libyan National Army (LNA), led by Khalifa Haftar.",
+      "title": "Is Eastern Libya Building a State by Deporting Migrants?",
+      "language": "EN",
+      "type": "Analiz",
+      "publisher": "ODAP",
+      "show_on_map": false
+    },
+    {
       "related_countries": [
         "İran"
       ],
@@ -23,7 +51,7 @@
       "region": "Irak / İran Etkisi / Güvenlik Yönetişimi",
       "why_it_matters": "Mesele yalnızca güvenlik politikası değildir. Ağır silahlar, bağımsız karargâhlar, finansman ağları ve siyasi liderlere bağlı komuta zincirleri korunursa kurumsal entegrasyon devlet egemenliğini güçlendirmek yerine milis gücünü devlet yapısı içinde yeniden üretebilir.",
       "title": "Irak’ta Milis Paradoksu",
-      "language": "EN",
+      "language": "TR",
       "map_description": "Irak’ta Haşdi Şabi çatısı altındaki silahlı yapıların devlet kurumlarıyla bütünleşmesi, bağımsız komuta zincirleri ve ağır silah kapasitesi nedeniyle egemenlik tartışmasının merkezinde yer alıyor.",
       "primary_country": "Irak",
       "type": "Analiz",

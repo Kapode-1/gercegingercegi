@@ -307,3 +307,45 @@ for(const publication of sorted){
     await fs.writeFile(articleFile,html);
   } catch(e){ console.warn('PDF brief warning:',publication.slug,e.message); }
 }
+
+
+// V21 ODAP quick briefs + article-specific QR + branded PDF footer
+try {
+  const QRCode=(await import('qrcode')).default;
+  const SITE='https://tayyip-minsin-policy-atlas.pages.dev';
+  const qrDir=path.join(dist,'assets','qr');
+  await fs.mkdir(qrDir,{recursive:true});
+  const decodeEntities=s=>String(s||'').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&#39;|&#x27;/g,"'").replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+  const textOnly=s=>decodeEntities(String(s||'').replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim());
+  const meta=(html,name)=>html.match(new RegExp(`<meta[^>]+(?:name|property)=["']${name}["'][^>]+content=["']([^"']*)["']`,'i'))?.[1]||html.match(new RegExp(`<meta[^>]+content=["']([^"']*)["'][^>]+(?:name|property)=["']${name}["']`,'i'))?.[1]||'';
+  const titleOf=html=>textOnly(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1]||html.match(/<title>([\s\S]*?)<\/title>/i)?.[1]||'Policy Atlas Analizi');
+  const bodyOf=html=>textOnly(html.match(/<article[^>]*class=["'][^"']*(?:article-body|odap-article-body)[^"']*["'][^>]*>([\s\S]*?)<\/article>/i)?.[1]||html.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1]||'');
+  const sentences=s=>String(s||'').match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map(x=>x.trim()).filter(x=>x.length>35)||[];
+  const processArticle=async(file,kind)=>{
+    let html=await fs.readFile(file,'utf8');
+    const slug=path.basename(file,'.html');
+    const relative=kind==='odap'?`/odap/${slug}.html`:`/yayinlar/${slug}.html`;
+    const canonical=html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i)?.[1]||`${SITE}${relative}`;
+    const qrName=`${kind}-${slug}.png`,qrWeb=`/assets/qr/${qrName}`;
+    await QRCode.toFile(path.join(qrDir,qrName),canonical,{width:300,margin:2,color:{dark:'#061518',light:'#FFFFFF'},errorCorrectionLevel:'M'});
+    const title=titleOf(html),body=bodyOf(html),desc=decodeEntities(meta(html,'description'))||sentences(body).slice(0,2).join(' ');
+    const language=(html.match(/<html[^>]+lang=["']([^"']+)/i)?.[1]||'tr').toUpperCase().startsWith('EN')?'EN':'TR';
+    const read=Math.max(1,Math.ceil(body.split(/\s+/).filter(Boolean).length/(language==='EN'?220:200)));
+    if(kind==='odap'&&!html.includes('class="sixty-summary"')){
+      const intro=sentences(body).slice(0,2).join(' '),conclusion=sentences(body).slice(-2).join(' ');
+      const brief=`<section class="sixty-summary sixty-summary-odap" aria-labelledby="sixty-${slug}"><header><div><p class="micro">EXECUTIVE BRIEF / 60 SECONDS</p><h2 id="sixty-${slug}">Dosyayı 60 Saniyede Anla</h2></div><div class="sixty-meta"><span><b>${read}</b> DK OKUMA</span><span><b>ODAP</b> YAYINCI</span><span><b>${language}</b> DİL</span></div></header><p class="sixty-lead">${esc(desc)}</p><div class="sixty-grid"><div class="sixty-row"><span>DOSYANIN KONUSU</span><p>${esc(intro||desc)}</p></div><div class="sixty-row"><span>ANA SONUÇ</span><p>${esc(conclusion||desc)}</p></div></div><a class="sixty-read" href="#full-analysis">TAM ANALİZE GEÇ ↓</a></section>`;
+      html=html.replace(/<section class=["']article-layout["']>/i,'<section class="article-layout" id="full-analysis">');
+      if(!html.includes('id="full-analysis"'))html=html.replace(/<article[^>]*class=["'][^"']*(?:article-body|odap-article-body)/i,'<article id="full-analysis" class="article-body');
+      const marker=html.includes('<section class="article-layout" id="full-analysis">')?'<section class="article-layout" id="full-analysis">':html.match(/<article[^>]+id="full-analysis"[^>]*>/i)?.[0];
+      if(marker)html=html.replace(marker,brief+marker);
+    }
+    html=html.replace(/<footer[^>]*class=["'][^"']*(?:article-footer|odap-footer|print-footer)[^"']*["'][^>]*>[\s\S]*?<\/footer>/gi,'');
+    const footer=`<footer class="print-article-footer"><div class="print-brand-lockup"><img src="/assets/brand/policy-atlas-mark.jpg" alt="Policy Atlas"><div><b>TAYYİP MİNSİN</b><span>POLICY ATLAS</span></div></div><div class="print-footer-center"><span>${esc(title)}</span><small>Bu makalenin çevrimiçi sürümünü ve güncel kaynaklarını açmak için QR kodu tarayın.</small></div><div class="print-partners"><img src="/assets/brand/cemre-iu-logo.jpg" alt="İstanbul Üniversitesi Cemre Öğrenci Kulübü"><img class="article-qr" src="${qrWeb}" alt="Bu makaleye özel QR kod"></div></footer>`;
+    html=html.replace('</main>',footer+'</main>');
+    await fs.writeFile(file,html);
+  };
+  for(const [dir,kind] of [['odap','odap'],['yayinlar','publication']]){
+    const full=path.join(dist,dir);try{for(const name of await fs.readdir(full))if(name.endsWith('.html'))await processArticle(path.join(full,name),kind)}catch{}
+  }
+  console.log('V21 ODAP briefs, unique QR codes and branded PDF footers generated.');
+} catch(e) { console.warn('V21 PDF branding warning:',e.message); }

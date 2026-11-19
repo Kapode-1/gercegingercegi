@@ -567,3 +567,30 @@ try {
   if(!home.includes('href="timeline.html"'))home=home.replace('</nav>',`<a href="timeline.html"><b>06</b>Zaman Çizelgesi</a></nav>`);
   await fs.writeFile(path.join(dist,'index.html'),home);
 } catch(e) { console.warn('V22 timeline warning:',e.message); }
+
+
+// V22.1 Context Capsule - intelligent timeline event dossier
+try {
+  const timelineFile=path.join(dist,'timeline.html');
+  let timelineHtml=await fs.readFile(timelineFile,'utf8');
+  const timelineSource=JSON.parse(await fs.readFile(path.join(root,'content','timeline.json'),'utf8'));
+  const sourceEvents=(timelineSource.events||[]).filter(x=>x.visible!==false).sort((a,b)=>String(a.start_date||'').localeCompare(String(b.start_date||'')));
+  let capsuleIndex=0;
+  timelineHtml=timelineHtml.replace(/<div class="timeline-detail([^\"]*)" id="timeline-detail-(\d+)">[\s\S]*?<\/div><\/div><\/article>/g,(full,active,id)=>{
+    const x=sourceEvents[capsuleIndex++]||{};
+    const coordinates=[['ÖLÇEK',x.scale],['MEKANİZMA',x.mechanism],['YÖN',x.direction],['ETKİ ŞİDDETİ',x.impact_level]].filter(v=>v[1]);
+    const beforeAfter=x.before_state||x.after_state?`<div class="context-shift"><article><span>ÖNCE</span><p>${esc(x.before_state||'')}</p></article><i>→</i><article><span>SONRA</span><p>${esc(x.after_state||'')}</p></article></div>`:'';
+    const questions=(x.open_questions||[]).map(q=>`<li>${esc(typeof q==='string'?q:(q.question||''))}</li>`).join('');
+    const signals=(x.signals||[]).map(s=>`<span>${esc(typeof s==='string'?s:(s.signal||''))}</span>`).join('');
+    const coords=coordinates.length?`<div class="context-coordinates">${coordinates.map(([k,v])=>`<div><span>${k}</span><b>${esc(v)}</b></div>`).join('')}</div>`:'';
+    const capsule=`<div class="timeline-detail${active}" id="timeline-detail-${id}">${coords}<div class="context-capsule">${x.trigger?`<section><span>TETİKLEYİCİ</span><p>${esc(x.trigger)}</p></section>`:''}${x.structural_change?`<section><span>YAPISAL DEĞİŞİM</span><p>${esc(x.structural_change)}</p></section>`:''}${x.legacy?`<section><span>BUGÜNE KALAN MİRAS</span><p>${esc(x.legacy)}</p></section>`:''}${x.counterfactual?`<section class="counterfactual"><span>OLMASAYDI?</span><p>${esc(x.counterfactual)}</p></section>`:''}</div>${beforeAfter}${signals?`<div class="context-signals"><b>İZLENECEK SİNYALLER</b><div>${signals}</div></div>`:''}${questions?`<div class="context-questions"><b>AÇIK SORULAR</b><ol>${questions}</ol></div>`:''}${x.why_turning_point?`<section class="context-verdict"><b>NEDEN KIRILMA NOKTASI?</b><p>${esc(x.why_turning_point)}</p></section>`:''}${x.primary_source?`<a class="timeline-source" href="${esc(x.primary_source)}" target="_blank" rel="noopener">BİRİNCİL KAYNAK ↗</a>`:''}</div></div></article>`;
+    return capsule;
+  });
+  const eventCount=sourceEvents.length;
+  const systemChanges=sourceEvents.filter(x=>x.importance==='SİSTEM DEĞİŞİKLİĞİ').length;
+  const regions=new Set(sourceEvents.map(x=>x.region).filter(Boolean)).size;
+  const categories=new Set(sourceEvents.map(x=>x.category).filter(Boolean)).size;
+  const intelligence=`<section class="timeline-intelligence"><div><span>CONTEXT ENGINE</span><h2>Bir olayın yalnızca <i>ne zaman</i> olduğunu değil, <i>neyi değiştirdiğini</i> izle.</h2></div><div class="timeline-stat-grid"><article><b>${String(eventCount).padStart(2,'0')}</b><span>OLAY</span></article><article><b>${String(systemChanges).padStart(2,'0')}</b><span>SİSTEM DEĞİŞİMİ</span></article><article><b>${String(regions).padStart(2,'0')}</b><span>BÖLGE</span></article><article><b>${String(categories).padStart(2,'0')}</b><span>POLİTİKA ALANI</span></article></div><p>Her kayıt; tetikleyici, yapısal değişim, önce/sonra karşılaştırması, bugüne kalan miras ve açık araştırma sorularıyla okunur.</p></section>`;
+  timelineHtml=timelineHtml.replace('<section class="timeline-toolbar">',intelligence+'<section class="timeline-toolbar">');
+  await fs.writeFile(timelineFile,timelineHtml);
+} catch(e){ console.warn('V22.1 Context Capsule warning:',e.message); }

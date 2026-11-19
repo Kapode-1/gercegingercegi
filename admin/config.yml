@@ -100,6 +100,28 @@ collections:
               - {label: "Bölge", name: "region", widget: "string", required: false}
               - {label: "Kısa açıklama", name: "summary", widget: "text"}
               - {label: "Neden kırılma noktası?", name: "why_turning_point", widget: "text"}
+              - {label: "Tetikleyici", name: "trigger", widget: "text", required: false, hint: "Süreci başlatan karar, kriz veya baskı neydi?"}
+              - {label: "Yapısal değişim", name: "structural_change", widget: "text", required: false, hint: "Kurallar, aktör dengesi veya politika aracı nasıl değişti?"}
+              - {label: "Önce", name: "before_state", widget: "text", required: false}
+              - {label: "Sonra", name: "after_state", widget: "text", required: false}
+              - {label: "Bugüne kalan miras", name: "legacy", widget: "text", required: false}
+              - {label: "Olmasaydı?", name: "counterfactual", widget: "text", required: false, hint: "Bu olay gerçekleşmeseydi olası alternatif seyir ne olurdu?"}
+              - {label: "Ölçek", name: "scale", widget: "select", required: false, options: ["ULUSAL", "BÖLGESEL", "KÜRESEL"]}
+              - {label: "Mekanizma", name: "mechanism", widget: "select", required: false, options: ["HUKUK", "DİPLOMASİ", "GÜVENLİK", "TİCARET", "ENERJİ", "KURUMLAŞMA"]}
+              - {label: "Yön", name: "direction", widget: "select", required: false, options: ["GENİŞLEME", "DARALMA", "KIRILMA", "GERİ DÖNÜŞ", "BELİRSİZ"]}
+              - {label: "Etki şiddeti", name: "impact_level", widget: "select", required: false, options: ["DÜŞÜK", "ORTA", "YÜKSEK", "SİSTEMİK"]}
+              - label: "İzlenecek sinyaller"
+                name: "signals"
+                widget: "list"
+                required: false
+                max: 6
+                field: {label: "Sinyal", name: "signal", widget: "string"}
+              - label: "Açık araştırma soruları"
+                name: "open_questions"
+                widget: "list"
+                required: false
+                max: 5
+                field: {label: "Soru", name: "question", widget: "string"}
               - {label: "Önem seviyesi", name: "importance", widget: "select", options: ["ARKA PLAN", "ÖNEMLİ GELİŞME", "KIRILMA NOKTASI", "SİSTEM DEĞİŞİKLİĞİ"]}
               - label: "Ana aktörler"
                 name: "actors"

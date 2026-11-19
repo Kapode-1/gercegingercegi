@@ -36,6 +36,10 @@ collections:
               - {label: "Atıf yazarı", name: "citation_author", widget: "string", required: false, default: "Tayyip Minsin"}
               - {label: "Atıf tarihi", name: "citation_date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false, required: false, hint: "Boşsa yayın tarihi kullanılır."}
               - {label: "Dil", name: "language", widget: "select", options: ["TR", "EN"]}
+              - {label: "Çeviri durumu", name: "translation_status", widget: "select", required: false, default: "ORIGINAL", options: ["ORIGINAL", "DRAFT", "HUMAN_REVIEW", "APPROVED"]}
+              - {label: "Eş sürüm slug", name: "translation_slug", widget: "string", required: false, hint: "Türkçe ve İngilizce sürümleri hreflang ile eşlemek için karşı dildeki slug."}
+              - {label: "Çevirmen / editör", name: "translation_editor", widget: "string", required: false}
+              - {label: "Dil editörü onay tarihi", name: "translation_approved_at", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false, required: false}
               - {label: "Bölge", name: "region", widget: "string"}
               - {label: "Özet", name: "summary", widget: "text"}
               - {label: "Kapak görseli", name: "image", widget: "image", required: false}

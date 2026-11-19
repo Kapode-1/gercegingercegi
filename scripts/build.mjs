@@ -253,3 +253,31 @@ try {
   if(!archiveHtml.includes('archive-filters.js'))archiveHtml=archiveHtml.replace('</body>','<script src="assets/archive-filters.js" defer></script></body>');
   await fs.writeFile(archiveFile,archiveHtml);
 } catch (e) { console.warn('V20 filter build warning:',e.message); }
+
+
+// V20.1 Unified Publications Archive: admin publications + ODAP
+try {
+  const indexPath=path.join(dist,'content','ai-index.json');
+  const archivePath=path.join(dist,'yayinlar.html');
+  const aiIndex=JSON.parse(await fs.readFile(indexPath,'utf8'));
+  const allItems=(aiIndex.items||[]).filter(x=>x&&x.title);
+  const seen=new Set();
+  const unified=allItems.filter(x=>{const key=String(x.external_url||x.slug||x.title).toLocaleLowerCase('tr');if(seen.has(key))return false;seen.add(key);return true}).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))||String(a.title).localeCompare(String(b.title),'tr'));
+  const card=(x,i)=>{
+    const href=x.external_url||`yayinlar/${x.slug}.html`;
+    const year=String(x.date||'').slice(0,4)||'Belirsiz';
+    const topics=(x.topics||x.key_concepts||[]).map(v=>typeof v==='string'?v:(v.concept||v.topic||'')).filter(Boolean);
+    const actors=(x.key_actors||[]).map(v=>typeof v==='string'?v:(v.actor||'')).filter(Boolean);
+    const search=[x.title,x.summary,x.publisher,x.type,x.region,x.language,year,...topics,...actors].join(' ').toLocaleLowerCase('tr');
+    const image=x.image||'/assets/policy-atlas.webp';
+    return `<a class="archive-card ${x.language==='EN'?'lang-en':''}" href="${esc(href)}" data-title="${esc(x.title)}" data-publisher="${esc(x.publisher||'Policy Atlas')}" data-type="${esc(x.type||'Analiz')}" data-language="${esc(x.language||'TR')}" data-region="${esc(x.region||'Diğer')}" data-year="${esc(year)}" data-topics="${esc(topics.join('|'))}" data-search="${esc(search)}"><img src="${esc(image)}" alt="" loading="lazy" decoding="async"><div><span class="code">TM–PUB/${String(i+1).padStart(3,'0')} • ${esc(x.region||'POLICY ATLAS')}</span><h2>${esc(x.title)}</h2><p>${esc(x.summary||'')}</p><div class="bottom"><span>${esc(x.date||year)}</span><span>${esc(x.publisher||'Policy Atlas')} →</span></div></div></a>`;
+  };
+  let archive=await fs.readFile(archivePath,'utf8');
+  archive=archive.replace(/<section class="archive-grid" id="publication-grid">[\s\S]*?<\/section>/,`<section class="archive-grid" id="publication-grid">${unified.map(card).join('')}</section>`);
+  archive=archive.replace(/<span class="live"><i><\/i>\s*\d+ FILES<\/span>/,`<span class="live"><i></i> ${unified.length} FILES</span>`);
+  await fs.writeFile(archivePath,archive);
+  let home=await fs.readFile(path.join(dist,'index.html'),'utf8');
+  home=home.replace(/href="odap\.html"/g,'href="yayinlar.html"').replace(/href="\/odap\.html"/g,'href="/yayinlar.html"');
+  await fs.writeFile(path.join(dist,'index.html'),home);
+  console.log(`Unified publication archive built with ${unified.length} records.`);
+} catch(e) { console.warn('Unified archive warning:',e.message); }

@@ -821,3 +821,17 @@ try{
  }
  console.log('V25.7 menu HTML normalized; detached Compass artefacts removed.');
 }catch(e){console.warn('V25.7 warning:',e.message)}
+
+
+// V25.8 inject isolated menu assets after all other menu builders
+try{
+ const files=[];async function walkV258(d){for(const e of await fs.readdir(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())await walkV258(p);else if(e.name.endsWith('.html'))files.push(p)}}await walkV258(dist);
+ for(const f of files){if(f.endsWith('pusula.html'))continue;let h=await fs.readFile(f,'utf8');
+  h=h.replace(/<link[^>]+href=["'][^"']*menu-v258\.css(?:\?[^"']*)?["'][^>]*>/gi,'');
+  h=h.replace(/<script[^>]+src=["'][^"']*menu-v258\.js(?:\?[^"']*)?["'][^>]*><\/script>/gi,'');
+  h=h.replace(/<\/head>/i,'<link rel="stylesheet" href="/assets/menu-v258.css?v=258"></head>');
+  h=h.replace(/<\/body>/i,'<script src="/assets/menu-v258.js?v=258" defer></script></body>');
+  await fs.writeFile(f,h);
+ }
+ console.log('V25.8 isolated definitive menu assets injected.');
+}catch(e){console.warn('V25.8 warning:',e.message)}

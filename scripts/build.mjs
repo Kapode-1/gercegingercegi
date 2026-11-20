@@ -849,3 +849,7 @@ try{
  }
  console.log('V25.9 direct .nav-links menu selector injected.');
 }catch(e){console.warn('V25.9 warning:',e.message)}
+
+
+// V25.10 self-contained menu; no external menu CSS dependency
+try{const files=[];async function walkV2510(d){for(const e of await fs.readdir(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())await walkV2510(p);else if(e.name.endsWith('.html'))files.push(p)}}await walkV2510(dist);for(const f of files){if(f.endsWith('pusula.html'))continue;let h=await fs.readFile(f,'utf8');h=h.replace(/<link[^>]+href=["'][^"']*menu-v25(?:8|9)\.css(?:\?[^"']*)?["'][^>]*>/gi,'');h=h.replace(/<script[^>]+src=["'][^"']*menu-v25(?:8|9|10)\.js(?:\?[^"']*)?["'][^>]*><\/script>/gi,'');h=h.replace(/<\/body>/i,'<script src="/assets/menu-v2510.js?v=2510" defer></script></body>');await fs.writeFile(f,h)}console.log('V25.10 self-contained menu injected; external menu CSS removed.')}catch(e){console.warn('V25.10 warning:',e.message)}

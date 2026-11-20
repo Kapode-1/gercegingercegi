@@ -1,0 +1,11 @@
+
+// V25.7 normalize menu order and remove detached legacy Compass artefacts
+try{
+ const files=[];async function walkV257(d){for(const e of await fs.readdir(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())await walkV257(p);else if(e.name.endsWith('.html'))files.push(p)}}await walkV257(dist);
+ for(const f of files){if(f.endsWith('pusula.html'))continue;let h=await fs.readFile(f,'utf8');
+  h=h.replace(/<a[^>]*class=["'][^"']*(?:nav-compass-chip|nav-compass-link)[^"']*["'][^>]*>[\s\S]*?<\/a>/gi,'');
+  h=h.replace(/<[^>]+class=["'][^"']*menu-compass-floating[^"']*["'][^>]*>[\s\S]*?<\/[^>]+>/gi,'');
+  await fs.writeFile(f,h);
+ }
+ console.log('V25.7 menu HTML normalized; detached Compass artefacts removed.');
+}catch(e){console.warn('V25.7 warning:',e.message)}

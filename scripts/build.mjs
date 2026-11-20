@@ -768,3 +768,25 @@ try {
   }
   console.log('V25.4 compact Compass navigation chip and archive signal strip generated.');
 }catch(e){console.warn('V25.4 warning:',e.message)}
+
+
+// V25.5 Numbered Compass menu entry and Android alignment repair
+try {
+  const htmlFiles=[];
+  async function walkV255(dir){for(const ent of await fs.readdir(dir,{withFileTypes:true})){const p=path.join(dir,ent.name);if(ent.isDirectory())await walkV255(p);else if(ent.name.endsWith('.html'))htmlFiles.push(p)}}
+  await walkV255(dist);
+  for(const file of htmlFiles){
+    if(file.endsWith('pusula.html')) continue;
+    let h=await fs.readFile(file,'utf8');
+    const en=/<html[^>]+lang=["']en/i.test(h)||file.includes(`${path.sep}en${path.sep}`);
+    // Remove previous Compass chip/full rows so there is exactly one entry.
+    h=h.replace(/<a[^>]*class=["'][^"']*(?:nav-compass-link|nav-compass-chip|nav-compass-eight)[^"']*["'][^>]*>[\s\S]*?<\/a>/gi,'');
+    const row=en?'<a class="nav-link nav-compass-eight" href="/pusula.html"><span>08</span><strong>Compass</strong><i class="menu-compass-mark" aria-hidden="true"><b></b></i></a>':'<a class="nav-link nav-compass-eight" href="/pusula.html"><span>08</span><strong>Pusula</strong><i class="menu-compass-mark" aria-hidden="true"><b></b></i></a>';
+    // Append after 07 Contact/Temas if possible, otherwise before closing nav.
+    const contact=/(<a[^>]*class=["'][^"']*nav-link[^"']*["'][^>]*>[\s\S]*?<span>\s*07\s*<\/span>[\s\S]*?<\/a>)/i;
+    if(contact.test(h)) h=h.replace(contact,'$1'+row);
+    else if(/<\/nav>/i.test(h)) h=h.replace(/<\/nav>/i,row+'</nav>');
+    await fs.writeFile(file,h);
+  }
+  console.log('V25.5 Compass restored as numbered menu item 08; Android archive alignment hooks active.');
+}catch(e){console.warn('V25.5 warning:',e.message)}

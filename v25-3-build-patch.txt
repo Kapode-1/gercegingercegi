@@ -1,0 +1,42 @@
+
+// V25.3 Research Compass entry gates
+try {
+  const htmlFiles=[];
+  async function walkCompass(dir){
+    for(const ent of await fs.readdir(dir,{withFileTypes:true})){
+      const p=path.join(dir,ent.name);
+      if(ent.isDirectory()) await walkCompass(p);
+      else if(ent.name.endsWith('.html')) htmlFiles.push(p);
+    }
+  }
+  await walkCompass(dist);
+  const navRowTR='<a class="nav-link nav-compass-link" href="/pusula.html"><span>07</span><strong>Pusula</strong><em>ROTANI BUL</em></a>';
+  const navRowEN='<a class="nav-link nav-compass-link" href="/pusula.html"><span>07</span><strong>Compass</strong><em>FIND YOUR ROUTE</em></a>';
+  for(const file of htmlFiles){
+    if(file.endsWith('pusula.html')) continue;
+    let h=await fs.readFile(file,'utf8');
+    if(!h.includes('nav-compass-link')){
+      const isEN=/<html[^>]+lang=["']en/i.test(h)||file.includes(`${path.sep}en${path.sep}`);
+      const row=isEN?navRowEN:navRowTR;
+      if(/<a[^>]+href=["'][^"']*(?:contact|#contact)[^"']*["'][^>]*class=["'][^"']*nav-link/i.test(h)){
+        h=h.replace(/(<a[^>]+href=["'][^"']*(?:contact|#contact)[^"']*["'][^>]*class=["'][^"']*nav-link[^"']*["'][^>]*>)/i,row+'$1');
+      } else if(/<\/nav>/i.test(h)) h=h.replace(/<\/nav>/i,row+'</nav>');
+    }
+    await fs.writeFile(file,h);
+  }
+  const archiveCandidates=[path.join(dist,'yayinlar.html'),path.join(dist,'tr','yayinlar.html'),path.join(dist,'en','publications.html')];
+  for(const file of archiveCandidates){
+    try{
+      let h=await fs.readFile(file,'utf8');
+      if(h.includes('compass-entry-gate')) continue;
+      const en=file.includes(`${path.sep}en${path.sep}`);
+      const gate=en?`<section class="compass-entry-gate" aria-labelledby="compass-gate-title"><div class="compass-gate-dial" aria-hidden="true"><span class="cg-ring r1"></span><span class="cg-ring r2"></span><i class="cg-needle"></i><b>N</b></div><div class="compass-gate-copy"><p>RESEARCH NAVIGATION / PERSONAL ROUTE</p><h2 id="compass-gate-title">Not sure where to begin?</h2><div class="compass-gate-line"><span></span><strong>Let the archive find your direction.</strong></div><p class="compass-gate-description">Choose a lens, a geography and a language. The Research Compass will build a five-stop reading route from the full Policy Atlas archive.</p><a href="/pusula.html">OPEN THE COMPASS <b>↗</b></a></div><div class="compass-gate-meta"><small>ARCHIVE SIGNAL</small><strong>LIVE</strong><span>NO ACCOUNT</span><span>NO TRACKING</span></div></section>`:`<section class="compass-entry-gate" aria-labelledby="compass-gate-title"><div class="compass-gate-dial" aria-hidden="true"><span class="cg-ring r1"></span><span class="cg-ring r2"></span><i class="cg-needle"></i><b>N</b></div><div class="compass-gate-copy"><p>ARAŞTIRMA NAVİGASYONU / KİŞİSEL ROTA</p><h2 id="compass-gate-title">Nereden başlayacağına emin değil misin?</h2><div class="compass-gate-line"><span></span><strong>Arşiv sana yönünü göstersin.</strong></div><p class="compass-gate-description">Merceğini, coğrafyanı ve dilini seç. Araştırma Pusulası, Policy Atlas arşivinden sana özel beş duraklı bir okuma rotası oluştursun.</p><a href="/pusula.html">PUSULAYI AÇ <b>↗</b></a></div><div class="compass-gate-meta"><small>ARŞİV SİNYALİ</small><strong>CANLI</strong><span>HESAP GEREKMEZ</span><span>TAKİP YOK</span></div></section>`;
+      const targets=[/<section[^>]+class=["'][^"']*(?:archive|publications|filters)[^"']*["'][^>]*>/i,/<main[^>]*>/i];
+      let inserted=false;
+      for(const re of targets){if(re.test(h)){h=h.replace(re,m=>m+gate);inserted=true;break}}
+      if(!inserted) h=h.replace(/<body[^>]*>/i,m=>m+gate);
+      await fs.writeFile(file,h);
+    }catch{}
+  }
+  console.log('V25.3 Compass menu entry and publication archive gateway generated.');
+}catch(e){console.warn('V25.3 Compass gate warning:',e.message)}

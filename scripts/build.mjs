@@ -835,3 +835,17 @@ try{
  }
  console.log('V25.8 isolated definitive menu assets injected.');
 }catch(e){console.warn('V25.8 warning:',e.message)}
+
+
+// V25.9 direct nav-links selector fix; injected after all legacy menu builders
+try{
+ const files=[];async function walkV259(d){for(const e of await fs.readdir(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())await walkV259(p);else if(e.name.endsWith('.html'))files.push(p)}}await walkV259(dist);
+ for(const f of files){if(f.endsWith('pusula.html'))continue;let h=await fs.readFile(f,'utf8');
+  h=h.replace(/<link[^>]+href=["'][^"']*menu-v25(?:8|9)\.css(?:\?[^"']*)?["'][^>]*>/gi,'');
+  h=h.replace(/<script[^>]+src=["'][^"']*menu-v25(?:8|9)\.js(?:\?[^"']*)?["'][^>]*><\/script>/gi,'');
+  h=h.replace(/<\/head>/i,'<link rel="stylesheet" href="/assets/menu-v259.css?v=259"></head>');
+  h=h.replace(/<\/body>/i,'<script src="/assets/menu-v259.js?v=259" defer></script></body>');
+  await fs.writeFile(f,h);
+ }
+ console.log('V25.9 direct .nav-links menu selector injected.');
+}catch(e){console.warn('V25.9 warning:',e.message)}

@@ -1,0 +1,11 @@
+
+// V25.2 final compass asset injection - runs after V25.1 page generation
+try {
+  const f=path.join(dist,'pusula.html');
+  let h=await fs.readFile(f,'utf8');
+  // Use root absolute assets and a compass-specific stylesheet to avoid stale atlas.css.
+  h=h.replace(/<link[^>]+href=["'][^"']*atlas\.css(?:\?v=[^"']*)?["'][^>]*>/i,'<link rel="stylesheet" href="/assets/atlas.css"><link rel="stylesheet" href="/assets/compass.css">');
+  h=h.replace(/<script[^>]+src=["'][^"']*research-compass\.js(?:\?v=[^"']*)?["'][^>]*><\/script>/i,'<script src="/assets/research-compass.js" defer></script>');
+  await fs.writeFile(f,h);
+  console.log('V25.2 compass-specific CSS and JS injected.');
+} catch(e){console.warn('V25.2 compass injection warning:',e.message)}

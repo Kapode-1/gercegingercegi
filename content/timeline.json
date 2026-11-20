@@ -1,6 +1,48 @@
 {
   "events": [
     {
+      "summary": "Avrupa Birliği’nin demir-çelik, çimento, alüminyum, gübre, elektrik ve hidrojen ithalatındaki gömülü karbon emisyonlarını sınırda fiyatlandırmaya başlaması; 1 Ekim 2023’te raporlama esaslı geçiş dönemiyle başlayıp 1 Ocak 2026’da mali yükümlülük aşamasına geçti.",
+      "legacy": "Birleşik Krallık gibi diğer büyük ekonomilerin benzer sınırda karbon düzenlemelerine yönelmesi, gelişmekte olan ülkelerde ulusal ETS ve yeşil sanayi politikalarının hızlanması ve DTÖ zemininde \"yeşil korumacılık\" tartışmalarının kalıcılaşması.",
+      "scale": "KÜRESEL",
+      "display_date": "1 Ekim 2023",
+      "start_date": "2023-10-01",
+      "signals": [
+        "SKDM kapsamının 2026 sonrası alt ürün gruplarına ve yeni sektörlere (kimya, polimer vb.) genişletilmesi",
+        "DTÖ nezdinde gelişmekte olan ülkelerin (özellikle BRICS bloğunun) hukuki itirazları ve misilleme adımları",
+        "AB içi ücretsiz tahsisatların kademeli kaldırılma hızının ihracat maliyetlerine yansıması"
+      ],
+      "impact_level": "YÜKSEK",
+      "after_state": "İhracatçı sektörler için tesis bazlı emisyon izleme, raporlama ve doğrulama (MRV) zorunluluğu ticari rekabetin temel şartı haline geldi. Türkiye başta olmak üzere AB’nin yakın ticaret ortakları, karbon gelirini ülke içinde tutmak için kendi emisyon ticaret sistemlerini hızla kurumsallaştırmaya yöneldi.",
+      "before_state": "Küresel iklim rejimi Paris Antlaşması çerçevesinde ulusal katkı beyanlarına (NDC) ve gönüllü bildirimlere dayanıyordu; uluslararası ticaret kuralları ile ürün bazlı gömülü karbon maliyetleri birbirinden ayrı işliyordu.",
+      "visible": true,
+      "structural_change": "Dış ticaret politikası doğrudan bir iklim yaptırım aracına dönüştü. AB’ye ihracat yapan üçüncü ülkeler, kendi içlerinde eşdeğer bir karbon fiyatlandırma sistemi (ulusal ETS) kurmadıkları takdirde karbon gelirini AB gümrüğüne aktarmak zorunda kalan yeni bir denge oluştu.",
+      "importance": "SİSTEM DEĞİŞİKLİĞİ",
+      "region": "Avrupa Birliği / Türkiye / Küresel",
+      "primary_source": "https://eur-lex.europa.eu/eli/reg/2023/956/oj](https://eur-lex.europa.eu/eli/reg/2023/956/oj",
+      "open_questions": [
+        "SKDM, küresel emisyon azaltımını hızlandıran bir katalizör mü, yoksa yeni bir yeşil ticaret bariyeri mi?",
+        "Türkiye’nin ulusal ETS gelirlerini sanayinin yeşil dönüşümüne aktarma kapasitesi ihracat rekabetçiliğini korumaya yetecek mi?",
+        "Çoklu sınırda karbon rejimleri (AB, Birleşik Krallık vb.) küresel tedarik zincirlerinde yeni bir \"karbon bloklaşması\" yaratır mı?"
+      ],
+      "trigger": "Avrupa Yeşil Mutabakatı ve Fit for 55 paketiyle AB Emisyon Ticaret Sistemi’nde (ETS) karbon maliyetlerinin artması, buna bağlı olarak Avrupa ağır sanayisinin üretimi daha gevşek iklim kurallarına sahip ülkelere taşıma (\"karbon kaçağı\") riski.",
+      "title": "İklim Politikaları",
+      "counterfactual": "Avrupa ağır sanayisinde karbon kaçağı baskısı artarken, Türkiye gibi AB pazarlarına yüksek oranda entegre ihracatçı ekonomiler için ulusal karbon fiyatlandırması ve tesis bazlı emisyon doğrulama altyapısı çok daha yavaş ve düşük öncelikli ilerlerdi.",
+      "mechanism": "TİCARET",
+      "affected_areas": [
+        "Karbon Fiyatlandırma",
+        "Dış Ticaret",
+        "Ağır Sanayi"
+      ],
+      "category": "Avrupa Birliği",
+      "actors": [
+        "Avrupa Komisyonu",
+        "Avrupa Parlamentosu",
+        "Türkiye Sanayi ve İhracat Sektörü"
+      ],
+      "why_turning_point": "İklim politikasını çok taraflı ve gönüllü diplomasi zemininden çıkarıp tek taraflı ticaret ve pazar erişimi kuralına dönüştürdü. AB, kendi iç piyasasının ağırlığını kullanarak (Brüksel Etkisi) karbon fiyatlandırmasını sınırlarının dışına ihraç eden ilk büyük ekonomik blok oldu.",
+      "direction": "GENİŞLEME"
+    },
+    {
       "summary": "COP21’de kabul edilen Paris Anlaşması, iklim değişikliğiyle mücadelede bütün tarafları ortak bir hukuki çerçeve altında bir araya getirdi. Anlaşma, ortalama sıcaklık artışını sanayi öncesi seviyelerin oldukça altında 2°C ile sınırlamayı ve artışı 1,5°C ile sınırlamak için çaba göstermeyi temel hedef olarak belirledi.",
       "legacy": "Paris mimarisi bugün ulusal iklim planlarının, net sıfır hedeflerinin, iklim finansmanı tartışmalarının, karbon piyasalarının ve iklim bağlantılı ticaret araçlarının temel siyasi ve hukuki referansı olmaya devam ediyor.",
       "scale": "KÜRESEL",

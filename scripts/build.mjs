@@ -735,3 +735,36 @@ try {
   }
   console.log('V25.3 Compass menu entry and publication archive gateway generated.');
 }catch(e){console.warn('V25.3 Compass gate warning:',e.message)}
+
+
+// V25.4 Compact Compass navigation and archive signal strip
+try {
+  const htmlFiles=[];
+  async function walkV254(dir){for(const ent of await fs.readdir(dir,{withFileTypes:true})){const p=path.join(dir,ent.name);if(ent.isDirectory())await walkV254(p);else if(ent.name.endsWith('.html'))htmlFiles.push(p)}}
+  await walkV254(dist);
+  for(const file of htmlFiles){
+    if(file.endsWith('pusula.html')) continue;
+    let h=await fs.readFile(file,'utf8');
+    const en=/<html[^>]+lang=["']en/i.test(h)||file.includes(`${path.sep}en${path.sep}`);
+    // Remove every previous full-size compass menu row or old compass chip.
+    h=h.replace(/<a[^>]*class=["'][^"']*(?:nav-compass-link|nav-compass-chip)[^"']*["'][^>]*>[\s\S]*?<\/a>/gi,'');
+    const chip=en?'<a class="nav-compass-chip" href="/pusula.html" aria-label="Open Research Compass"><span class="nav-chip-dial" aria-hidden="true"><i></i></span><span><small>DISCOVER</small><strong>COMPASS</strong></span><b>↗</b></a>':'<a class="nav-compass-chip" href="/pusula.html" aria-label="Araştırma Pusulasını aç"><span class="nav-chip-dial" aria-hidden="true"><i></i></span><span><small>KEŞFET</small><strong>PUSULA</strong></span><b>↗</b></a>';
+    // Add as a special utility, not as another numbered menu heading.
+    if(/<\/nav>/i.test(h)) h=h.replace(/<\/nav>/i,chip+'</nav>');
+    await fs.writeFile(file,h);
+  }
+  for(const file of [path.join(dist,'yayinlar.html'),path.join(dist,'tr','yayinlar.html'),path.join(dist,'en','publications.html')]){
+    try{
+      let h=await fs.readFile(file,'utf8');
+      const en=file.includes(`${path.sep}en${path.sep}`);
+      const strip=en?`<aside class="compass-signal-strip" aria-label="Research Compass"><span class="signal-dial" aria-hidden="true"><i></i></span><div class="signal-copy"><small>PERSONAL READING ROUTE</small><strong>Not sure where to begin?</strong><p>Choose three coordinates; receive five publications.</p></div><a href="/pusula.html">OPEN COMPASS <b>↗</b></a><span class="signal-led">LIVE</span></aside>`:`<aside class="compass-signal-strip" aria-label="Araştırma Pusulası"><span class="signal-dial" aria-hidden="true"><i></i></span><div class="signal-copy"><small>KİŞİSEL OKUMA ROTASI</small><strong>Nereden başlayacağına emin değil misin?</strong><p>Üç koordinat seç; arşivden beş yayınlık rotanı al.</p></div><a href="/pusula.html">PUSULAYI AÇ <b>↗</b></a><span class="signal-led">CANLI</span></aside>`;
+      h=h.replace(/<section[^>]*class=["'][^"']*compass-entry-gate[^"']*["'][^>]*>[\s\S]*?<\/section>/gi,strip);
+      if(!h.includes('compass-signal-strip')){
+        const target=/<section[^>]+class=["'][^"']*(?:archive|publications|filters)[^"']*["'][^>]*>/i;
+        if(target.test(h))h=h.replace(target,m=>m+strip);else h=h.replace(/<main[^>]*>/i,m=>m+strip);
+      }
+      await fs.writeFile(file,h);
+    }catch{}
+  }
+  console.log('V25.4 compact Compass navigation chip and archive signal strip generated.');
+}catch(e){console.warn('V25.4 warning:',e.message)}

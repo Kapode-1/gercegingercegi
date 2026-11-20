@@ -1,0 +1,18 @@
+
+// V25.6 deterministic menu and Android layout repair
+try {
+  const htmlFiles=[];
+  async function walkV256(dir){for(const ent of await fs.readdir(dir,{withFileTypes:true})){const p=path.join(dir,ent.name);if(ent.isDirectory())await walkV256(p);else if(ent.name.endsWith('.html'))htmlFiles.push(p)}}
+  await walkV256(dist);
+  for(const file of htmlFiles){
+    if(file.endsWith('pusula.html')) continue;
+    let h=await fs.readFile(file,'utf8');
+    // Remove any build-time compass row. Runtime script will place a single row in the correct menu container.
+    h=h.replace(/<a[^>]*class=["'][^"']*(?:nav-compass-link|nav-compass-chip|nav-compass-eight)[^"']*["'][^>]*>[\s\S]*?<\/a>/gi,'');
+    // Add deterministic runtime repair exactly once.
+    h=h.replace(/<script[^>]+src=["'][^"']*menu-layout-repair\.js(?:\?[^"']*)?["'][^>]*><\/script>/gi,'');
+    h=h.replace(/<\/body>/i,'<script src="/assets/menu-layout-repair.js" defer></script></body>');
+    await fs.writeFile(file,h);
+  }
+  console.log('V25.6 deterministic menu and Android layout repair injected.');
+}catch(e){console.warn('V25.6 warning:',e.message)}

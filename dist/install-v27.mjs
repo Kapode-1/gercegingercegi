@@ -1,0 +1,1 @@
+import fs from'node:fs';let b=fs.readFileSync('scripts/build.mjs','utf8');if(!b.includes('// V27 Smart Reading Route injection')){b+='\n\n'+fs.readFileSync('v27-build-patch.txt','utf8')+'\n';fs.writeFileSync('scripts/build.mjs',b)}console.log('V27 kuruldu: ai-index tabanlı Akıllı Okuma Rotası eklendi.');

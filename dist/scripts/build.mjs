@@ -906,3 +906,13 @@ try{const files=[];async function walkV2510(d){for(const e of await fs.readdir(d
  for(const f of walk(d).filter(x=>x.endsWith('.html'))){let h=fs.readFileSync(f,'utf8');h=h.replace(/<link[^>]+pa-quick-access-v26[23]\.css[^>]*>\s*/g,'').replace(/<script[^>]+pa-quick-access-v26[23]\.js[^>]*><\/script>\s*/g,'');h=h.replace('</head>',`<link rel="stylesheet" href="/assets/pa-quick-access-v263.css?v=${v}">\n</head>`).replace('</body>',`<script src="/assets/pa-quick-access-v263.js?v=${v}" defer></script>\n</body>`);fs.writeFileSync(f,h,'utf8')}
  console.log(`V26.3 Notification and Glass Dock injected (${v}).`)
 }
+
+
+// V27 Smart Reading Route injection
+{
+ const fs=await import('node:fs'),path=await import('node:path');const d=path.join(process.cwd(),'dist'),a=path.join(d,'assets');fs.mkdirSync(a,{recursive:true});
+ fs.copyFileSync('pa-reading-route-v27.js',path.join(a,'pa-reading-route-v27.js'));fs.copyFileSync('pa-reading-route-v27.css',path.join(a,'pa-reading-route-v27.css'));
+ const walk=x=>fs.readdirSync(x,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(x,e.name)):[path.join(x,e.name)]),v=Date.now().toString(36);
+ for(const f of walk(d).filter(x=>x.endsWith('.html'))){let h=fs.readFileSync(f,'utf8');h=h.replace(/<link[^>]+pa-reading-route-v27\.css[^>]*>\s*/g,'').replace(/<script[^>]+pa-reading-route-v27\.js[^>]*><\/script>\s*/g,'');h=h.replace('</head>',`<link rel="stylesheet" href="/assets/pa-reading-route-v27.css?v=${v}">\n</head>`).replace('</body>',`<script src="/assets/pa-reading-route-v27.js?v=${v}" defer></script>\n</body>`);fs.writeFileSync(f,h,'utf8')}
+ console.log(`V27 Smart Reading Route injected (${v}).`)
+}

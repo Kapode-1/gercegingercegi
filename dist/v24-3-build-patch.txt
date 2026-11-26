@@ -1,0 +1,18 @@
+
+// V24.3 Turkish voice support + article layout stability
+try {
+  const injectVoice=(html,lang)=>{
+    if(!html.includes('class="article-body"')&&!html.includes('class="odap-article-body"'))return html;
+    if(html.includes('class="read-aloud"'))return html;
+    const label=lang==='en'?'Listen to this article':'Yazıyı dinle';
+    const stop=lang==='en'?'Stop':'Durdur';
+    const control=`<div class="read-aloud" data-read-aloud data-lang="${lang}"><button type="button" aria-pressed="false"><span class="read-icon">▶</span><b>${label}</b></button><select aria-label="${lang==='en'?'Voice selection':'Ses seçimi'}"><option value="">${lang==='en'?'Automatic':'Otomatik'}</option></select><span class="read-status" aria-live="polite"></span></div>`;
+    const heroEnd=html.match(/<\/header>/i)?.[0];
+    if(heroEnd)html=html.replace(heroEnd,heroEnd+control);else html=html.replace(/<section class="article-layout"/i,control+'<section class="article-layout"');
+    if(!html.includes('article-reader.js'))html=html.replace('</body>','<script src="/assets/article-reader.js" defer></script></body>');
+    return html;
+  };
+  const files=[];const walk=async d=>{for(const e of await fs.readdir(d,{withFileTypes:true})){const f=path.join(d,e.name);e.isDirectory()?await walk(f):e.name.endsWith('.html')&&files.push(f)}};await walk(dist);
+  for(const file of files){let h=await fs.readFile(file,'utf8');const lang=(h.match(/<html[^>]+lang=["']([^"']+)/i)?.[1]||'tr').toLowerCase().startsWith('en')?'en':'tr';h=injectVoice(h,lang);await fs.writeFile(file,h)}
+  console.log('V24.3 Turkish/English article voice controls and layout stability generated.');
+} catch(e){console.warn('V24.3 warning:',e.message)}

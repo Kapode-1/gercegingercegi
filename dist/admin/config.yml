@@ -1,0 +1,210 @@
+backend:
+  name: github
+  repo: Kapode-1/gercegingercegi
+  branch: main
+  base_url: https://tayyip-decap-oauth.mnsntayp.workers.dev
+  auth_endpoint: auth
+  use_graphql: true
+
+site_url: https://tayyipminsin.com.tr
+logo_url: /assets/tayyip-minsin-social.jpg
+locale: tr
+publish_mode: simple
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "site_content"
+    label: "Site İçeriği"
+    files:
+      - name: "publications"
+        label: "Yayınlar ve Yazılar"
+        file: "content/publications.json"
+        format: "json"
+        fields:
+          - label: "Yayınlar"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}} — {{fields.publisher}}"
+            add_to_top: true
+            fields:
+              - {label: "Başlık", name: "title", widget: "string"}
+              - {label: "URL kısa adı", name: "slug", widget: "string", hint: "Küçük harf, boşluksuz: ornek-yazi-basligi"}
+              - {label: "Yayıncı", name: "publisher", widget: "select", options: ["ODAP", "Objektürk", "Kişisel Site", "Diğer"]}
+              - {label: "Dosya türü", name: "type", widget: "select", options: ["Policy Brief", "Analiz", "Makale", "Commentary", "Climate File"]}
+              - {label: "Yayın tarihi", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false}
+              - {label: "Atıf yazarı", name: "citation_author", widget: "string", required: false, default: "Tayyip Minsin"}
+              - {label: "Atıf tarihi", name: "citation_date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false, required: false, hint: "Boşsa yayın tarihi kullanılır."}
+              - {label: "Dil", name: "language", widget: "select", options: ["TR", "EN"]}
+              - {label: "Çeviri durumu", name: "translation_status", widget: "select", required: false, default: "ORIGINAL", options: ["ORIGINAL", "DRAFT", "HUMAN_REVIEW", "APPROVED"]}
+              - {label: "Eş sürüm slug", name: "translation_slug", widget: "string", required: false, hint: "Türkçe ve İngilizce sürümleri hreflang ile eşlemek için karşı dildeki slug."}
+              - {label: "Çevirmen / editör", name: "translation_editor", widget: "string", required: false}
+              - {label: "Dil editörü onay tarihi", name: "translation_approved_at", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false, required: false}
+              - {label: "Bölge", name: "region", widget: "string"}
+              - {label: "Özet", name: "summary", widget: "text"}
+              - {label: "Kapak görseli", name: "image", widget: "image", required: false}
+              - {label: "Dış bağlantı", name: "external_url", widget: "string", required: false, hint: "Yazı başka sitede yayımlandıysa tam bağlantı"}
+              - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false}
+              - label: "Tematik etiketler"
+                name: "topics"
+                widget: "list"
+                required: false
+                max: 12
+                field: {label: "Etiket", name: "topic", widget: "string"}
+              - {label: "Kısa dosya özeti", name: "quick_summary", widget: "text", required: false, hint: "Yazının ana tezini 2–3 cümlede özetleyin."}
+              - {label: "Ne oldu?", name: "what_happened", widget: "text", required: false}
+              - {label: "Neden önemli?", name: "why_it_matters", widget: "text", required: false}
+              - {label: "Takip edilmesi gereken", name: "watch_next", widget: "text", required: false}
+              - {label: "Dosya derinliği", name: "depth", widget: "select", required: false, default: "ANALİZ", options: ["KISA DEĞERLENDİRME", "ANALİZ", "DERİNLEMESİNE İNCELEME", "POLİTİKA NOTU"]}
+              - label: "Ana aktörler"
+                name: "key_actors"
+                widget: "list"
+                required: false
+                max: 8
+                field: {label: "Aktör", name: "actor", widget: "string"}
+              - label: "Temel kavramlar"
+                name: "key_concepts"
+                widget: "list"
+                required: false
+                max: 8
+                field: {label: "Kavram", name: "concept", widget: "string"}
+              - {label: "Tam metin", name: "body", widget: "markdown", required: false}
+              - label: "Kaynakça"
+                name: "references"
+                widget: "list"
+                required: false
+                field: {label: "Kaynak", name: "reference", widget: "string"}
+              - {label: "Haritada göster", name: "show_on_map", widget: "boolean", default: true}
+              - {label: "Ana ülke / bölge", name: "primary_country", widget: "select", required: false, options: ["Türkiye", "Libya", "Körfez", "Suudi Arabistan", "Kolombiya", "İsrail / Kudüs", "Fas", "Batı Sahra", "Cezayir", "Nijer", "Çad", "İtalya", "Suriye", "Irak", "İran", "Mısır", "Ürdün", "Lübnan", "Katar", "BAE", "Kuveyt", "Yunanistan", "Brüksel / AB", "Panama"]}
+              - {label: "İlgili ülkeler", name: "related_countries", widget: "select", multiple: true, required: false, options: ["Türkiye", "Libya", "Körfez", "Suudi Arabistan", "Kolombiya", "İsrail / Kudüs", "Fas", "Batı Sahra", "Cezayir", "Nijer", "Çad", "İtalya", "Suriye", "Irak", "İran", "Mısır", "Ürdün", "Lübnan", "Katar", "BAE", "Kuveyt", "Yunanistan", "Brüksel / AB", "Panama"]}
+              - {label: "Harita paneli açıklaması", name: "map_description", widget: "text", required: false}
+              - {label: "Özel yatay konum (%)", name: "map_x", widget: "number", required: false, min: 0, max: 100, value_type: "float"}
+              - {label: "Özel dikey konum (%)", name: "map_y", widget: "number", required: false, min: 0, max: 100, value_type: "float"}
+
+      - name: "timeline"
+        label: "Politika Zaman Çizelgesi"
+        file: "content/timeline.json"
+        format: "json"
+        fields:
+          - label: "Olaylar"
+            name: "events"
+            widget: "list"
+            required: false
+            add_to_top: true
+            summary: "{{fields.display_date}} — {{fields.title}}"
+            fields:
+              - {label: "Başlangıç tarihi", name: "start_date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false}
+              - {label: "Ekranda gösterilecek tarih", name: "display_date", widget: "string", hint: "Örnek: 1991, 2023–2026 veya 1 Ekim 2023"}
+              - {label: "Başlık", name: "title", widget: "string"}
+              - {label: "Kategori", name: "category", widget: "select", options: ["İklim Diplomasisi", "Avrupa Birliği", "Türkiye", "Libya", "Körfez", "Suriye", "Batı Sahra", "Uluslararası Hukuk", "Enerji Güvenliği"]}
+              - {label: "Bölge", name: "region", widget: "string", required: false}
+              - {label: "Kısa açıklama", name: "summary", widget: "text"}
+              - {label: "Neden kırılma noktası?", name: "why_turning_point", widget: "text"}
+              - {label: "Tetikleyici", name: "trigger", widget: "text", required: false, hint: "Süreci başlatan karar, kriz veya baskı neydi?"}
+              - {label: "Yapısal değişim", name: "structural_change", widget: "text", required: false, hint: "Kurallar, aktör dengesi veya politika aracı nasıl değişti?"}
+              - {label: "Önce", name: "before_state", widget: "text", required: false}
+              - {label: "Sonra", name: "after_state", widget: "text", required: false}
+              - {label: "Bugüne kalan miras", name: "legacy", widget: "text", required: false}
+              - {label: "Olmasaydı?", name: "counterfactual", widget: "text", required: false, hint: "Bu olay gerçekleşmeseydi olası alternatif seyir ne olurdu?"}
+              - {label: "Ölçek", name: "scale", widget: "select", required: false, options: ["ULUSAL", "BÖLGESEL", "KÜRESEL"]}
+              - {label: "Mekanizma", name: "mechanism", widget: "select", required: false, options: ["HUKUK", "DİPLOMASİ", "GÜVENLİK", "TİCARET", "ENERJİ", "KURUMLAŞMA"]}
+              - {label: "Yön", name: "direction", widget: "select", required: false, options: ["GENİŞLEME", "DARALMA", "KIRILMA", "GERİ DÖNÜŞ", "BELİRSİZ"]}
+              - {label: "Etki şiddeti", name: "impact_level", widget: "select", required: false, options: ["DÜŞÜK", "ORTA", "YÜKSEK", "SİSTEMİK"]}
+              - label: "İzlenecek sinyaller"
+                name: "signals"
+                widget: "list"
+                required: false
+                max: 6
+                field: {label: "Sinyal", name: "signal", widget: "string"}
+              - label: "Açık araştırma soruları"
+                name: "open_questions"
+                widget: "list"
+                required: false
+                max: 5
+                field: {label: "Soru", name: "question", widget: "string"}
+              - {label: "Önem seviyesi", name: "importance", widget: "select", options: ["ARKA PLAN", "ÖNEMLİ GELİŞME", "KIRILMA NOKTASI", "SİSTEM DEĞİŞİKLİĞİ"]}
+              - label: "Ana aktörler"
+                name: "actors"
+                widget: "list"
+                required: false
+                field: {label: "Aktör", name: "actor", widget: "string"}
+              - label: "Etkilenen alanlar"
+                name: "affected_areas"
+                widget: "list"
+                required: false
+                field: {label: "Alan", name: "area", widget: "string"}
+              - {label: "Birincil kaynak URL", name: "primary_source", widget: "string", required: false}
+              - label: "İlgili yayın slugları"
+                name: "related_publications"
+                widget: "list"
+                required: false
+                field: {label: "Slug", name: "slug", widget: "string", hint: "Örnek: irakta-milis-paradoksu"}
+              - {label: "Sitede göster", name: "visible", widget: "boolean", default: true, required: false}
+
+      - name: "profile"
+        label: "Profil ve İletişim"
+        file: "content/profile.json"
+        format: "json"
+        fields:
+          - {label: "Ana unvan", name: "job_title", widget: "string", default: "İklim ve Enerji Politikaları Araştırmacısı", required: false}
+          - {label: "Kurum / eğitim satırı", name: "affiliation", widget: "string", default: "İÜ Siyaset Bilimi ve Uluslararası İlişkiler", required: false}
+          - {label: "Kısa tanıtım", name: "intro", widget: "text", required: false}
+          - {label: "Hakkımda", name: "about", widget: "markdown", required: false}
+          - label: "Araştırma odakları"
+            name: "focus_areas"
+            widget: "list"
+            min: 0
+            required: false
+            max: 6
+            field: {label: "Odak", name: "focus", widget: "string"}
+          - {label: "Profil fotoğrafı", name: "portrait", widget: "image", required: false, default: "/assets/tayyip-minsin-portrait.jpg"}
+          - {label: "Konum etiketi", name: "location", widget: "string", default: "İSTANBUL", required: false}
+          - {label: "Portre alt etiketi", name: "portrait_note", widget: "string", default: "RESEARCH • WRITING • DIPLOMACY", required: false}
+          - {label: "Manifesto üst etiketi", name: "manifesto_kicker", widget: "string", default: "POLICY / STRATEGY / GOVERNANCE", required: false}
+          - {label: "Manifesto cümlesi", name: "manifesto", widget: "text", required: false}
+          - {label: "Ana alıntı", name: "quote", widget: "text", required: false}
+          - {label: "E-posta", name: "email", widget: "string", required: false}
+          - {label: "Instagram", name: "instagram", widget: "string", required: false}
+          - {label: "LinkedIn", name: "linkedin", widget: "string", required: false}
+          - {label: "X", name: "x", widget: "string", required: false}
+          - {label: "Objektürk profili", name: "objekturk", widget: "string", required: false}
+          - {label: "CV durumu", name: "cv_status", widget: "string", default: "CV / PUBLIC VERSION IN PREPARATION", required: false}
+          - {label: "İş birliği durumu", name: "availability", widget: "string", default: "AVAILABLE FOR SELECTED COLLABORATIONS", required: false}
+          - {label: "Google açıklaması", name: "seo_description", widget: "text", required: false}
+          - label: "İngilizce Site Profili"
+            name: "english"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "English introduction", name: "intro", widget: "text", required: false}
+              - {label: "English manifesto", name: "manifesto", widget: "text", required: false}
+              - {label: "English profile quote", name: "quote", widget: "text", required: false}
+              - label: "English research focus areas"
+                name: "focus_areas"
+                widget: "list"
+                required: false
+                field: {label: "Focus area", name: "focus", widget: "string"}
+          - {label: "İletişim formu aktif", name: "contact_form_enabled", widget: "boolean", required: false, default: false}
+          - {label: "Formspree Form ID", name: "formspree_form_id", widget: "string", required: false, hint: "Örnek: xabcdeyz. Yalnızca ID; tam URL değil."}
+          - {label: "Turnstile Site Key", name: "turnstile_site_key", widget: "string", required: false, hint: "Cloudflare Turnstile public site key. Secret key buraya yazılmaz."}
+          - {label: "Form başarı mesajı", name: "contact_success_message", widget: "string", required: false, default: "Mesajın ulaştı. En kısa sürede dönüş yapacağım."}
+          - {label: "KVKK / aydınlatma kısa metni", name: "contact_privacy_text", widget: "text", required: false, default: "Paylaştığım bilgilerin yalnızca bu iletişim talebine yanıt verilmesi amacıyla işlenmesini kabul ediyorum."}
+
+      - name: "social_dispatches"
+        label: "LinkedIn Gönderileri"
+        file: "content/social-dispatches.json"
+        format: "json"
+        fields:
+          - label: "Gönderiler"
+            name: "items"
+            widget: "list"
+            required: false
+            add_to_top: true
+            summary: "{{fields.title}} — {{fields.date}}"
+            fields:
+              - {label: "Başlık / kısa not", name: "title", widget: "string"}
+              - {label: "LinkedIn gönderi URL'si", name: "url", widget: "string", hint: "Herkese açık LinkedIn gönderisinin tam bağlantısı"}
+              - {label: "Tarih", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false}
+              - {label: "Kısa açıklama", name: "summary", widget: "text", required: false}
+              - {label: "Sitede göster", name: "visible", widget: "boolean", default: true, required: false}
+              - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false, required: false}

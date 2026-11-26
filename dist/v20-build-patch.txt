@@ -1,0 +1,25 @@
+
+// V20 Dynamic Publication Intelligence Filters
+try {
+  const archiveFile=path.join(dist,'yayinlar.html');
+  let archiveHtml=await fs.readFile(archiveFile,'utf8');
+  const filterItems=[...sorted];
+  let cardIndex=0;
+  archiveHtml=archiveHtml.replace(/<a class="archive-card ([^"]*)" href="([^"]+)">/g,(match,classes,href)=>{
+    const item=filterItems[cardIndex++]||{};
+    const year=String(item.date||'').slice(0,4)||'Belirsiz';
+    const topics=(item.topics||item.key_concepts||[]).map(x=>typeof x==='string'?x:(x.concept||x.topic||'')).filter(Boolean);
+    const search=[item.title,item.summary,item.publisher,item.type,item.region,item.language,year,...topics,...(item.key_actors||[]).map(x=>typeof x==='string'?x:(x.actor||''))].join(' ').toLocaleLowerCase('tr');
+    return `<a class="archive-card ${classes}" href="${href}" data-title="${esc(item.title||'')}" data-publisher="${esc(item.publisher||'Diğer')}" data-type="${esc(item.type||'Diğer')}" data-language="${esc(item.language||'TR')}" data-region="${esc(item.region||'Diğer')}" data-year="${esc(year)}" data-topics="${esc(topics.join('|'))}" data-search="${esc(search)}">`;
+  });
+  const unique=key=>[...new Set(filterItems.map(x=>String(x[key]||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'tr'));
+  const years=[...new Set(filterItems.map(x=>String(x.date||'').slice(0,4)).filter(Boolean))].sort().reverse();
+  const topics=[...new Set(filterItems.flatMap(x=>(x.topics||x.key_concepts||[]).map(v=>typeof v==='string'?v:(v.concept||v.topic||'')).filter(Boolean)))].sort((a,b)=>a.localeCompare(b,'tr'));
+  const option=(value,label=value)=>`<option value="${esc(value)}">${esc(label)}</option>`;
+  const chips=topics.slice(0,12).map(x=>`<button type="button" class="filter-chip" data-topic="${esc(x)}">${esc(x)}</button>`).join('');
+  const filterPanel=`<section class="publication-filters" aria-label="Yayın filtreleri"><div class="filter-command"><label for="publication-search">ARAŞTIRMA ARŞİVİNDE ARA</label><div class="filter-search-row"><input id="publication-search" type="search" autocomplete="off" placeholder="Başlık, kavram, ülke veya aktör…"><button type="button" id="filter-reset">TEMİZLE</button></div><div class="filter-status"><span id="filter-count">${filterItems.length} DOSYA</span><span id="filter-summary">TÜM ARŞİV</span></div></div><div class="filter-controls"><label>YAYINCI<select id="filter-publisher"><option value="">Tümü</option>${unique('publisher').map(x=>option(x)).join('')}</select></label><label>FORMAT<select id="filter-type"><option value="">Tümü</option>${unique('type').map(x=>option(x)).join('')}</select></label><label>DİL<select id="filter-language"><option value="">Tümü</option>${unique('language').map(x=>option(x)).join('')}</select></label><label>YIL<select id="filter-year"><option value="">Tümü</option>${years.map(x=>option(x)).join('')}</select></label><label>SIRALA<select id="filter-sort"><option value="newest">En yeni</option><option value="oldest">En eski</option><option value="az">A–Z</option><option value="za">Z–A</option></select></label></div>${chips?`<div class="filter-topics"><span>KAVRAM RADARI</span><div>${chips}</div></div>`:''}<div class="active-filter-strip" id="active-filter-strip" aria-live="polite"></div></section>`;
+  archiveHtml=archiveHtml.replace('<section class="archive-grid">',filterPanel+'<section class="archive-grid" id="publication-grid">');
+  archiveHtml=archiveHtml.replace('</main>','<div class="filter-empty" id="filter-empty" hidden><b>0 DOSYA</b><p>Bu kombinasyonda yayın bulunamadı. Filtreleri temizleyerek yeniden deneyin.</p></div></main>');
+  if(!archiveHtml.includes('archive-filters.js'))archiveHtml=archiveHtml.replace('</body>','<script src="assets/archive-filters.js" defer></script></body>');
+  await fs.writeFile(archiveFile,archiveHtml);
+} catch (e) { console.warn('V20 filter build warning:',e.message); }

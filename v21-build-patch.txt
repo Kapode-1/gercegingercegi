@@ -2,7 +2,7 @@
 // V21 ODAP quick briefs + article-specific QR + branded PDF footer
 try {
   const QRCode=(await import('qrcode')).default;
-  const SITE='https://tayyip-minsin-policy-atlas.pages.dev';
+  const SITE='https://tayyipminsin.com.tr';
   const qrDir=path.join(dist,'assets','qr');
   await fs.mkdir(qrDir,{recursive:true});
   const decodeEntities=s=>String(s||'').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&#39;|&#x27;/g,"'").replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&gt;/g,'>');

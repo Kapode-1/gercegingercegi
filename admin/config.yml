@@ -6,7 +6,7 @@ backend:
   auth_endpoint: auth
   use_graphql: true
 
-site_url: https://tayyip-minsin-policy-atlas.pages.dev
+site_url: https://tayyipminsin.com.tr
 logo_url: /assets/tayyip-minsin-social.jpg
 locale: tr
 publish_mode: simple

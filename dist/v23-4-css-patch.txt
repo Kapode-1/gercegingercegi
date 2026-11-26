@@ -1,0 +1,10 @@
+
+/* V23.4 hide every orphan audio fragment, then restore only canonical controls */
+.audio-voice,.audio-rate,.audio-reader-controls,.audio-reader-progress,.audio-reader-brand,.audio-reader-note{display:none!important}
+.audio-reader-canonical .audio-voice,.audio-reader-canonical .audio-rate{display:block!important}
+.audio-reader-canonical .audio-reader-controls{display:flex!important}
+.audio-reader-canonical .audio-reader-progress{display:grid!important}
+.audio-reader-canonical .audio-reader-brand{display:flex!important}
+.audio-reader-canonical .audio-reader-note{display:block!important}
+select.audio-voice:not(.audio-reader-canonical select),select.audio-rate:not(.audio-reader-canonical select){display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important}
+@media(max-width:840px){.audio-reader-canonical .audio-reader-controls{display:grid!important}}

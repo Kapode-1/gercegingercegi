@@ -1,0 +1,16 @@
+
+# V24.2 - revalidate generated HTML and mutable CSS/JS
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/tr/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/en/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/assets/atlas.css
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/assets/atlas.js
+  Cache-Control: no-cache, no-store, must-revalidate

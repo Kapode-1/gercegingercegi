@@ -1,0 +1,10 @@
+
+/* V23.2 remove black bars and duplicate-looking native controls */
+.audio-reader{position:relative;isolation:isolate;overflow:visible!important;background:#07191c!important;min-height:0!important;height:auto!important;margin:0!important;border-top:1px solid rgba(214,191,147,.2)!important;border-bottom:1px solid rgba(214,191,147,.2)!important}
+.audio-reader:before,.audio-reader:after{display:none!important;content:none!important}
+.audio-reader select{appearance:auto!important;-webkit-appearance:menulist!important;color-scheme:dark!important;max-width:230px!important}
+.audio-reader select::-ms-expand{display:block!important}
+.audio-reader option{background:#0b2529!important;color:#ebe5d8!important}
+.audio-reader-brand,.audio-reader-controls,.audio-reader-progress,.audio-reader-note{position:relative;z-index:1}
+body>.audio-reader,.article-layout .audio-reader,.sixty-summary .audio-reader{display:none!important}
+@media(max-width:840px){.audio-reader{overflow:hidden!important}.audio-reader-controls label{min-width:0!important}.audio-reader-controls select{width:100%!important;max-width:100%!important}}

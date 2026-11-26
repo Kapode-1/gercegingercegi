@@ -1,0 +1,6 @@
+
+/* V22.2 Stable menu items */
+nav .nav-extra{display:grid!important;grid-template-columns:30px minmax(0,1fr)!important;gap:12px!important;align-items:center!important;width:100%!important;box-sizing:border-box!important;text-decoration:none!important;white-space:normal!important}
+nav .nav-extra b{display:block!important;width:auto!important;margin:0!important;font:9px 'Courier New',monospace!important;letter-spacing:.1em!important;color:#b8643f!important}
+nav .nav-extra span{display:block!important;min-width:0!important;margin:0!important;line-height:1.25!important;overflow-wrap:anywhere!important}
+@media(max-width:760px){nav .nav-extra{grid-template-columns:28px minmax(0,1fr)!important;gap:10px!important;padding-block:12px!important}nav .nav-extra span{font-size:16px!important}}

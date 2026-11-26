@@ -1,0 +1,1 @@
+import fs from'node:fs';let b=fs.readFileSync('scripts/build.mjs','utf8');if(!b.includes('// V26.2 Quick Access Dock injection')){b+='\n\n'+fs.readFileSync('v26-2-build-patch.txt','utf8')+'\n';fs.writeFileSync('scripts/build.mjs',b)}console.log('V26.2 kuruldu: büyük devam kartı kompakt Kısa Erişim düğmesine taşındı.');

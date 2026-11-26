@@ -1,0 +1,1 @@
+import fs from'node:fs';let b=fs.readFileSync('scripts/build.mjs','utf8');if(!b.includes('// V26.1 Continue Reading final injection')){b+='\n\n'+fs.readFileSync('v26-1-build-patch.txt','utf8')+'\n';fs.writeFileSync('scripts/build.mjs',b)}console.log('V26.1 kuruldu: clean URL ve farklı makale şablonlarında devam özelliği onarıldı.');

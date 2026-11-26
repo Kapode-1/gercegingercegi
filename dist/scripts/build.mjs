@@ -853,3 +853,25 @@ try{
 
 // V25.10 self-contained menu; no external menu CSS dependency
 try{const files=[];async function walkV2510(d){for(const e of await fs.readdir(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory())await walkV2510(p);else if(e.name.endsWith('.html'))files.push(p)}}await walkV2510(dist);for(const f of files){if(f.endsWith('pusula.html'))continue;let h=await fs.readFile(f,'utf8');h=h.replace(/<link[^>]+href=["'][^"']*menu-v25(?:8|9)\.css(?:\?[^"']*)?["'][^>]*>/gi,'');h=h.replace(/<script[^>]+src=["'][^"']*menu-v25(?:8|9|10)\.js(?:\?[^"']*)?["'][^>]*><\/script>/gi,'');h=h.replace(/<\/body>/i,'<script src="/assets/menu-v2510.js?v=2510" defer></script></body>');await fs.writeFile(f,h)}console.log('V25.10 self-contained menu injected; external menu CSS removed.')}catch(e){console.warn('V25.10 warning:',e.message)}
+
+
+// V26 Continue Reading injection
+{
+  const fs26 = await import('node:fs');
+  const path26 = await import('node:path');
+  const dist26 = path26.join(process.cwd(), 'dist');
+  const assets26 = path26.join(dist26, 'assets');
+  fs26.mkdirSync(assets26, { recursive: true });
+  fs26.copyFileSync(path26.join(process.cwd(),'pa-continue-reading.js'), path26.join(assets26,'pa-continue-reading.js'));
+  fs26.copyFileSync(path26.join(process.cwd(),'pa-continue-reading.css'), path26.join(assets26,'pa-continue-reading.css'));
+  const walk26=d=>fs26.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk26(path26.join(d,e.name)):[path26.join(d,e.name)]);
+  const version26=Date.now().toString(36);
+  for(const file26 of walk26(dist26).filter(f=>f.endsWith('.html'))){
+    let html26=fs26.readFileSync(file26,'utf8');
+    if(!html26.includes('pa-continue-reading.css')) html26=html26.replace('</head>',`<link rel="stylesheet" href="/assets/pa-continue-reading.css?v=${version26}">\n</head>`);
+    if(!html26.includes('pa-continue-reading.js')) html26=html26.replace('</body>',`<script src="/assets/pa-continue-reading.js?v=${version26}" defer></script>\n</body>`);
+    fs26.writeFileSync(file26,html26,'utf8');
+  }
+  console.log(`V26 Continue Reading injected into HTML pages (${version26}).`);
+}
+

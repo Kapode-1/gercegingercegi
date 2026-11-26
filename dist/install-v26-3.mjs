@@ -1,0 +1,1 @@
+import fs from'node:fs';let b=fs.readFileSync('scripts/build.mjs','utf8');if(!b.includes('// V26.3 Notification + Glass Dock injection')){b+='\n\n'+fs.readFileSync('v26-3-build-patch.txt','utf8')+'\n';fs.writeFileSync('scripts/build.mjs',b)}console.log('V26.3 kuruldu: telefon tipi bildirim, güvenli dokunma alanları ve transparan pusula düğmesi eklendi.');

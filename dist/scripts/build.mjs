@@ -926,3 +926,15 @@ try{const files=[];async function walkV2510(d){for(const e of await fs.readdir(d
  for(const f of walk(d).filter(x=>x.endsWith('.html'))){let h=fs.readFileSync(f,'utf8');h=h.replace(/<link[^>]+pa-swipe-notification-v264\.css[^>]*>\s*/g,'').replace(/<script[^>]+pa-swipe-notification-v264\.js[^>]*><\/script>\s*/g,'');h=h.replace('</head>',`<link rel="stylesheet" href="/assets/pa-swipe-notification-v264.css?v=${v}">\n</head>`).replace('</body>',`<script src="/assets/pa-swipe-notification-v264.js?v=${v}" defer></script>\n</body>`);fs.writeFileSync(f,h,'utf8')}
  console.log(`V26.4 Swipe Notification injected (${v}).`)
 }
+
+
+// V28 Watch Desk build
+{
+ const fs=await import('node:fs'),path=await import('node:path');const d=path.join(process.cwd(),'dist'),a=path.join(d,'assets');fs.mkdirSync(a,{recursive:true});
+ for(const f of ['watch-desk-v28.js','watch-desk-v28.css','watch-entry-v28.js'])fs.copyFileSync(f,path.join(a,f));
+ fs.copyFileSync('video.html',path.join(d,'video.html'));
+ const source=path.join(process.cwd(),'content','videos.json');if(fs.existsSync(source))fs.copyFileSync(source,path.join(d,'content','videos.json'));
+ const walk=x=>fs.readdirSync(x,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(x,e.name)):[path.join(x,e.name)]),v=Date.now().toString(36);
+ for(const f of walk(d).filter(x=>x.endsWith('.html'))){let h=fs.readFileSync(f,'utf8');if(f.endsWith('video.html')){h=h.replace('/assets/watch-desk-v28.css','/assets/watch-desk-v28.css?v='+v).replace('/assets/watch-desk-v28.js','/assets/watch-desk-v28.js?v='+v)}else{if(!h.includes('watch-desk-v28.css'))h=h.replace('</head>',`<link rel="stylesheet" href="/assets/watch-desk-v28.css?v=${v}">\n</head>`);if(!h.includes('watch-entry-v28.js'))h=h.replace('</body>',`<script src="/assets/watch-entry-v28.js?v=${v}" defer></script>\n</body>`)}fs.writeFileSync(f,h,'utf8')}
+ console.log(`V28 Watch Desk built (${v}).`)
+}

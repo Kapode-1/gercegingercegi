@@ -208,3 +208,29 @@ collections:
               - {label: "Kısa açıklama", name: "summary", widget: "text", required: false}
               - {label: "Sitede göster", name: "visible", widget: "boolean", default: true, required: false}
               - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false, required: false}
+
+
+  - name: "videos"
+    label: "Video Arşivi / Gerçeğin Gerçeği"
+    files:
+      - name: "video_archive"
+        label: "YouTube ve Instagram Videoları"
+        file: "content/videos.json"
+        fields:
+          - label: "Videolar"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.platform}} — {{fields.title}}"
+            fields:
+              - {label: "Platform", name: "platform", widget: "select", options: ["YouTube", "Instagram"]}
+              - {label: "Başlık", name: "title", widget: "string"}
+              - {label: "Kısa açıklama", name: "summary", widget: "text"}
+              - {label: "Video URL", name: "url", widget: "string"}
+              - {label: "Tarih", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY", time_format: false}
+              - {label: "Dil", name: "language", widget: "select", options: ["TR", "EN"], default: "TR"}
+              - {label: "Süre", name: "duration", widget: "string", required: false}
+              - {label: "Tematik etiketler", name: "tags", widget: "list", required: false}
+              - {label: "İlgili yayın slugları", name: "related_publications", widget: "list", required: false}
+              - {label: "Öne çıkar", name: "featured", widget: "boolean", default: false, required: false}
+              - {label: "Sitede göster", name: "visible", widget: "boolean", default: true}
+

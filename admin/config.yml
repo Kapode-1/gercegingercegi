@@ -29,6 +29,8 @@ collections:
             add_to_top: true
             fields:
               - {label: "Başlık", name: "title", widget: "string"}
+              - {label: "Görüntü formatı", name: "format", widget: "select", options: ["Otomatik", "Yatay / 16:9", "Dikey / 9:16", "Kare / 1:1"], default: "Otomatik"}
+              - {label: "Özel kapak görseli", name: "thumbnail", widget: "image", required: false}
               - {label: "URL kısa adı", name: "slug", widget: "string", hint: "Küçük harf, boşluksuz: ornek-yazi-basligi"}
               - {label: "Yayıncı", name: "publisher", widget: "select", options: ["ODAP", "Objektürk", "Kişisel Site", "Diğer"]}
               - {label: "Dosya türü", name: "type", widget: "select", options: ["Policy Brief", "Analiz", "Makale", "Commentary", "Climate File"]}

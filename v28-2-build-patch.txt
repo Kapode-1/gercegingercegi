@@ -1,0 +1,7 @@
+// V28.2 Adaptive Video Formats injection
+{
+ const fs=await import('node:fs'),path=await import('node:path');const d=path.join(process.cwd(),'dist'),a=path.join(d,'assets');fs.mkdirSync(a,{recursive:true});
+ fs.copyFileSync('watch-desk-v282.js',path.join(a,'watch-desk-v282.js'));fs.copyFileSync('watch-desk-v282.css',path.join(a,'watch-desk-v282.css'));
+ const f=path.join(d,'video.html'),v=Date.now().toString(36);if(fs.existsSync(f)){let h=fs.readFileSync(f,'utf8');h=h.replace(/<link[^>]+watch-desk-v282\.css[^>]*>\s*/g,'').replace(/<script[^>]+watch-desk-v282\.js[^>]*><\/script>\s*/g,'');h=h.replace('</head>',`<link rel="stylesheet" href="/assets/watch-desk-v282.css?v=${v}">\n</head>`).replace('</body>',`<script src="/assets/watch-desk-v282.js?v=${v}" defer></script>\n</body>`);fs.writeFileSync(f,h,'utf8')}
+ console.log(`V28.2 Adaptive Video Formats injected (${v}).`)
+}

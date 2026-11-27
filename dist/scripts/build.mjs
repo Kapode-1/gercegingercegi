@@ -938,3 +938,12 @@ try{const files=[];async function walkV2510(d){for(const e of await fs.readdir(d
  for(const f of walk(d).filter(x=>x.endsWith('.html'))){let h=fs.readFileSync(f,'utf8');if(f.endsWith('video.html')){h=h.replace('/assets/watch-desk-v28.css','/assets/watch-desk-v28.css?v='+v).replace('/assets/watch-desk-v28.js','/assets/watch-desk-v28.js?v='+v)}else{if(!h.includes('watch-desk-v28.css'))h=h.replace('</head>',`<link rel="stylesheet" href="/assets/watch-desk-v28.css?v=${v}">\n</head>`);if(!h.includes('watch-entry-v28.js'))h=h.replace('</body>',`<script src="/assets/watch-entry-v28.js?v=${v}" defer></script>\n</body>`)}fs.writeFileSync(f,h,'utf8')}
  console.log(`V28 Watch Desk built (${v}).`)
 }
+
+
+// V28.2 Adaptive Video Formats injection
+{
+ const fs=await import('node:fs'),path=await import('node:path');const d=path.join(process.cwd(),'dist'),a=path.join(d,'assets');fs.mkdirSync(a,{recursive:true});
+ fs.copyFileSync('watch-desk-v282.js',path.join(a,'watch-desk-v282.js'));fs.copyFileSync('watch-desk-v282.css',path.join(a,'watch-desk-v282.css'));
+ const f=path.join(d,'video.html'),v=Date.now().toString(36);if(fs.existsSync(f)){let h=fs.readFileSync(f,'utf8');h=h.replace(/<link[^>]+watch-desk-v282\.css[^>]*>\s*/g,'').replace(/<script[^>]+watch-desk-v282\.js[^>]*><\/script>\s*/g,'');h=h.replace('</head>',`<link rel="stylesheet" href="/assets/watch-desk-v282.css?v=${v}">\n</head>`).replace('</body>',`<script src="/assets/watch-desk-v282.js?v=${v}" defer></script>\n</body>`);fs.writeFileSync(f,h,'utf8')}
+ console.log(`V28.2 Adaptive Video Formats injected (${v}).`)
+}

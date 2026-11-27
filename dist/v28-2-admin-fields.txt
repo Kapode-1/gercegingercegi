@@ -1,0 +1,2 @@
+              - {label: "Görüntü formatı", name: "format", widget: "select", options: ["Otomatik", "Yatay / 16:9", "Dikey / 9:16", "Kare / 1:1"], default: "Otomatik"}
+              - {label: "Özel kapak görseli", name: "thumbnail", widget: "image", required: false}

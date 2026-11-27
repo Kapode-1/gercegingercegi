@@ -1,3 +1,24 @@
 {
-  "items": []
+  "items": [
+    {
+      "language": "TR",
+      "featured": false,
+      "visible": true,
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/p/DgPHQr8tP5g/",
+      "title": "Beşiktaş'tan onurlu bir duruş",
+      "summary": "UEFA'nın \"futbola siyaset karışmaz\" masalı dün gece Batum'da resmen bitti. ",
+      "date": "2026-11-27"
+    },
+    {
+      "language": "TR",
+      "featured": false,
+      "visible": true,
+      "platform": "YouTube",
+      "url": "https://www.youtube.com/watch?v=bT_MV7XOQc0",
+      "title": " AVRUPA'NIN GÖRÜNMEZ DUVARI: Dünyayı Değiştirecek Yeni Savaş - COP31",
+      "summary": "Her yıl dünyanın dört bir yanından on binlerce diplomat aynı soru için toplanıyor. Ama dış halkadaki Yeşil Bölge'de umut konuşulurken, güvenlik bariyerlerinin arkasındaki Mavi Bölge'de her şey tek bir kelimeye, bir virgülün yerine ve 198 ülkenin oybirliği tuzağına kilitleniyor.\n\nBütçe tablolarında $1,3 trilyonluk gerçek ihtiyacın karşısına borç ağırlıklı krediler çıkınca, sahneye diplomasiden çok daha sert bir güç giriyor: Avrupa Birliği'nin \"Görünmez Karbon Duvarı\" (CBAM / SKDM) ve Brüksel Etkisi. Peki doğanın devrilme noktaları hızlanırken, insanlığın yeni kuralları doğanın saati dolmadan yetişebilecek mi?\n",
+      "date": "2026-11-27"
+    }
+  ]
 }

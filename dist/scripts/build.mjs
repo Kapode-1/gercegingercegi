@@ -947,3 +947,13 @@ try{const files=[];async function walkV2510(d){for(const e of await fs.readdir(d
  const f=path.join(d,'video.html'),v=Date.now().toString(36);if(fs.existsSync(f)){let h=fs.readFileSync(f,'utf8');h=h.replace(/<link[^>]+watch-desk-v282\.css[^>]*>\s*/g,'').replace(/<script[^>]+watch-desk-v282\.js[^>]*><\/script>\s*/g,'');h=h.replace('</head>',`<link rel="stylesheet" href="/assets/watch-desk-v282.css?v=${v}">\n</head>`).replace('</body>',`<script src="/assets/watch-desk-v282.js?v=${v}" defer></script>\n</body>`);fs.writeFileSync(f,h,'utf8')}
  console.log(`V28.2 Adaptive Video Formats injected (${v}).`)
 }
+
+
+// V28.3 Watch Navigation Redesign injection
+{
+ const fs=await import('node:fs'),path=await import('node:path');const d=path.join(process.cwd(),'dist'),a=path.join(d,'assets');fs.mkdirSync(a,{recursive:true});
+ fs.copyFileSync('watch-navigation-v283.js',path.join(a,'watch-navigation-v283.js'));fs.copyFileSync('watch-navigation-v283.css',path.join(a,'watch-navigation-v283.css'));
+ const walk=x=>fs.readdirSync(x,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(x,e.name)):[path.join(x,e.name)]),v=Date.now().toString(36);
+ for(const f of walk(d).filter(x=>x.endsWith('.html'))){let h=fs.readFileSync(f,'utf8');h=h.replace(/<link[^>]+watch-navigation-v283\.css[^>]*>\s*/g,'').replace(/<script[^>]+watch-navigation-v283\.js[^>]*><\/script>\s*/g,'');h=h.replace('</head>',`<link rel="stylesheet" href="/assets/watch-navigation-v283.css?v=${v}">\n</head>`).replace('</body>',`<script src="/assets/watch-navigation-v283.js?v=${v}" defer></script>\n</body>`);fs.writeFileSync(f,h,'utf8')}
+ console.log(`V28.3 Watch navigation redesign injected (${v}).`)
+}

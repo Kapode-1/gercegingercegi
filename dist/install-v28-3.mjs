@@ -1,0 +1,1 @@
+import fs from'node:fs';let b=fs.readFileSync('scripts/build.mjs','utf8');if(!b.includes('// V28.3 Watch Navigation Redesign injection')){b+='\n\n'+fs.readFileSync('v28-3-build-patch.txt','utf8')+'\n';fs.writeFileSync('scripts/build.mjs',b)}console.log('V28.3 kuruldu: İzle menüye, Kısa Erişim paneline ve mobil alt navigasyona eklendi; Watch Desk hero yenilendi.');

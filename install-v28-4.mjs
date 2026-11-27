@@ -1,0 +1,1 @@
+import fs from'node:fs';let b=fs.readFileSync('scripts/build.mjs','utf8');if(!b.includes('// V28.4 Universal Adaptive Navigation injection')){b+='\n\n'+fs.readFileSync('v28-4-build-patch.txt','utf8')+'\n';fs.writeFileSync('scripts/build.mjs',b)}console.log('V28.4 kuruldu: evrensel adaptif alt navigasyon, Pusula sekmesi ve Watch Desk tasarım onarımı eklendi.');

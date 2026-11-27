@@ -1,0 +1,12 @@
+(() => {
+'use strict';
+const en=(document.documentElement.lang||'tr').toLowerCase().startsWith('en');
+const T=en?{home:'Home',pub:'Publications',watch:'Watch',ai:'AI',compass:'Menu',title:'Explore',profile:'Profile',timeline:'Timeline',contact:'Contact',close:'Close'}:{home:'Ana Sayfa',pub:'Yayınlar',watch:'İzle',ai:'AI',compass:'Menü',title:'Keşfet',profile:'Profil',timeline:'Zaman Çizelgesi',contact:'Temas',close:'Kapat'};
+const icon={home:'<path d="M4 10.5 12 4l8 6.5V20h-5v-6H9v6H4Z"/>',pub:'<path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3Z"/><path d="M8 4v13a3 3 0 0 0-3-3"/>',watch:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3Z"/>',ai:'<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="4"/>',compass:'<circle cx="12" cy="12" r="8"/><path d="m15.7 8.3-2.2 5.2-5.2 2.2 2.2-5.2Z"/>'};
+const svg=n=>`<svg viewBox="0 0 24 24" aria-hidden="true">${icon[n]}</svg>`;
+const dock=document.querySelector('.pa-bottom284');if(dock){const old=dock.querySelector('[data-key="compass"]');if(old){const btn=document.createElement('button');btn.type='button';btn.dataset.key='compass';btn.className='pa-nav285__menu';btn.innerHTML=`<span class="pa-bottom284__icon">${svg('compass')}</span><b>${T.compass}</b>`;old.replaceWith(btn);btn.onclick=e=>{e.preventDefault();e.stopPropagation();toggle()}}}
+document.querySelectorAll('.pa-dock263,.pa-dock262').forEach(x=>x.remove());
+const sheet=document.createElement('aside');sheet.className='pa-sheet285';sheet.setAttribute('aria-hidden','true');sheet.innerHTML=`<div class="pa-sheet285__shade"></div><section><header><small>POLICY ATLAS / NAV</small><strong>${T.title}</strong><button type="button" aria-label="${T.close}">×</button></header><nav><a href="/pusula.html"><i>01</i><span>Pusula</span></a><a href="/#profile"><i>02</i><span>${T.profile}</span></a><a href="/timeline.html"><i>03</i><span>${T.timeline}</span></a><a href="/#contact"><i>04</i><span>${T.contact}</span></a></nav></section>`;document.body.appendChild(sheet);
+const toggle=force=>{const open=typeof force==='boolean'?force:!sheet.classList.contains('is-open');sheet.classList.toggle('is-open',open);sheet.setAttribute('aria-hidden',String(!open));document.body.classList.toggle('pa-sheet285-lock',open)};
+sheet.querySelector('header button').onclick=()=>toggle(false);sheet.querySelector('.pa-sheet285__shade').onclick=()=>toggle(false);document.addEventListener('keydown',e=>e.key==='Escape'&&toggle(false));
+})();

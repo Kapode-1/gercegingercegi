@@ -1,0 +1,1 @@
+import fs from'node:fs';let b=fs.readFileSync('scripts/build.mjs','utf8');if(!b.includes('// V28.5 Media Hub + Compass Menu injection')){b+='\n\n'+fs.readFileSync('v28-5-build-patch.txt','utf8')+'\n';fs.writeFileSync('scripts/build.mjs',b)}console.log('V28.5 kuruldu: alt bardaki Pusula açılır menüye dönüştü ve Watch Desk sosyal medya hub tasarımına geçti.');

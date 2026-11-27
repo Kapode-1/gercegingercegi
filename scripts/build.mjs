@@ -967,3 +967,13 @@ try{const files=[];async function walkV2510(d){for(const e of await fs.readdir(d
  for(const f of walk(d).filter(x=>x.endsWith('.html'))){let h=fs.readFileSync(f,'utf8');h=h.replace(/<link[^>]+universal-dock-v284\.css[^>]*>\s*/g,'').replace(/<script[^>]+universal-dock-v284\.js[^>]*><\/script>\s*/g,'');h=h.replace('</head>',`<link rel="stylesheet" href="/assets/universal-dock-v284.css?v=${v}">\n</head>`).replace('</body>',`<script src="/assets/universal-dock-v284.js?v=${v}" defer></script>\n</body>`);fs.writeFileSync(f,h,'utf8')}
  console.log(`V28.4 Universal Adaptive Navigation injected (${v}).`)
 }
+
+
+// V28.5 Media Hub + Compass Menu injection
+{
+ const fs=await import('node:fs'),path=await import('node:path');const d=path.join(process.cwd(),'dist'),a=path.join(d,'assets');fs.mkdirSync(a,{recursive:true});
+ fs.copyFileSync('media-hub-v285.js',path.join(a,'media-hub-v285.js'));fs.copyFileSync('media-hub-v285.css',path.join(a,'media-hub-v285.css'));
+ const walk=x=>fs.readdirSync(x,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(x,e.name)):[path.join(x,e.name)]),v=Date.now().toString(36);
+ for(const f of walk(d).filter(x=>x.endsWith('.html'))){let h=fs.readFileSync(f,'utf8');h=h.replace(/<link[^>]+media-hub-v285\.css[^>]*>\s*/g,'').replace(/<script[^>]+media-hub-v285\.js[^>]*><\/script>\s*/g,'');h=h.replace('</head>',`<link rel="stylesheet" href="/assets/media-hub-v285.css?v=${v}">\n</head>`).replace('</body>',`<script src="/assets/media-hub-v285.js?v=${v}" defer></script>\n</body>`);fs.writeFileSync(f,h,'utf8')}
+ console.log(`V28.5 Media Hub and Compass Menu injected (${v}).`)
+}

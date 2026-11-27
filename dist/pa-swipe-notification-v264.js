@@ -1,0 +1,27 @@
+(() => {
+'use strict';
+const KEY='policyAtlas.readingProgress.v2', NOTICE='policyAtlas.continueNotice.v264';
+const en=(document.documentElement.lang||'tr').toLowerCase().startsWith('en');
+const T=en?{notice:'Continue where you left off',continue:'Resume',dismiss:'Swipe to dismiss',read:'read',left:'left',min:'min'}:{notice:'Kaldığın yer hazır',continue:'Devam Et',dismiss:'Kapatmak için yana kaydır',read:'okundu',left:'kaldı',min:'dk'};
+const parse=v=>{try{return JSON.parse(v)||{}}catch{return{}}};
+const item=Object.values(parse(localStorage.getItem(KEY))).filter(x=>x.progress>=5&&x.progress<96&&x.path!==location.pathname).sort((a,b)=>b.updated-a.updated)[0];
+document.querySelectorAll('.pa-toast263,.pa-toast264').forEach(x=>x.remove());
+if(!item || sessionStorage.getItem(NOTICE)===String(item.updated)) return;
+const toast=document.createElement('aside'); toast.className='pa-toast264';
+toast.setAttribute('role','status'); toast.setAttribute('aria-live','polite');
+toast.innerHTML=`<div class="pa-toast264__mark" aria-hidden="true"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="17"/><path d="M21 8v5M34 21h-5M21 34v-5M8 21h5"/><path class="n" d="m25 14-2 9-7 5 3-9Z"/></svg></div><div class="pa-toast264__copy"><small>${T.notice}</small><strong></strong><p>${item.progress}% ${T.read} · ~${item.remaining} ${T.min} ${T.left}</p><i><em style="width:${item.progress}%"></em></i></div><a>${T.continue}</a><button type="button" aria-label="Close">×</button><span class="pa-toast264__hint">↔ ${T.dismiss}</span>`;
+toast.querySelector('strong').textContent=item.title;
+toast.querySelector('a').href=item.url+'#continue-reading';
+document.body.appendChild(toast);
+let startX=0,startY=0,dx=0,dragging=false,closed=false,timer;
+const dismiss=(dir=1)=>{if(closed)return;closed=true;clearTimeout(timer);toast.style.transition='transform .26s ease,opacity .22s ease';toast.style.transform=`translate3d(calc(-50% + ${dir*115}vw),0,0) rotate(${dir*4}deg)`;toast.style.opacity='0';setTimeout(()=>toast.remove(),300)};
+const reset=()=>{toast.style.transition='transform .28s cubic-bezier(.2,.8,.2,1), opacity .2s';toast.style.transform='translate3d(-50%,0,0)';toast.style.opacity='1';};
+toast.querySelector('button').onclick=()=>dismiss(1);
+toast.addEventListener('pointerdown',e=>{if(e.target.closest('a,button'))return;dragging=true;startX=e.clientX;startY=e.clientY;dx=0;toast.setPointerCapture?.(e.pointerId);toast.style.transition='none';clearTimeout(timer)}, {passive:true});
+toast.addEventListener('pointermove',e=>{if(!dragging)return;const x=e.clientX-startX,y=e.clientY-startY;if(Math.abs(y)>Math.abs(x)*1.25&&Math.abs(y)>12){dragging=false;reset();return}dx=x;const fade=Math.max(.35,1-Math.abs(dx)/360);toast.style.transform=`translate3d(calc(-50% + ${dx}px),0,0) rotate(${dx/45}deg)`;toast.style.opacity=String(fade)}, {passive:true});
+toast.addEventListener('pointerup',()=>{if(!dragging)return;dragging=false;Math.abs(dx)>85?dismiss(Math.sign(dx)||1):reset()});
+toast.addEventListener('pointercancel',()=>{dragging=false;reset()});
+requestAnimationFrame(()=>toast.classList.add('show'));
+sessionStorage.setItem(NOTICE,String(item.updated));
+timer=setTimeout(()=>dismiss(1),8000);
+})();

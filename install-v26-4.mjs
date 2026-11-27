@@ -1,0 +1,1 @@
+import fs from'node:fs';let b=fs.readFileSync('scripts/build.mjs','utf8');if(!b.includes('// V26.4 Swipe Notification injection')){b+='\n\n'+fs.readFileSync('v26-4-build-patch.txt','utf8')+'\n';fs.writeFileSync('scripts/build.mjs',b)}console.log('V26.4 kuruldu: modern bildirim ve sağa/sola kaydırarak kapatma eklendi.');

@@ -1,3 +1,14 @@
 {
-  "items": []
+  "items": [
+    {
+      "language": "TR",
+      "featured": false,
+      "visible": true,
+      "platform": "Instagram",
+      "url": "https://www.instagram.com/p/DgPHQr8tP5g/",
+      "title": "Beşiktaş'tan onurlu bir duruş",
+      "summary": "UEFA'nın \"futbola siyaset karışmaz\" masalı dün gece Batum'da resmen bitti. ",
+      "date": "2026-11-27"
+    }
+  ]
 }
